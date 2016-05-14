@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Hourglass\Http\Controllers\Auth;
 
-use App\User;
+use Hourglass\User;
 use Validator;
-use App\Http\Controllers\Controller;
+use Hourglass\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 

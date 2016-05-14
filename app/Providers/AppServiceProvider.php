@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Hourglass\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
