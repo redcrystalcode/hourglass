@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateUsersTable extends Migration
+class CreateJobsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,19 +12,25 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id')->unsigned()->index();
             $table->foreign('account_id')->references('id')->on('accounts')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->string('role');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('timezone');
-            $table->rememberToken();
+            $table->string('number');
+            $table->string('description');
+            $table->string('customer');
+            $table->integer('location_id')->unsigned()->index();
+            $table->foreign('location_id')->references('id')->on('locations')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->json('productivity')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->unique(['account_id', 'number', 'deleted_at']);
         });
     }
 
@@ -35,6 +41,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::drop('jobs');
     }
 }

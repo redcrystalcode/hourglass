@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateUsersTable extends Migration
+class CreateJobShiftsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,18 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('job_shifts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id')->unsigned()->index();
             $table->foreign('account_id')->references('id')->on('accounts')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('name');
-            $table->string('role');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('timezone');
-            $table->rememberToken();
+            $table->integer('job_id')->unsigned()->index();
+            $table->foreign('job_id')->references('id')->on('jobs')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->json('productivity')->nullable();
+            $table->boolean('closed')->default(false);
             $table->timestamps();
         });
     }
@@ -35,6 +35,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::drop('job_shifts');
     }
 }
