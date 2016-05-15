@@ -6,6 +6,7 @@
 @import 'material-design-lite/src/material-design-lite';
 
 // Built using gulp sass:prepare
+//noinspection CssUnknownTarget
 @import 'nprogress';
 
 @import 'overrides/mdl-textfield';
@@ -28,8 +29,9 @@
 @import 'components/spacer';
 @import 'components/badge';
 
+@import 'layout/sidebar';
+
 @import 'pages/account';
-@import 'pages/project';
 
 * {
   box-sizing: border-box;
@@ -48,7 +50,35 @@ a[data-internal] * {
   pointer-events: none;
 }
 
-.app__content-region {
-  min-height: 120px;
-  background-color: #fafafa;
+.app__outer-container {
+  .app__main-container {
+    width: calc(100% - 330px);
+  }
+  .app__sidebar-container {
+    @include shadow-6dp();
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 330px;
+    background: white;
+  }
+}
+.app__content-region .container {
+  min-height: calc(100vh - 114px);
+  /*
+  // Fixed Height Version
+  height: calc(100vh - 114px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  */
+}
+
+
+// Navbar Overrides
+.navbar {
+  .navbar__logo {
+    background-size: auto 30px;
+  }
 }

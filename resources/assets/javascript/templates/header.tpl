@@ -12,7 +12,7 @@
 	            <div class="selector__options">
 		            {{#primary_links}}
 		                <div class="selector__option {{#active}}selector__option--selected{{/active}}">
-				            <a href="/{{path}}" data-internal>
+				            <a href="/app/{{path}}" data-internal>
 					            <i class="option__icon material-icons">{{icon}}</i>
 					            <span class="option__label">{{name}}</span>
 				            </a>
@@ -27,7 +27,7 @@
     </div>
     <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--6-col-tablet">
         <div class="navbar__logo">
-            <span class="hidden">furnish cloud</span>
+            <span class="hidden">Hourglass</span>
         </div>
     </div>
     <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--1-col-tablet text-right">
@@ -52,7 +52,7 @@
 					    </a>
 				    </div>
 				    <div class="selector__option">
-					    <a href="/logout" data-internal>
+					    <a href="/logout">
 						    <i class="option__icon material-icons">lock</i>
 						    <span class="option__label">Log Out</span>
 					    </a>
@@ -63,7 +63,7 @@
 		    <ul class="navbar__nav">
 			    {{#unauthenticated_links}}
 				    <li class="nav__item nav__item--pill">
-					    <a href="/{{this.path}}" data-internal>{{this.name}}</a>
+					    <a href="/app/{{this.path}}" data-internal>{{this.name}}</a>
 				    </li>
 			    {{/unauthenticated_links}}
 		    </ul>

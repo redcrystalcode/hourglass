@@ -1,21 +1,21 @@
-$color-primary: "0,201,196";
-$color-primary-dark: "0,176,171"; // 600
-$color-accent: "255,96,110";
-$color-turquoise-500: rgb(0,201,196);
+$color-primary: "0,150,136";
+$color-primary-dark: "0,121,107"; // 600
+$color-accent: "255,110,64";
+$color-teal-500: rgb(0,150,136);
 
-$color-turquoise-100: lighten($color-turquoise-500, 20%);
-$color-turquoise-200: lighten($color-turquoise-500, 15%);
-$color-turquoise-300: lighten($color-turquoise-500, 10%);
-$color-turquoise-400: lighten($color-turquoise-500, 5%);
+$color-teal-100: lighten($color-teal-500, 20%);
+$color-teal-200: lighten($color-teal-500, 15%);
+$color-teal-300: lighten($color-teal-500, 10%);
+$color-teal-400: lighten($color-teal-500, 5%);
 
-$color-turquoise-600: darken($color-turquoise-500, 5%);
-$color-turquoise-700: darken($color-turquoise-500, 10%);
-$color-turquoise-800: darken($color-turquoise-500, 15%);
-$color-turquoise-900: darken($color-turquoise-500, 20%);
+$color-teal-600: darken($color-teal-500, 5%);
+$color-teal-700: darken($color-teal-500, 10%);
+$color-teal-800: darken($color-teal-500, 15%);
+$color-teal-900: darken($color-teal-500, 20%);
 
-$color-brand-primary: $color-turquoise-500;
-$color-brand-dark: $color-turquoise-600;
-$color-brand-accent: rgb(255,96,100);
+$color-brand-primary: rgb(0,150,136);
+$color-brand-dark: rgb(0,121,107);
+$color-brand-accent: rgb(255,110,64);
 
 $color-background-gray: #FAFAFA;
 $color-text-gray: rgba(0,0,0,0.87);

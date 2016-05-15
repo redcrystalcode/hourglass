@@ -14,7 +14,7 @@ var reload = browserSync.reload;
 var paths = {
     sass: {
         main: './resources/assets/sass/main.scss',
-        watch: './resources/assets/sass/**/*.scss',
+        watch: 'resources/assets/sass/**/*.scss',
         dest: './public/css'
     },
     js: {
@@ -94,7 +94,9 @@ gulp.task('sass', ['sass:prepare'], function() {
         .pipe(reload({stream: true}));
 });
 gulp.task('sass:watch', ['sass'], function() {
-    gulp.watch(paths.sass.watch, ['sass']);
+    $.watch(paths.sass.watch, function() {
+        gulp.start('sass');
+    });
 });
 
 // Compile JS

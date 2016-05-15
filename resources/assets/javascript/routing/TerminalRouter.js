@@ -1,7 +1,6 @@
 import BaseRouter from 'routing/BaseRouter';
-import ItemsRoute from 'routing/routes/projects/ItemsRoute';
 import HeaderService from 'services/HeaderService';
-import ProjectSelectorView from 'views/projects/ProjectSelectorView';
+import TerminalLayoutView from 'views/terminal/TerminalLayoutView';
 
 const TerminalRouter = BaseRouter.extend({
     onInitialize() {
@@ -20,22 +19,9 @@ const TerminalRouter = BaseRouter.extend({
     },
 
     index() {
-        HeaderService.request('activate', 'projects');
-        this.container.show(new ProjectSelectorView());
+        HeaderService.request('activate', 'terminal');
+        this.container.show(new TerminalLayoutView());
     },
-
-    overview(id) {
-        // TODO - Show project overview
-        this.go(`projects/${id}/items`);
-    },
-
-    items(id) {
-        HeaderService.request('activate', 'projects.items');
-        return new ItemsRoute({
-            container: this.container,
-            projectId: id,
-        });
-    }
 
 });
 

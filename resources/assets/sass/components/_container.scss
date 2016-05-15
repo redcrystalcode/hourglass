@@ -4,7 +4,7 @@
   position: relative;
   background-color: $color-background-gray;
   padding: 112px 40px 80px 40px;
-  top: -72px;
+  margin-top: -72px;
 
   &--default {
     &:before {
@@ -14,6 +14,11 @@
       margin: -112px -40px 40px;
       background-color: $color-brand-primary;
     }
+  }
+
+  &--splash {
+    background-color: $color-brand-primary;
+    color: white;
   }
 
   &--with-ribbon {

@@ -72,7 +72,8 @@ app.on('start', () => {
 
     // debugger;
     Backbone.history.start({
-        pushState: true
+        pushState: true,
+        root: '/app/'
     });
 });
 
