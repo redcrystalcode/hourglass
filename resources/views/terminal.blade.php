@@ -3,7 +3,7 @@
     <head>
         <title>Hourglass</title>
 
-        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|Material+Icons|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/css/main.css">
 
         <!--Let browser know website is optimized for mobile-->
