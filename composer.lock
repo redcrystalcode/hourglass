@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "754e409e9c7ba7f6a89ab3509b5e8edd",
-    "content-hash": "188279ece74671b51f4d8534d081d610",
+    "hash": "90366303130237f2028bafa2dce7ff11",
+    "content-hash": "085be7a9bba57e3bf2d72fa70df3404e",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -895,6 +895,46 @@
                 "shell"
             ],
             "time": "2016-03-09 05:03:14"
+        },
+        {
+            "name": "redcrystal/laravel-validation-rules",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redcrystalcode/laravel-validation-rules.git",
+                "reference": "f4afaad54cc2ac83c3361043a9619ae1089fde9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redcrystalcode/laravel-validation-rules/zipball/f4afaad54cc2ac83c3361043a9619ae1089fde9b",
+                "reference": "f4afaad54cc2ac83c3361043a9619ae1089fde9b",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=4.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RedCrystal\\ValidationRules\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zain Mehdi",
+                    "email": "szainmehdi@gmail.com"
+                }
+            ],
+            "description": "Laravel Validation Rules: Fluent Helper Classes for Validation Rules",
+            "time": "2016-05-15 00:55:28"
         },
         {
             "name": "swiftmailer/swiftmailer",
