@@ -12,16 +12,16 @@
 					</h3>
 					<form>
 						<div class="mdl-textfield mdl-textfield--floating-label mdl-textfield--full-width mdl-js-textfield">
-							<input class="mdl-textfield__input" type="text" id="timecard" name="timecard" value="" tabindex="1" autofocus>
+							<input class="mdl-textfield__input" type="password" id="timecard" name="timecard" value="" tabindex="1" autofocus>
 							<label class="mdl-textfield__label" for="timecard">Timecard</label>
 						</div>
 					</form>
 					<div class="prompt__toolbar">
-						<button class="toolbar__button">
+						<button class="toolbar__button mdl-js-button mdl-js-ripple-effect">
 							<i class="button__icon material-icons">timer</i>
 							<span class="button__text">Express Clock In</span>
 						</button>
-						<button class="toolbar__button">
+						<button class="toolbar__button mdl-js-button mdl-js-ripple-effect">
 							<i class="button__icon material-icons">credit_card</i>
 							<span class="button__text">Register Timecard</span>
 						</button>

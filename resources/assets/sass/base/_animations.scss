@@ -8,9 +8,9 @@
     opacity: 1
   }
 }
-@mixin animate-enter {
+@mixin animate-enter($length: 0.6s) {
   transform-origin: center;
-  animation: animate-enter 0.6s;
+  animation: animate-enter $length;
 }
 
 @keyframes animate-material-slide-down {
