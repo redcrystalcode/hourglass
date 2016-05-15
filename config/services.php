@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => Hourglass\User::class,
+        'model' => \Hourglass\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

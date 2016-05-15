@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Hourglass\User::class,
+            'model' => \Hourglass\Models\User::class,
         ],
 
         // 'users' => [
