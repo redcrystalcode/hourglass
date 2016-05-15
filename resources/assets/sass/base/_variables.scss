@@ -1,0 +1,31 @@
+$color-primary: "0,201,196";
+$color-primary-dark: "0,176,171"; // 600
+$color-accent: "255,96,110";
+$color-turquoise-500: rgb(0,201,196);
+
+$color-turquoise-100: lighten($color-turquoise-500, 20%);
+$color-turquoise-200: lighten($color-turquoise-500, 15%);
+$color-turquoise-300: lighten($color-turquoise-500, 10%);
+$color-turquoise-400: lighten($color-turquoise-500, 5%);
+
+$color-turquoise-600: darken($color-turquoise-500, 5%);
+$color-turquoise-700: darken($color-turquoise-500, 10%);
+$color-turquoise-800: darken($color-turquoise-500, 15%);
+$color-turquoise-900: darken($color-turquoise-500, 20%);
+
+$color-brand-primary: $color-turquoise-500;
+$color-brand-dark: $color-turquoise-600;
+$color-brand-accent: rgb(255,96,100);
+
+$color-background-gray: #FAFAFA;
+$color-text-gray: rgba(0,0,0,0.87);
+$color-text-gray-light: rgba(0,0,0,0.56);
+
+$link-hover-background-dark: rgba(0, 0, 0, 0.06);
+$link-active-background-dark: rgba(0, 0, 0, 0.12);
+
+// Text Fields
+$input-text-highlight-color: lighten($color-brand-accent, 10%);
+$input-text-error-color: #B71C1C;
+
+$grid-desktop-breakpoint: 1040px;

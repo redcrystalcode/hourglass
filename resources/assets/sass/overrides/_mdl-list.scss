@@ -1,0 +1,16 @@
+@import "base/mixins";
+@import "base/variables";
+@import "material-design-lite/src/mixins";
+
+.mdl-list__item-secondary-action {
+  cursor: pointer;
+}
+.mdl-list__item--anchor {
+  @include link-hover-highlight-dark($link-hover-background-dark, $link-hover-background-dark);
+  cursor: pointer;
+}
+//.mdl-list__item-sub-title {
+//  text-overflow: ellipsis;
+//  overflow: hidden;
+//  //white-space: nowrap;
+//}

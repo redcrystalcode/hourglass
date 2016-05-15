@@ -1,0 +1,26 @@
+.mdl-radio-group {
+  .mdl-radio-group__label {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .mdl-radio-group__options {
+    margin-left: 0px;
+
+    .mdl-radio {
+      display: block;
+      margin-bottom: 8px;
+
+      .mdl-radio__label {
+        font-size: 15px;
+        font-weight: 300;
+
+        .material-icons {
+          font-size: 19px;
+          vertical-align: text-bottom;
+          color: #777;
+        }
+      }
+    }
+  }
+}

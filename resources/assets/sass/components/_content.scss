@@ -1,0 +1,13 @@
+.content__empty {
+  text-align: center;
+  padding: 40px;
+  color: lighten($color-text-gray-light, 20%);
+
+  .empty__icon i {
+     font-size: 48px;
+  }
+  .empty__heading {
+    font-weight: 300;
+    font-size: 24px;
+  }
+}

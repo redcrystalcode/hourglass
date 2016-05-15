@@ -1,0 +1,44 @@
+@mixin link-style($color, $hover: $color, $active: $color) {
+  color: $color;
+  &:visited {
+    color: $color;
+  }
+  &:hover {
+    color: $hover;
+  }
+  &:active {
+    color: $active;
+  }
+}
+
+@mixin link-hover-shadow() {
+  transition: box-shadow 0.3s;
+  &:hover {
+    @include shadow-4dp();
+  }
+  &:active {
+    @include shadow-6dp();
+  }
+}
+
+@mixin link-hover-highlight-dark(
+  $hover: $link-hover-background-dark,
+  $active: $link-active-background-dark
+) {
+  transition: background-color 0.3s;
+  background-color: rgba(0, 0, 0, 0);
+  &:hover {
+    background-color: $hover;
+  }
+  &:active {
+    background-color: $active;
+  }
+}
+
+@mixin faded($normal: 0.8, $hover: 1.0) {
+  transition: opacity 0.3s;
+  opacity: $normal;
+  &:hover {
+    opacity: $hover;
+  }
+}

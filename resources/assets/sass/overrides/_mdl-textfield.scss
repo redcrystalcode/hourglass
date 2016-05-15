@@ -1,0 +1,60 @@
+@import "base/variables";
+@import "base/mixins";
+
+// Disable ugly outline when auto-focusing inputs
+// before JS has upgraded the element.
+.mdl-textfield > input {
+  outline: none;
+}
+
+// Hack away the default mdl-textfield validation display.
+.mdl-textfield.is-invalid {
+  .mdl-textfield__error {
+    visibility: hidden;
+  }
+  .mdl-textfield__input {
+    border-color: $input-text-bottom-border-color;
+  }
+  &.mdl-textfield--floating-label .mdl-textfield__label {
+    color: $input-text-highlight-color;
+    &:after {
+      background-color: $input-text-highlight-color;
+    }
+  }
+}
+
+// Add my custom invalid textfield state
+.mdl-textfield.mdl-textfield--invalid {
+  .mdl-textfield__error {
+    visibility: visible;
+  }
+  .mdl-textfield__input {
+    border-color: $input-text-error-color;
+  }
+  &.mdl-textfield--floating-label .mdl-textfield__label {
+    color: $input-text-error-color;
+    &:after {
+      background-color: $input-text-error-color;
+    }
+  }
+}
+
+// Custom element associated with .mdl-textfield to
+// provide hints or additional functionality.
+.mdl-textfield__hint {
+  @include faded();
+  color: $color-text-gray;
+  margin-top: 12px;
+  font-size: 0.9em;
+  font-weight: normal;
+
+  a {
+    @include link-style($color-accent);
+  }
+}
+
+.mdl-textfield--no-resize {
+  textarea {
+    resize: none;
+  }
+}

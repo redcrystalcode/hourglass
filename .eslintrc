@@ -1,0 +1,23 @@
+{
+    "extends": "google",
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "indent": ["error", 4],
+        "comma-dangle": ["error", "only-multiline"],
+        "valid-jsdoc": ["error", {
+            "requireReturnDescription": false,
+            "requireReturn": false,
+            "requireParamDescription": false
+        }],
+        "camelcase": ["off"],
+        "max-len": ["error", {"code": 120, "ignoreUrls": true, "ignoreComments": false}],
+        "operator-linebreak": ["error", "before"],
+        "arrow-parens": ["error", "always"],
+        "new-cap": ["error", {
+            "capIsNewExceptions": ["Deferred"]
+        }],
+        "no-warning-comments": ["off"]
+    }
+}

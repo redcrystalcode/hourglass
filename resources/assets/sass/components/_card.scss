@@ -1,0 +1,50 @@
+@import "material-design-lite/src/variables";
+@import "material-design-lite/src/mixins";
+@import "base/animations";
+
+.card {
+  @include shadow-2dp();
+  padding: 40px;
+  width: 100%;
+  background-color: white;
+  border-radius: 2px;
+
+  &--0dp {
+    box-shadow: none;
+  }
+  &--2dp {}
+  &--3dp {
+    @include shadow-3dp();
+  }
+  &--4dp {
+    @include shadow-4dp();
+  }
+  &--6dp {
+    @include shadow-6dp();
+  }
+  &--8dp {
+    @include shadow-8dp();
+  }
+
+  &--animate-in {
+    @include animate-enter();
+  }
+
+  .card__title {
+    font-size: 1.4em;
+    font-weight: normal;
+
+    &--sm {
+      font-size: 1.2em;
+    }
+    &--md {
+      font-size: 1.5em;
+    }
+    &--lg {
+      font-size: 1.7em;
+    }
+    &--xl {
+      font-size: 2.2em;
+    }
+  }
+}

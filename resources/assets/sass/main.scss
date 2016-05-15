@@ -1,0 +1,54 @@
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/animations';
+@import 'base/helpers';
+
+@import 'material-design-lite/src/material-design-lite';
+
+// Built using gulp sass:prepare
+@import 'nprogress';
+
+@import 'overrides/mdl-textfield';
+@import 'overrides/mdl-radio';
+@import 'overrides/mdl-button';
+@import 'overrides/mdl-list';
+
+@import 'components/card';
+@import 'components/settings-card';
+@import 'components/collection-card';
+@import 'components/container';
+@import 'components/content';
+@import 'components/navbar';
+@import 'components/footer';
+@import 'components/section';
+@import 'components/dialog';
+@import 'components/action-sheet';
+@import 'components/overlay';
+@import 'components/loading';
+@import 'components/spacer';
+@import 'components/badge';
+
+@import 'pages/account';
+@import 'pages/project';
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: white;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+a[data-internal] * {
+  pointer-events: none;
+}
+
+.app__content-region {
+  min-height: 120px;
+  background-color: #fafafa;
+}

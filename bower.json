@@ -1,0 +1,21 @@
+{
+  "name": "hourglass",
+  "version": "1.0.0",
+  "authors": [
+    "Zain Mehdi <zain@redcrystalcode.com>"
+  ],
+  "description": "Hourglass",
+  "main": "public/index.php",
+  "license": "ISC",
+  "homepage": "http://hourglass.redcrystalcode.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-lite": "~1.1.1"
+  }
+}

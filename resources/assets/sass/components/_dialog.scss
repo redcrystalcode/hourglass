@@ -1,0 +1,74 @@
+@import 'base/variables';
+@import 'material-design-lite/src/mixins';
+
+@keyframes animate-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animate-dialog-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
+
+.dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+
+  .dialog__wrapper {
+    @include shadow-8dp();
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+  }
+
+  .dialog__content {
+    padding: 24px;
+
+    .dialog__title {
+      color: $color-text-gray;
+      font-weight: 500;
+      font-size: 20px;
+      margin: 0 0 20px 0;
+    }
+    .dialog__body {
+      color: $color-text-gray-light;
+      font-size: 15px;
+      font-weight: 400;
+      margin: 0;
+    }
+  }
+
+  .dialog__actions {
+    padding: 8px;
+    display: flex;
+    flex-flow: row-reverse;
+
+    .mdl-button {
+      color: $color-brand-dark;
+    }
+  }
+
+  &.dialog--visible {
+    animation: animate-dialog-in 0.3s;
+  }
+  &.dialog--hiding {
+    animation: animate-dialog-out 0.2s;
+  }
+}

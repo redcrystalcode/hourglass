@@ -1,0 +1,16 @@
+.badge {
+  display: inline-block;
+  vertical-align: text-bottom;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  background-color: $color-brand-primary;
+  text-transform: uppercase;
+  padding: 0 8px;
+  border-radius: 4px;
+  margin-left: 4px;
+  
+  &.badge--accent {
+    background-color: $color-brand-accent;
+  }
+}

@@ -1,0 +1,10 @@
+.mdl-button {
+  &.mdl-button--with-icon {
+    i.material-icons {
+      margin-right: 8px;
+      margin-left: -4px;
+      vertical-align: top;
+      line-height: 36px;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "base/variables";
+
+.footer {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  position: relative;
+  padding: 20px 40px;
+  background-color: white;
+  color: $color-text-gray-light;
+
+  .footer__logo {
+    background: url(/img/logo/logo-512-color.png) no-repeat left;
+    background-size: contain;
+    height: 40px;
+    width: 100%;
+  }
+
+  .footer__nav {
+    text-align: right;
+
+    .nav__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .list__item {
+        display: inline-block;
+
+        i.material-icons {
+          vertical-align: middle;
+          margin-right: 4px;
+        }
+
+        a {
+          color: $color-text-gray-light;
+          font-weight: 400;
+          padding: 12px 18px;
+          transition: background-color 0.3s;
+          border-radius: 4px;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.08);
+          }
+          &:active {
+            background-color: rgba(0, 0, 0, 0.18);
+          }
+        }
+      }
+    }
+  }
+}
