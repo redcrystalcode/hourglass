@@ -31,9 +31,12 @@ class AuthController extends Controller
     protected $redirectTo = '/';
 
     /**
+     * @var string
+     */
+    protected $username = 'username';
+
+    /**
      * Create a new authentication controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {

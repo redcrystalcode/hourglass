@@ -19,10 +19,11 @@ class CreateUsersTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->string('role');
+            $table->string('role')->default('admin');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('timezone');
+            $table->string('timezone')->default('America/Los_Angeles');
             $table->rememberToken();
             $table->timestamps();
         });
