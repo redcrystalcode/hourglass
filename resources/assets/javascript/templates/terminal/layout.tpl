@@ -1,10 +1,8 @@
 <div class="terminal container container--splash">
 	<main class="main-content">
 		<div class="mdl-grid mdl-grid--no-spacing">
-			<div class="mdl-cell mdl-cell--6-col mdl-cell--3-offset">
-				<div class="terminal__clock">
-					10:08 <span class="clock__am-pm">am</span>
-				</div>
+			<div class="mdl-cell mdl-cell--6-col mdl-cell--3-offset mdl-cell--10-col-tablet mdl-cell--1-offset-tablet">
+				<div class="clock-region"></div>
 				<div class="terminal__prompt card">
 					<div class="prompt__icon"><i class="material-icons">credit_card</i></div>
 					<h3 class="prompt__instructions">

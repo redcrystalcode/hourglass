@@ -250,3 +250,15 @@
 
   }
 }
+
+
+
+@media screen and (max-width: $grid-desktop-breakpoint) {
+  .navbar__selector {
+    min-width: 0;
+
+    .selector__selected .selected__item {
+      display: none;
+    }
+  }
+}

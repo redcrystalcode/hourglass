@@ -10,6 +10,7 @@ import 'backbone.syphon';
 import 'backbone-query-parameters';
 import 'babel-polyfill';
 import 'form-serializer';
+import 'date-util';
 
 // Register partials.
 PartialsManager.register();

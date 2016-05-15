@@ -4,7 +4,6 @@
 
 .terminal {
   .terminal__clock {
-    @include animate-fade-in();
     font-size: 108px;
     font-weight: 100;
     text-align: center;
@@ -34,9 +33,9 @@
       background: $color-brand-accent;
       color: white;
       position: absolute;
-      top: -59px;
+      top: -54px;
       left: 50%;
-      margin-left: -59px;
+      margin-left: -54px;
       display: flex;
 
       i.material-icons {

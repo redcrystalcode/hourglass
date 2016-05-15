@@ -1,5 +1,5 @@
 <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--1-col-tablet">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
 	    {{#logged_in}}
 		    <div class="navbar__selector {{#if selected.subpath}}navbar__selector--with-back{{/if}}">
 	            <div class="selector__selected">
@@ -25,12 +25,12 @@
 	        </div>
 	    {{/logged_in}}
     </div>
-    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--6-col-tablet">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle">
         <div class="navbar__logo">
             <span class="hidden">Hourglass</span>
         </div>
     </div>
-    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--1-col-tablet text-right">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--middle text-right">
 	    {{#if logged_in}}
 	        <div class="navbar__selector navbar__selector--dark navbar__selector--right user-selector">
 			    <div class="selector__selected">
