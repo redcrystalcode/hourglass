@@ -17,10 +17,10 @@
   }
   .terminal__prompt {
     @include shadow-4dp();
-    @include animate-enter(0.8s);
+    @include animate-fade-in();
 
     max-width: 500px;
-    margin: 80px auto 0;
+    margin: 50px auto 0;
     border-radius: 4px;
     position: relative;
     color: $color-text-gray;
@@ -42,6 +42,16 @@
         font-size: 64px;
         align-self: center;
         margin: 0 auto;
+
+        &.prompt__icon-sub {
+          position: absolute;
+          right: 24px;
+          bottom: 24px;
+          font-size: 24px;
+          border-radius: 50%;
+          color: #ff6e40;
+          background: white;
+        }
       }
     }
 
@@ -51,7 +61,11 @@
       line-height: 32px;
       text-align: center;
     }
-
+    .prompt__actions {
+      display: flex;
+      flex-flow: row-reverse;
+      align-items: center;
+    }
     .prompt__toolbar {
       background: $color-brand-dark;
       padding: 12px;

@@ -53,6 +53,14 @@
   }
 }
 
+// Custom element associated with .mdl-textfield to
+// provide hints or additional functionality.
+.mdl-textfield__tooltip {
+  position: absolute;
+  right: 12px;
+  bottom: 20px;
+}
+
 .mdl-textfield--no-resize {
   textarea {
     resize: none;

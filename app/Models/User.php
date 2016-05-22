@@ -30,6 +30,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $username
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\User whereUsername($value)
  */
 class User extends Authenticatable
 {

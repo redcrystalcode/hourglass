@@ -10,6 +10,9 @@
 | database. Just tell the factory how a default model should look.
 |
 */
+/** @var Factory $factory */
+
+use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(\Hourglass\Models\User::class, function (Faker\Generator $faker) {
     return [
@@ -19,3 +22,16 @@ $factory->define(\Hourglass\Models\User::class, function (Faker\Generator $faker
         'remember_token' => str_random(10),
     ];
 });
+
+
+$factory->define(\Hourglass\Models\Job::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->words(3),
+        'number' => $faker->bothify('######?'),
+        'description' => $faker->paragraph(3),
+        'customer' => $faker->company,
+        'location_id' => 1,
+    ];
+});
+
+

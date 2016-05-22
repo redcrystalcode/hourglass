@@ -7,8 +7,8 @@ import AccountLayoutView from 'views/account/AccountLayoutView';
  */
 const IndexRoute = BaseRoute.extend({
     fetch() {
-        this.model = new AccountModel();
-        return this.model.fetch();
+        // this.model = new AccountModel();
+        // return this.model.fetch();
     },
     render() {
         this.container.show(new AccountLayoutView({

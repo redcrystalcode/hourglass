@@ -41,8 +41,9 @@ const FormManager = Marionette.Object.extend({
      * @private
      */
     _save() {
+        this.model.set(this.getData());
         return new Promise((resolve) => {
-            this.model.save(this.getData())
+            this.model.save()
                 .then(() => {
                     this.trigger('save:success');
                     resolve();

@@ -14,6 +14,10 @@ class CreateTimesheetsTable extends Migration
     {
         Schema::create('timesheets', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('account_id')->unsigned()->index();
+            $table->foreign('account_id')->references('id')->on('accounts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('employee_id')->unsigned()->index();
             $table->foreign('employee_id')->references('id')->on('employees')
                 ->onUpdate('cascade')

@@ -27,6 +27,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Location extends Model
 {
     use BelongsToAccount, SoftDeletes;
+    
+    protected $fillable = [
+        'name'
+    ];
 
     /**
      * @var string[]

@@ -21,3 +21,12 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/app', 'TerminalController@index');
 Route::get('app/{path?}', 'TerminalController@index')->where('path', '.+');
+
+Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
+    Route::resource('employees', 'EmployeeController');
+    Route::resource('locations', 'LocationController');
+
+    // Terminal Routes
+    Route::post('terminal/clock', 'TerminalController@clock');
+    Route::get('terminal/clocked-in', 'TerminalController@clockedInEmployees');
+});

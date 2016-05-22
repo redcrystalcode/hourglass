@@ -6,7 +6,7 @@ import {Collection} from 'backbone';
  */
 const BaseCollection = Collection.extend({
     parse(response) {
-        return response.data;
+        return response.data || response;
     }
 });
 

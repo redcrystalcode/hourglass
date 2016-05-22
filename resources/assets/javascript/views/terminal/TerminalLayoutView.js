@@ -10,20 +10,12 @@ const TerminalLayoutView = LayoutView.extend({
 
     regions: {
         clock: '.clock-region',
-    //     loading: '.account-loading-region',
-    //     hero: '.account-hero-region',
-    //     details: '.account-details-region',
-    //     members: '.account-members-region',
+        prompt: '.prompt-region',
     },
 
     onBeforeShow() {
         this.showChildView('clock', new TerminalClockView());
-        // this.showChildView('details', new AccountDetailsView({
-        //     model: this.model
-        // }));
-        // this.showChildView('members', new AccountMembersView({
-        //     model: this.model
-        // }));
+        this.showChildView('prompt', this.options.prompt);
     },
 });
 

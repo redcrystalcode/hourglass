@@ -1,0 +1,114 @@
+.mini-chooser {
+  position: relative;
+  min-height: 40px;
+  .mini-chooser__create-field {
+    margin-top: -12px;
+    display: flex;
+    align-items: center;
+
+    .mini-chooser__create-field-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+      margin-right: 12px;
+      text-align: center;
+      flex: none;
+      i.material-icons {
+        line-height: 28px;
+        font-size: 16px;
+        color: $color-text-gray-light;
+      }
+    }
+  }
+  &.mini-chooser--loading {
+    .mini-chooser__loader {
+      display: block;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      z-index: 5;
+      margin-left: -35px;
+      .app__loading {
+        padding: 0;
+      }
+    }
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+.mini-chooser__loader {
+  display: none;
+}
+
+.mini-chooser__list {
+  &--scrollable {
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  &--fixed {
+    min-height: 140px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  .mini-chooser__list-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 12px;
+
+    .mini-chooser__list-item-icon {
+      width: 28px;
+      height: 28px;
+      background-color: $color-brand-primary;
+      transition: background-color 0.2s;
+      border-radius: 50%;
+      text-align: center;
+      margin-right: 12px;
+      flex: none;
+
+      i.material-icons {
+        font-size: 16px;
+        line-height: 28px;
+        color: white;
+      }
+    }
+    .mini-chooser__list-item-body {
+      font-size: 16px;
+      flex-grow: 2;
+
+      .mini-chooser__list-item-body-secondary {
+        color: $color-text-gray-light;
+        font-size: 14px;
+        margin-left: 8px;
+      }
+    }
+    .mini-chooser__list-item-selector {
+      min-width: 32px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.1s, color 0.2s;
+    }
+    &:hover .mini-chooser__list-item-selector {
+      opacity: 0.47;
+    }
+    &--selected {
+      .mini-chooser__list-item-icon {
+        background-color: $color-brand-accent;
+      }
+      .mini-chooser__list-item-selector {
+        opacity: 1.0 !important;
+        color: $color-brand-accent;
+      }
+    }
+  }
+}
+

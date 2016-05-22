@@ -131,7 +131,7 @@ gulp.task('js:watch', function() {
 // Watch assets.
 gulp.task('watch', function() {
     browserSync.init({
-        proxy: 'https://hourglass.app'
+        proxy: 'http://hourglass.app'
     });
     gulp.start(['js:watch', 'sass:watch']);
 });

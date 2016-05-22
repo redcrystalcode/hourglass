@@ -9,15 +9,15 @@ class Api {
     }
 
     setApiBase() {
-        let protocol = 'https';
+        let protocol = 'http';
         let domain = this.getDomain();
-        this.base = `${protocol}://${domain}/`;
+        this.base = `${protocol}://${domain}/api/`;
     }
 
     getDomain() {
         let host = document.location.hostname;
         if (host === 'localhost') {
-            return 'hourglass.app';
+            return 'localhost:' + document.location.port;
         }
         return host;
     }
@@ -55,7 +55,8 @@ class Api {
 
     call(method, url, data = null, returnXhr = false) {
         let headers = {
-            Accept: 'application/json'
+            'Accept': 'application/json',
+            'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN'),
         };
         var xhr = $.ajax(url, {
             method,

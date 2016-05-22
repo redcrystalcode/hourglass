@@ -1,6 +1,6 @@
 import BaseRouter from 'routing/BaseRouter';
 import HeaderService from 'services/HeaderService';
-import TerminalLayoutView from 'views/terminal/TerminalLayoutView';
+import TerminalService from 'services/TerminalService';
 
 const TerminalRouter = BaseRouter.extend({
     onInitialize() {
@@ -14,13 +14,19 @@ const TerminalRouter = BaseRouter.extend({
 
     routes: {
         'terminal': 'index',
+        // 'terminal/register-timecard': 'registerTimecard'
         // 'terminal/:id': 'overview',
         // 'terminal/:id/items': 'items',
     },
 
     index() {
         HeaderService.request('activate', 'terminal');
-        this.container.show(new TerminalLayoutView());
+        TerminalService.request('index');
+    },
+
+    registerTimecard() {
+        HeaderService.request('activate', 'terminal');
+        TerminalService.request('register:timecard');
     },
 
 });

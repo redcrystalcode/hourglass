@@ -1,5 +1,28 @@
 .sidebar {
   position: relative;
+
+  &.sidebar--loading {
+    .sidebar__loader {
+      display: block;
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      z-index: 10;
+      margin-left: -35px;
+    }
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+.sidebar__loader {
+  display: none;
 }
 
 .sidebar__heading {
@@ -25,6 +48,9 @@
   }
   .clock-list {
     margin: 0;
+    .mdl-list__item:not(.animate) {
+      animation: move 0.4s ease-out;
+    }
     .mdl-list__item-primary-content {
       flex: 1 0 auto;
       .mdl-list__item-title {
@@ -60,4 +86,11 @@
       }
     }
   }
+}
+
+.sidebar__empty {
+  padding: 40px;
+  text-align: center;
+  color: $color-text-gray-light;
+  opacity: 0.6;
 }

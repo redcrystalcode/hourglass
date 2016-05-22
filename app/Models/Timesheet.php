@@ -26,6 +26,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Timesheet whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Timesheet whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property integer $account_id
+ * @property-read \Hourglass\Models\JobShift $shift
+ * @property-read \Hourglass\Models\Job $job
+ * @property-read \Hourglass\Models\Employee $employee
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Timesheet whereAccountId($value)
  */
 class Timesheet extends Model
 {
@@ -37,4 +42,28 @@ class Timesheet extends Model
     protected $dates = [
         'time_in', 'time_out', 'created_at', 'updated_at', 'deleted_at'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
+     */
+    public function shift()
+    {
+        return $this->belongsTo(JobShift::class, 'job_shift_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
+     */
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
+     */
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 }

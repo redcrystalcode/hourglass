@@ -15,6 +15,7 @@ import SettingsRouter from 'routing/SettingsRouter';
 import HeaderService from 'services/HeaderService';
 import ApplicationService from 'services/ApplicationService';
 import LoadingService from 'services/LoadingService';
+import TerminalService from 'services/TerminalService';
 
 import UserManager from 'managers/UserManager';
 
@@ -42,6 +43,10 @@ app.on('start', () => {
     });
 
     LoadingService.setup({
+        container: app.layout.content,
+    });
+
+    TerminalService.setup({
         container: app.layout.content,
     });
 

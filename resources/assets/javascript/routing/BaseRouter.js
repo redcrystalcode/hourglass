@@ -23,19 +23,9 @@ const BaseRouter = Router.extend({
         this.navigate(route, {trigger: true});
     },
 
-    getUnfilteredRoutes() {
-        return ['login', 'register', 'acceptInvitation'];
-    },
-
-    isUnfilteredRoute(name) {
-        return this.getUnfilteredRoutes().indexOf(name) !== -1;
-    },
-
     /**
      * This internally-called function handles redirects for
      * authentication.
-     *
-     * @return {boolean}
      */
     execute() {
         // Routing using Backbone.History to a subroute of an active route was

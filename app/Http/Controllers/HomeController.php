@@ -3,6 +3,8 @@
 namespace Hourglass\Http\Controllers;
 
 use Hourglass\Http\Requests;
+use Hourglass\Models\Employee;
+use Hourglass\Models\Location;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,6 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = \Auth::user();
+        $employees = Employee::whereAccountId($user->account_id)->get();
+        $locations = Location::whereAccountId($user->account_id)->get();
+        return view('home', compact('employees', 'locations'));
     }
 }

@@ -84,7 +84,9 @@
 }
 
 .action-sheet__body {
+  height: calc(100vh - 72px);
   padding: 24px 24px 80px 24px;
+  overflow-y: auto;
 
   p {
     font-size: 12px;
@@ -92,7 +94,13 @@
   }
 }
 
+.action-sheet__form-header {
+  margin: 0;
+  font-size: 16px;
+}
+
 .action-sheet__footer {
+  background: white;
   border-top: 1px solid #dedede;
   position: absolute;
   bottom: 0;

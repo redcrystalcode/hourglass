@@ -13,6 +13,21 @@
   animation: animate-enter $length;
 }
 
+@keyframes animate-slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1
+  }
+  to {
+    transform: translateX(300px);
+    opacity: 0
+  }
+}
+@mixin animate-slide-out-right($length: 0.3s) {
+  transform-origin: center;
+  animation: animate-slide-out-right $length;
+}
+
 @keyframes animate-material-slide-down {
   from {
     transform: scaleY(0);
@@ -67,4 +82,11 @@
   animation: animate-fade-out 0.3s;
 }
 
-
+.animate {
+  &--slide-out-right {
+    @include animate-slide-out-right();
+  }
+  &--slide-up {
+    @include animate-material-slide-up();
+  }
+}

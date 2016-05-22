@@ -28,4 +28,9 @@ use Illuminate\Database\Eloquent\Model;
 class JobShift extends Model
 {
     use BelongsToAccount;
+
+    /**
+     * @var array
+     */
+    protected $fillable = ['account_id', 'job_id', 'closed'];
 }
