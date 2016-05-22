@@ -69,6 +69,19 @@ class TerminalController extends BaseController
     }
 
     /**
+     * Get all timecards assigned right now for UI purposes.
+     * @return array
+     */
+    public function timecards()
+    {
+        $timecards = $this->account->employees()->whereNotNull('terminal_key')->get(['id', 'terminal_key', 'name']);
+
+        return [
+            'data' => $timecards
+        ];
+    }
+
+    /**
      * Determine if the employee is clocked in.
      *
      * @param \Hourglass\Models\Employee $employee

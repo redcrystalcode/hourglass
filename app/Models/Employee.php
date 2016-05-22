@@ -42,6 +42,10 @@ class Employee extends Model
 
     protected $sortable = ['name', 'created_at'];
 
+    protected $fillable = [
+        'name', 'position', 'terminal_key', 'location_id'
+    ];
+
     /**
      * @var string[]
      */

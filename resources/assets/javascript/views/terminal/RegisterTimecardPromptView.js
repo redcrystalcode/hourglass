@@ -1,9 +1,13 @@
 import _ from 'lodash';
+import nprogress from 'nprogress';
 import {LayoutView} from 'backbone.marionette';
+import api from 'core/Api';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import TerminalService from 'services/TerminalService';
 import AddEmployeeView from 'views/terminal/AddEmployeeView';
 import ActionSheet from 'components/ActionSheet';
+import Dialog from 'components/Dialog';
+import FormValidator from 'components/FormValidator';
 import MiniChooser from 'components/MiniChooser';
 import template from 'templates/terminal/prompts/register-timecard.tpl';
 import mdl from 'mdl';
@@ -12,12 +16,15 @@ const RegisterTimecardPromptView = LayoutView.extend({
     template,
 
     ui: {
-        input: 'input[name=timecard]',
-        search: 'input[name=search]'
+        form: 'form',
+        timecard: 'input[name=terminal_key]',
+        search: 'input[name=search]',
+        register: '.js-register',
     },
 
     events: {
         'click .js-cancel': 'cancel',
+        'click @ui.register': 'onSubmit',
         'click .js-new-employee': 'showNewEmployeeActionSheet',
         'keyup @ui.search': 'handleSearchInput',
     },
@@ -28,6 +35,10 @@ const RegisterTimecardPromptView = LayoutView.extend({
 
     cancel() {
         TerminalService.request('index');
+    },
+
+    initialize(options) {
+        this.timecards = options.timecards;
     },
 
     onBeforeShow() {
@@ -42,13 +53,17 @@ const RegisterTimecardPromptView = LayoutView.extend({
             collection: this.employees,
         });
         this.showChildView('employeeSearch', this.chooser);
+        this.employees.setSorting('created_at', 1);
         this.employees.fetch();
         this.listenTo(this.chooser, 'selected', this.onEmployeeSelected);
     },
 
     onShow() {
         mdl.upgradeAllRegistered();
-        this.ui.input.focus();
+        this.ui.timecard.focus();
+        this.validator = new FormValidator({
+            form: this.ui.form
+        });
     },
 
     showNewEmployeeActionSheet() {
@@ -59,8 +74,39 @@ const RegisterTimecardPromptView = LayoutView.extend({
     },
 
     onEmployeeSelected(employee) {
-        console.log('Selected!');
-        console.log(employee);
+        this.selectedEmployee = employee;
+        this.ui.register.attr('disabled', false);
+    },
+
+    onSubmit() {
+        var existingTimecard = this.timecards.findWhere({terminal_key: this.ui.timecard.val()});
+
+        if (existingTimecard && existingTimecard.get('id') !== this.selectedEmployee.get('id')) {
+            Dialog.open({
+                title: 'Reassign timecard?',
+                body: 'This timecard is already registered to ' + existingTimecard.get('name')
+                    + '. Are you sure you want to reassign this timecard to ' + this.selectedEmployee.get('name')
+                    + '? <span class="dialog__body-subtext">' + existingTimecard.get('name') + ' will not be able to '
+                    + 'clock in or out until you register another timecard for them.',
+                primaryAction: 'Reassign'
+            }).then(this.register.bind(this));
+        } else {
+            this.register();
+        }
+    },
+
+    register() {
+        nprogress.start();
+        api.post('employees/%s/register', this.selectedEmployee.get('id'), {
+            terminal_key: this.ui.timecard.val()
+        }).then((response) => {
+            nprogress.done();
+            this.selectedEmployee.reset(response.data);
+            TerminalService.request('index');
+        }).catch((errors) => {
+            nprogress.done();
+            this.validator.showServerErrors(errors);
+        });
     },
 
     handleSearchInput() {

@@ -1,4 +1,7 @@
+import nprogress from 'nprogress';
+import {Collection} from 'backbone';
 import Service from 'backbone.service';
+import api from 'core/Api';
 import TerminalLayoutView from 'views/terminal/TerminalLayoutView';
 import ClockInOrOutPromptView from 'views/terminal/ClockInOrOutPromptView';
 import RegisterTimecardPromptView from 'views/terminal/RegisterTimecardPromptView';
@@ -20,7 +23,18 @@ const TerminalService = Service.extend({
     },
 
     registerTimecard() {
-        this._show(new RegisterTimecardPromptView());
+        nprogress.start();
+        api.get('terminal/timecards').then((response) => {
+            nprogress.done();
+            this._show(new RegisterTimecardPromptView({
+                timecards: new Collection(response.data),
+            }));
+        }).catch((errors) => {
+            nprogress.done();
+            // TODO - Error Handling
+            console.error('Something went wrong!');
+            console.error(errors);
+        });
     },
 
     selectJob(employee) {

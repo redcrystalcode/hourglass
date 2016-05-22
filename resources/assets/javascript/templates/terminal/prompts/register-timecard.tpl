@@ -5,8 +5,8 @@
 	</h3>
 	<form>
 		<div class="mdl-textfield mdl-textfield--floating-label mdl-textfield--full-width mdl-js-textfield">
-			<input class="mdl-textfield__input" type="password" id="timecard" name="timecard" value="" tabindex="1" autofocus>
-			<label class="mdl-textfield__label" for="timecard">Timecard</label>
+			<input class="mdl-textfield__input" type="password" id="terminal_key" name="terminal_key" value="" tabindex="1" autofocus>
+			<label class="mdl-textfield__label" for="terminal_key">Timecard</label>
 		</div>
 		<div class="mdl-textfield mdl-textfield--floating-label mdl-textfield--full-width mdl-js-textfield">
 			<input class="mdl-textfield__input" type="text" id="search" name="search" value="" tabindex="2" autofocus>
@@ -16,7 +16,7 @@
 	</form>
 
 	<div class="prompt__actions">
-		<button tabindex="3" class="js-register mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect">
+		<button tabindex="3" class="js-register mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect" disabled>
 			Register
 		</button>
 		<button tabindex="4" class="js-cancel mdl-button mdl-button mdl-js-button mdl-js-ripple-effect">
