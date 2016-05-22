@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import $ from 'jquery';
 import Cocktail from 'backbone.cocktail';
 
 /**
@@ -7,7 +8,17 @@ import Cocktail from 'backbone.cocktail';
  * @return {object}
  */
 export function getFormData($form) {
-    return JSON.parse($form.serializeJSON());
+    let data = JSON.parse($form.serializeJSON());
+
+    // Support nested properties using dot notation.
+    $form.find('[name]').each(function() {
+        let name = $(this).attr('name');
+        if (!_.get(data, name)) {
+            _.set(data, name, $(this).val());
+        }
+    });
+
+    return data;
 }
 
 /**
@@ -31,4 +42,57 @@ export function setUpDefaultSort(Collection) {
  */
 export function mixin(target, ...mixins) {
     Cocktail.mixin(target, ...mixins);
+}
+
+/**
+ * Mixin soft deletes functionality.
+ * @param {object} target
+ */
+export function softDeletes(target) {
+    /**
+     * Add soft-delete functionality
+     * @param {object} options
+     * @returns {boolean|jQuery.xhr}
+     */
+    target.prototype.archive = function(options) {
+        options = _.extend({validate: true, parse: true}, options);
+
+        // After a successful server-side save, the client is (optionally)
+        // updated with the server-side state.
+        var model = this;
+        var success = options.success;
+        var attributes = this.attributes;
+        options.success = function(resp) {
+            // Ensure attributes are restored during synchronous saves.
+            model.attributes = attributes;
+            var serverAttrs = options.parse ? model.parse(resp, options) : resp;
+            if (serverAttrs && !model.set(serverAttrs, options)) {
+                return false;
+            }
+            if (success) {
+                success.call(options.context, model, resp, options);
+            }
+            model.trigger('sync', model, resp, options);
+        };
+
+        var wrapError = function(model, options) {
+            var error = options.error;
+            options.error = function(resp) {
+                if (error) {
+                    error.call(options.context, model, resp, options);
+                }
+                model.trigger('error', model, resp, options);
+            };
+        };
+
+        var xhr = false;
+        if (this.isNew()) {
+            _.defer(options.success);
+        } else {
+            wrapError(this, options);
+            xhr = this.sync('delete', this, options);
+        }
+
+        return xhr;
+    };
 }

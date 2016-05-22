@@ -20,7 +20,7 @@ class CreateJobsTable extends Migration
                 ->onDelete('cascade');
             $table->string('name');
             $table->string('number');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('customer');
             $table->integer('location_id')->unsigned()->index();
             $table->foreign('location_id')->references('id')->on('locations')

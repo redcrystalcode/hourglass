@@ -1,4 +1,5 @@
 import Menu from 'components/Menu';
+import mdl from 'mdl';
 import template from 'templates/components/select-button.tpl';
 
 const SelectButton = Menu.extend({
@@ -15,6 +16,10 @@ const SelectButton = Menu.extend({
         this.trigger('selected', this.model.toJSON());
         this.render();
         this.onSelected();
+    },
+
+    onDomRefresh() {
+        mdl.upgradeAllRegistered();
     },
 
     reset() {

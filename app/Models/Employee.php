@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee search($keyword)
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee sort($column, $direction)
  */
 class Employee extends Model
 {

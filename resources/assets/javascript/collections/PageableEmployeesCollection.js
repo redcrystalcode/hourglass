@@ -10,7 +10,7 @@ const PageableEmployeesCollection = BasePageableCollection.extend({
         new: {attr: 'created_at', dir: 1, label: 'Newest First'},
         old: {attr: 'created_at', dir: -1, label: 'Oldest First'},
     },
-    defaultSort: 'alpha'
+    defaultSort: 'new'
 });
 
 setUpDefaultSort(PageableEmployeesCollection);

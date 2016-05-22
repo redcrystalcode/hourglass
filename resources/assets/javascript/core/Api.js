@@ -61,7 +61,8 @@ class Api {
         var xhr = $.ajax(url, {
             method,
             data,
-            headers
+            headers,
+            type: 'json'
         });
 
         if (returnXhr === true) {

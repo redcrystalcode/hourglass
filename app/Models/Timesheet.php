@@ -56,7 +56,7 @@ class Timesheet extends Model
      */
     public function job()
     {
-        return $this->belongsTo(Job::class);
+        return $this->belongsTo(Job::class)->withTrashed();
     }
 
     /**
@@ -64,6 +64,6 @@ class Timesheet extends Model
      */
     public function employee()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class)->withTrashed();
     }
 }

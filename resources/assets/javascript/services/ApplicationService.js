@@ -6,8 +6,10 @@ const ApplicationService = Service.extend({
     },
 
     requests: {
-        route: 'route',
-        user: 'user'
+        'route': 'route',
+        'user': 'user',
+        'sidebar:hide': 'hideSidebar',
+        'sidebar:show': 'showSidebar'
     },
 
     route(route) {
@@ -16,6 +18,14 @@ const ApplicationService = Service.extend({
 
     user() {
         return this.app.user;
+    },
+
+    showSidebar() {
+        this.app.layout.$el.addClass('app--with-sidebar');
+    },
+
+    hideSidebar() {
+        this.app.layout.$el.removeClass('app--with-sidebar');
     }
 });
 

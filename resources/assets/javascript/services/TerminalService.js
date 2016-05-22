@@ -23,16 +23,12 @@ const TerminalService = Service.extend({
     },
 
     _show(view) {
-        if (!this.layout) {
+        if (!this.layout || !this._isShowingView(TerminalLayoutView)) {
             this.layout = new TerminalLayoutView({
                 prompt: view
             });
             this.container.show(this.layout);
             return;
-        }
-
-        if (!this._isShowingView(TerminalLayoutView)) {
-            this.container.show(this.layout);
         }
 
         this.layout.showChildView('prompt', view);

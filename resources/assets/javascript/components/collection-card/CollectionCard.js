@@ -33,6 +33,7 @@ const CollectionCard = LayoutView.extend({
         page: 'handlePaging',
         request: 'addLoadingState',
         sync: 'removeLoadingState',
+        error: 'removeLoadingState',
         destroy: 'removeLoadingState',
     },
 

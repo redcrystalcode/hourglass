@@ -15,19 +15,18 @@ const DisplaysMenu = {
         if (this._isMenuDisabled()) {
             return;
         }
+    },
+
+    onDomRefresh() {
+        if (this._isMenuDisabled()) {
+            return;
+        }
 
         this.menu = new Menu({
             items: _.result(this.menuOptions, 'items', []),
         });
         this.listenTo(this.menu, 'selected', this.onMenuSelection);
         this.addRegion('menuRegion', _.result(this.menuOptions, 'container', '.menu-container'));
-    },
-
-    onBeforeShow() {
-        if (this._isMenuDisabled()) {
-            return;
-        }
-
         this.showChildView('menuRegion', this.menu);
     },
 
@@ -61,7 +60,7 @@ const DisplaysMenu = {
      * @private
      */
     _isMenuDisabled() {
-        return this.menuOptions.disable === true;
+        return (this.menuOptions.disable === true) || (this.menuOptions.items.length === 0);
     }
 };
 

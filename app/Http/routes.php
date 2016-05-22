@@ -24,6 +24,7 @@ Route::get('app/{path?}', 'TerminalController@index')->where('path', '.+');
 
 Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
     Route::resource('employees', 'EmployeeController');
+    Route::resource('jobs', 'JobController');
     Route::resource('locations', 'LocationController');
 
     // Terminal Routes

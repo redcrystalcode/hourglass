@@ -16,6 +16,7 @@ const FormValidator = Marionette.Object.extend({
 
     clearErrors() {
         this.form.find('.' + this.errorClass).removeClass(this.errorClass);
+        this.form.find('[data-validation-error-for]').empty();
     },
 
     showServerErrors(errors) {
@@ -28,18 +29,22 @@ const FormValidator = Marionette.Object.extend({
     },
 
     showError(name, errorText) {
-        var textfield = this.form
-            .find('[name="' + name + '"]')
-            .parent();
+        var input = this.form.find('[name="' + name + '"]');
+        var errorTextEl;
 
-        textfield.addClass(this.errorClass)
-            .find('.' + this.errorTextClass);
-
-        var errorTextEl = textfield.find('.' + this.errorTextClass);
-        if (errorTextEl.length === 0) {
-            errorTextEl = $('<div/>', {class: this.errorTextClass});
-            textfield.append(errorTextEl);
+        if (input.length) {
+            var textfield = input.parent();
+            textfield.addClass(this.errorClass)
+                .find('.' + this.errorTextClass);
+            errorTextEl = textfield.find('.' + this.errorTextClass);
+            if (errorTextEl.length === 0) {
+                errorTextEl = $('<div/>', {class: this.errorTextClass});
+                textfield.append(errorTextEl);
+            }
+        } else {
+            errorTextEl = this.form.find('[data-validation-error-for="' + name + '"]');
         }
+
         errorTextEl.text(errorText);
     },
 });

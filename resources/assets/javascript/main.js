@@ -11,6 +11,7 @@ import DefaultRouter from 'routing/DefaultRouter';
 import AccountRouter from 'routing/AccountRouter';
 import TerminalRouter from 'routing/TerminalRouter';
 import SettingsRouter from 'routing/SettingsRouter';
+import JobsRouter from 'routing/JobsRouter';
 
 import HeaderService from 'services/HeaderService';
 import ApplicationService from 'services/ApplicationService';
@@ -61,9 +62,12 @@ app.on('start', () => {
         account: new AccountRouter({
             container: app.layout.content
         }),
+        jobs: new JobsRouter({
+            container: app.layout.content
+        }),
         settings: new SettingsRouter({
             container: app.layout.content
-        })
+        }),
     };
     app.router = app.routers.main;
 
@@ -86,10 +90,10 @@ app.on('start', () => {
 app.start();
 
 // Route all anchor tags with [data-internal] attribute.
-$(document).on('click', 'a[data-internal]', function(e) {
+$(document).on('click', 'a', function(e) {
     var href = $(this).attr('href');
-    if (href.substring(0, 1) === '/' && href.substring(0, 2) !== '//') {
+    if (href.substring(0, 4) === '/app') {
         e.preventDefault();
-        Backbone.history.navigate(href, true);
+        Backbone.history.navigate(href.substring(4), true);
     }
 });

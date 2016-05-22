@@ -39,6 +39,12 @@
   }
 }
 
+// Add custom validation error outside textfield
+.form-validation-error {
+  color: $input-text-error-color;
+  font-size: 12px;
+}
+
 // Custom element associated with .mdl-textfield to
 // provide hints or additional functionality.
 .mdl-textfield__hint {

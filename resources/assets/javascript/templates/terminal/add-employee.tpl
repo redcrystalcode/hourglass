@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<h4 class="action-sheet__form-header">Location</h4>
-	<p>What location will this job be worked on?</p>
+	<p>Choose the location this employee will primarily work in.</p>
 	<div class="location-chooser-region">
 
 	</div>

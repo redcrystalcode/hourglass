@@ -4,7 +4,7 @@
 			<h3 class="dialog__title">{{title}}</h3>
 		{{/if}}
 		{{#if body}}
-			<p class="dialog__body">{{body}}</p>
+			<p class="dialog__body">{{{body}}}</p>
 		{{/if}}
 	</div>
 	<div class="dialog__actions">

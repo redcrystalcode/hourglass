@@ -3,6 +3,9 @@
 namespace Hourglass\Models;
 
 use Hourglass\Models\Relations\BelongsToAccount;
+use Hourglass\Models\Scopes\IsSearchable;
+use Hourglass\Models\Scopes\IsSortable;
+use Hourglass\Models\Scopes\SortsTrashedLast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -33,10 +36,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job whereDeletedAt($value)
  * @mixin \Eloquent
+ * @property-read \Hourglass\Models\Location $location
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job search($keyword)
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job sort($column, $direction)
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job sortTrashedLast()
  */
 class Job extends Model
 {
-    use BelongsToAccount, SoftDeletes;
+    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable, SortsTrashedLast;
+
+    protected $searchable = ['name', 'number'];
+
+    protected $sortable = ['name', 'created_at'];
+
+    protected $fillable = [
+        'name', 'number', 'customer', 'description',
+        'location_id', 'productivity'
+    ];
+
+    protected $casts = [
+        'productivity' => 'array'
+    ];
 
     /**
      * @var string[]
@@ -44,4 +64,12 @@ class Job extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

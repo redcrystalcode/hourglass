@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import _ from 'lodash';
 import {ItemView} from 'backbone.marionette';
 import {Collection} from 'backbone';
 import ApplicationService from 'services/ApplicationService';
@@ -61,6 +62,13 @@ const HeaderView = ItemView.extend({
             return;
         }
         e.stopPropagation();
+
+        // Check if other navbar__selector is open.
+        var others = $('.navbar__selector--open');
+        _.each(others, (selector) => {
+            this.closeSelector.call(selector);
+        });
+
         var selector = e.currentTarget;
         $(selector).addClass('navbar__selector--open');
         $('body').one('click', this.closeSelector.bind(selector));
