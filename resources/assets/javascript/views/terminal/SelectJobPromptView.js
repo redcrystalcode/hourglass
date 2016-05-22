@@ -7,6 +7,7 @@ import PageableJobsCollection from 'collections/PageableJobsCollection';
 import FormValidator from 'components/FormValidator';
 import MiniChooser from 'components/MiniChooser';
 import TerminalService from 'services/TerminalService';
+import NotificationService from 'services/NotificationService';
 import template from 'templates/terminal/prompts/select-job.tpl';
 import mdl from 'mdl';
 
@@ -80,7 +81,6 @@ const SelectJobPromptView = LayoutView.extend({
             terminal_key: this.model.get('terminal_key'),
             job_id: this.selectedJob.get('id')
         }).then(this.handleResponse.bind(this)).catch((errors) => {
-            console.log(errors);
             this.validator.showServerErrors(errors);
             nprogress.done();
         });
@@ -88,10 +88,9 @@ const SelectJobPromptView = LayoutView.extend({
 
     handleResponse(response) {
         nprogress.done();
-        console.log(response);
 
-        // If clocked out:
         this.channel.trigger('clock:in', response.data);
+        NotificationService.request('notify:clock:in', response.data);
         TerminalService.request('index');
     },
 

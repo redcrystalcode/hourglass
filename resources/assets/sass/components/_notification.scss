@@ -1,0 +1,107 @@
+@keyframes animate-notification-out {
+  from {
+    transform: scaleY(1);
+    height: 60px;
+    margin-top: 12px;
+    opacity: 1;
+    padding: 12px;
+  }
+  to {
+    transform: scaleY(0);
+    height: 0;
+    margin-top: 0;
+    opacity: 0;
+    padding: 0;
+  }
+}
+
+@mixin animate-notification-out($time: 0.5s) {
+  animation: animate-notification-out $time;
+  transform-origin: top;
+}
+
+@keyframes animate-notification-in {
+  from {
+    transform: scaleY(0);
+    height: 0px;
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    height: 60px;
+    opacity: 1
+  }
+}
+
+@mixin animate-notification-in($time: 0.5s) {
+  animation: animate-notification-in $time ease-out;
+  transform-origin: top;
+}
+
+.notification-container {
+  position: fixed;
+  top: 84px;
+  right: 24px;
+  z-index: 1;
+}
+
+.notification {
+  @include shadow-6dp();
+  @include animate-notification-in(0.3s);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px;
+  display: flex;
+  width: 280px;
+  height: 60px;
+  z-index: 1;
+  position: relative;
+  margin-top: 12px;
+  overflow: hidden;
+
+  &.animate-out {
+    @include animate-notification-out(0.4s);
+  }
+
+  .notification__icon {
+    background: $color-brand-accent;
+    flex: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+    color: white;
+    text-align: center;
+    i.material-icons {
+      line-height: 36px;
+    }
+  }
+  .notification__content {
+    flex-grow: 2;
+    margin-right: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+
+    .notification__primary {
+      font-size: 13px;
+      color: $color-text-gray;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .notification__secondary {
+      font-size: 12px;
+      color: $color-text-gray-light;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  .notification__timestamp {
+    font-size: 11px;
+    font-weight: 600;
+    color: $color-text-gray-light;
+    white-space: nowrap;
+  }
+}
+

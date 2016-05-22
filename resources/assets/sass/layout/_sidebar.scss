@@ -60,6 +60,11 @@
         display: inline-block;
         overflow: hidden;
       }
+      .mdl-list__item-sub-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
     .mdl-list__item-secondary-content {
       color: $color-text-gray-light;

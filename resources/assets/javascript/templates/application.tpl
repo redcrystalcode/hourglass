@@ -1,6 +1,7 @@
 <div class="app__outer-container">
 	<div class="app__main-container">
 		<div class="app__header-region"></div>
+		<div class="app__notifications-region"></div>
 		<div class="app__content-region"></div>
 		<div class="app__footer-region"></div>
 	</div>

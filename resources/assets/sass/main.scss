@@ -20,6 +20,7 @@
 @import 'components/container';
 @import 'components/content';
 @import 'components/navbar';
+@import 'components/notification';
 @import 'components/footer';
 @import 'components/section';
 @import 'components/dialog';
@@ -73,6 +74,9 @@ a[data-internal] * {
     .app__sidebar-container {
       @include shadow-6dp();
       right: 0;
+    }
+    .notification-container {
+      right: 330px + 24px;
     }
   }
 }

@@ -89,4 +89,7 @@
   &--slide-up {
     @include animate-material-slide-up();
   }
+  &--fade-out {
+    @include animate-fade-out(0.2s);
+  }
 }

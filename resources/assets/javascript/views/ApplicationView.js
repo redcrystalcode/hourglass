@@ -1,5 +1,6 @@
 import {LayoutView} from 'backbone.marionette';
 import FooterView from 'views/FooterView';
+import NotificationsView from 'views/NotificationsView';
 import LoadingView from 'components/LoadingView';
 import OnTheClockSidebarView from 'views/OnTheClockSidebarView';
 import template from 'templates/application.tpl';
@@ -12,6 +13,7 @@ const ApplicationView = LayoutView.extend({
     regions: {
         header: '.app__header-region',
         content: '.app__content-region',
+        notifications: '.app__notifications-region',
         footer: '.app__footer-region',
         sidebar: '.app__sidebar-region',
     },
@@ -26,6 +28,7 @@ const ApplicationView = LayoutView.extend({
     onRender() {
         this.showChildView('content', new LoadingView());
         this.showChildView('footer', new FooterView());
+        this.showChildView('notifications', new NotificationsView());
         this.showChildView('sidebar', new OnTheClockSidebarView());
     },
 

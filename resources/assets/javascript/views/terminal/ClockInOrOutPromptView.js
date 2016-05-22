@@ -5,6 +5,7 @@ import api from 'core/Api';
 import EmployeeModel from 'models/EmployeeModel';
 import FormValidator from 'components/FormValidator';
 import TerminalService from 'services/TerminalService';
+import NotificationService from 'services/NotificationService';
 import template from 'templates/terminal/prompts/clock-in-or-out.tpl';
 import mdl from 'mdl';
 
@@ -66,8 +67,10 @@ const ClockInOrOutPromptView = ItemView.extend({
         // If clocked out:
         if (response.status === Status.CLOCKED_OUT) {
             this.channel.trigger('clock:out', response.data);
+            NotificationService.request('notify:clock:out', response.data);
         } else if (response.status === Status.CLOCKED_IN) {
             this.channel.trigger('clock:in', response.data);
+            NotificationService.request('notify:clock:in', response.data);
         } else {
             TerminalService.request('select:job', new EmployeeModel(response.data));
         }

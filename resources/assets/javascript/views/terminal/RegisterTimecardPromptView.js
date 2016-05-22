@@ -4,6 +4,7 @@ import {LayoutView} from 'backbone.marionette';
 import api from 'core/Api';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import TerminalService from 'services/TerminalService';
+import NotificationService from 'services/NotificationService';
 import AddEmployeeView from 'views/terminal/AddEmployeeView';
 import ActionSheet from 'components/ActionSheet';
 import Dialog from 'components/Dialog';
@@ -103,6 +104,11 @@ const RegisterTimecardPromptView = LayoutView.extend({
             nprogress.done();
             this.selectedEmployee.reset(response.data);
             TerminalService.request('index');
+            NotificationService.request('notify', {
+                icon: 'credit_card',
+                primary: 'Timecard Assigned',
+                secondary: `to ${this.selectedEmployee.get('name')}`
+            });
         }).catch((errors) => {
             nprogress.done();
             this.validator.showServerErrors(errors);
