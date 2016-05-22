@@ -103,11 +103,10 @@
       box-shadow: none;
     }
 
-    //&.navbar__selector--closing .selector__options {
-    //  transform-origin: top;
-    //  animation: animate-material-slide-up 0.3s !important;
-    //  opacity: 0;
-    //}
+    &.navbar__selector--closing .selector__options {
+      transform-origin: top;
+      animation: animate-material-slide-up 0.3s !important;
+    }
 
     .selector__options {
       @include shadow-6dp();

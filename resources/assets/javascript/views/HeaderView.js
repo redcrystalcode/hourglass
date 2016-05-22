@@ -57,7 +57,7 @@ const HeaderView = ItemView.extend({
     },
 
     openSelector(e) {
-        if ($(e.target).is('.selector__option a') ) {
+        if ($(e.target).is('.selector__option a')) {
             return;
         }
         e.stopPropagation();
@@ -67,7 +67,10 @@ const HeaderView = ItemView.extend({
     },
 
     closeSelector() {
-        $(this).removeClass('navbar__selector--open');
+        $(this).addClass('navbar__selector--closing').one('animationend', () => {
+            $(this).removeClass('navbar__selector--closing')
+                .removeClass('navbar__selector--open');
+        });
     },
 
     getSelected() {
