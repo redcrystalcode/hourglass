@@ -6,8 +6,10 @@ import api from 'core/Api';
 import PageableJobsCollection from 'collections/PageableJobsCollection';
 import FormValidator from 'components/FormValidator';
 import MiniChooser from 'components/MiniChooser';
+import ActionSheet from 'components/ActionSheet';
 import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
+import ManageJobView from 'views/jobs/ManageJobView';
 import template from 'templates/terminal/prompts/select-job.tpl';
 import mdl from 'mdl';
 
@@ -23,6 +25,7 @@ const SelectJobPromptView = LayoutView.extend({
 
     events: {
         'click .js-cancel': 'cancel',
+        'click .js-new-job': 'showAddJobActionSheet',
         'submit @ui.form': 'onFormSubmit',
         'click @ui.submit': 'submit',
         'keyup @ui.search': 'handleSearchInput',
@@ -120,6 +123,13 @@ const SelectJobPromptView = LayoutView.extend({
     clearSearch() {
         this.ui.search.val('');
         this.jobs.fetch();
+    },
+
+    showAddJobActionSheet() {
+        var sheet = new ActionSheet({
+            view: new ManageJobView({collection: this.jobs})
+        });
+        sheet.open();
     }
 });
 
