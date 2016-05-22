@@ -2,6 +2,7 @@ import Service from 'backbone.service';
 import TerminalLayoutView from 'views/terminal/TerminalLayoutView';
 import ClockInOrOutPromptView from 'views/terminal/ClockInOrOutPromptView';
 import RegisterTimecardPromptView from 'views/terminal/RegisterTimecardPromptView';
+import SelectJobPromptView from 'views/terminal/SelectJobPromptView';
 
 const TerminalService = Service.extend({
     setup(options = {}) {
@@ -20,6 +21,12 @@ const TerminalService = Service.extend({
 
     registerTimecard() {
         this._show(new RegisterTimecardPromptView());
+    },
+
+    selectJob(employee) {
+        this._show(new SelectJobPromptView({
+            model: employee,
+        }));
     },
 
     _show(view) {

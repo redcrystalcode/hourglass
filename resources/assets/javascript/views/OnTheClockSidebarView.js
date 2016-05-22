@@ -68,10 +68,10 @@ const OnTheClockSidebarView = CompositeView.extend({
 
     /**
      * Respond to Clock Out Event
-     * @param {int} id - Timesheet ID
+     * @param {object} timesheet - Timesheet object
      */
-    onClockOut(id) {
-        let model = this.collection.findWhere({id});
+    onClockOut(timesheet) {
+        let model = this.collection.findWhere({id: timesheet.id});
         if (!model) {
             return;
         }

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import {Collection} from 'backbone';
 import {LayoutView} from 'backbone.marionette';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import TerminalService from 'services/TerminalService';

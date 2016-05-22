@@ -44,7 +44,7 @@ const ClockInOrOutPromptView = ItemView.extend({
         e.preventDefault();
         nprogress.start();
         let timecard = this.ui.input.val();
-        api.post('terminal/clock', null, {terminal_key: timecard, job_id: 2})
+        api.post('terminal/clock', null, {terminal_key: timecard})
             .then(this.handleResponse.bind(this))
             .catch((errors) => {
                 console.log(errors);
@@ -65,12 +65,11 @@ const ClockInOrOutPromptView = ItemView.extend({
 
         // If clocked out:
         if (response.status === Status.CLOCKED_OUT) {
-            this.channel.trigger('clock:out', response.data.id);
+            this.channel.trigger('clock:out', response.data);
         } else if (response.status === Status.CLOCKED_IN) {
             this.channel.trigger('clock:in', response.data);
         } else {
-            // Must select job.
-            console.log('Select a Job!');
+            TerminalService.request('select:job', new EmployeeModel(response.data));
         }
     },
 });

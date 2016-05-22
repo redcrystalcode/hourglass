@@ -8,6 +8,7 @@ use Hourglass\Models\Employee;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Timesheet;
+use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\TerminalTimesheetTransformer;
 
 class TerminalController extends BaseController
@@ -48,7 +49,7 @@ class TerminalController extends BaseController
         }
 
         return [
-            'data' => $employee,
+            'data' => (new EmployeeTransformer())->transform($employee),
             'status' => self::STATUS_SELECT_JOB,
         ];
     }

@@ -19,7 +19,11 @@ const JobListView = LayoutView.extend({
     },
 
     initialize() {
-        this.jobs = new PageableJobsCollection();
+        this.jobs = new PageableJobsCollection([], {
+            queryParams: {
+                include_deleted: true,
+            }
+        });
     },
 
     onBeforeShow() {

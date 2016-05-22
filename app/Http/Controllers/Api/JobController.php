@@ -34,14 +34,16 @@ class JobController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginate = $this->account->jobs()
-            ->withTrashed()
+        $query = $this->account->jobs()
             ->search($request->get('search'))
             ->sortTrashedLast()
-            ->sort($request->get('sort_by'), $request->get('order'))
-            ->paginate($request->get('per_page', 10));
+            ->sort($request->get('sort_by'), $request->get('order'));
 
-        return $this->respondWithPaginator($paginate);
+        if ($request->get('include_deleted')) {
+            $query->withTrashed();
+        }
+
+        return $this->respondWithPaginator($query->paginate($request->get('per_page', 10)));
     }
 
     /**
