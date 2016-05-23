@@ -167,7 +167,7 @@ class TerminalController extends BaseController
             'job_id' => $job->id,
             'closed' => false
         ]);
-        if ($shift->exists()) {
+        if (!$shift->exists()) {
             $this->account->shifts()->save($shift);
         }
 
