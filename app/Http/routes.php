@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
 
 Route::get('/app', 'TerminalController@index');
 Route::get('app/{path?}', 'TerminalController@index')->where('path', '.+');
