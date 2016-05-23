@@ -32,4 +32,6 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
     Route::post('terminal/clock', 'TerminalController@clock');
     Route::get('terminal/timecards', 'TerminalController@timecards');
     Route::get('terminal/clocked-in', 'TerminalController@clockedInEmployees');
+    Route::get('terminal/shifts', 'TerminalController@ongoingShifts');
+    Route::post('terminal/shifts/{id}/end', 'TerminalController@endShift');
 });

@@ -1,8 +1,5 @@
 import {LayoutView} from 'backbone.marionette';
 import TerminalClockView from 'views/terminal/TerminalClockView';
-// import AccountHeroView from 'views/account/AccountHeroView';
-// import AccountDetailsView from 'views/account/AccountDetailsView';
-// import AccountMembersView from 'views/account/AccountMembersView';
 import template from 'templates/terminal/layout.tpl';
 
 const TerminalLayoutView = LayoutView.extend({
@@ -11,6 +8,7 @@ const TerminalLayoutView = LayoutView.extend({
     regions: {
         clock: '.clock-region',
         prompt: '.prompt-region',
+        shifts: '.shifts-region'
     },
 
     onBeforeShow() {

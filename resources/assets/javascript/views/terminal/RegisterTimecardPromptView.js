@@ -69,7 +69,9 @@ const RegisterTimecardPromptView = LayoutView.extend({
 
     showNewEmployeeActionSheet() {
         this.sheet = new ActionSheet({
-            view: new AddEmployeeView()
+            view: new AddEmployeeView({
+                collection: this.employees
+            })
         });
         this.sheet.open();
     },

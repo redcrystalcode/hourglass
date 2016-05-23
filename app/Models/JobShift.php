@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Hourglass\Models\Job $job
+ * @property string $comments
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift whereComments($value)
  */
 class JobShift extends Model
 {
@@ -33,4 +36,16 @@ class JobShift extends Model
      * @var array
      */
     protected $fillable = ['account_id', 'job_id', 'closed'];
+
+    protected $casts = [
+        'productivity' => 'array'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Illuminate\Database\Query\Builder
+     */
+    public function job()
+    {
+        return $this->belongsTo(Job::class)->withTrashed();
+    }
 }

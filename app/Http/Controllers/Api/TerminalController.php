@@ -4,12 +4,15 @@ namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use Hourglass\Http\Requests\Terminal\ClockRequest;
+use Hourglass\Http\Requests\Terminal\EndShiftRequest;
 use Hourglass\Models\Employee;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\EmployeeTransformer;
+use Hourglass\Transformers\JobShiftTransformer;
 use Hourglass\Transformers\TerminalTimesheetTransformer;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TerminalController extends BaseController
 {
@@ -26,8 +29,8 @@ class TerminalController extends BaseController
     public function clock(ClockRequest $request)
     {
         $transformer = new TerminalTimesheetTransformer();
-
         $terminalKey = $request->get('terminal_key');
+
         $employee = $this->account->employees()->where('terminal_key', $terminalKey)->first();
         if ($this->isEmployeeClockedIn($employee)) {
             $timesheet = $this->clockOut($employee);
@@ -79,6 +82,47 @@ class TerminalController extends BaseController
         return [
             'data' => $timecards
         ];
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ongoingShifts()
+    {
+        /** @var JobShift[] $shifts */
+        $shifts = $this->account->shifts()
+            ->where('closed', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $this->respondWithCollection($shifts, new JobShiftTransformer());
+    }
+
+    /**
+     * @param \Hourglass\Http\Requests\Terminal\EndShiftRequest $request
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function endShift(EndShiftRequest $request, $id)
+    {
+        /** @var JobShift $shift */
+        $shift = $this->account->shifts()->find($id);
+
+        if (!$shift) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        $shift->productivity = [
+            'quantity' => $request->get('quantity'),
+            'setup' => $request->get('setup')
+        ];
+        $shift->comments = $request->get('comments');
+        $shift->closed = true;
+
+        $shift->save();
+
+        return $this->respondWithItem($shift, new JobShiftTransformer());
     }
 
     /**

@@ -2,19 +2,18 @@ import {ItemView} from 'backbone.marionette';
 import nprogress from 'nprogress';
 import Radio from 'backbone.radio';
 import api from 'core/Api';
-import EmployeeModel from 'models/EmployeeModel';
 import FormValidator from 'components/FormValidator';
 import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
-import template from 'templates/terminal/prompts/clock-in-or-out.tpl';
+import template from 'templates/terminal/prompts/express-clock-in.tpl';
 import mdl from 'mdl';
 
 const Status = {
     CLOCKED_IN: 'clocked_in',
     CLOCKED_OUT: 'clocked_out',
-    SELECT_JOB: 'select_job',
 };
-const ClockInOrOutPromptView = ItemView.extend({
+
+const ExpressClockInPromptView = ItemView.extend({
     template,
 
     ui: {
@@ -23,19 +22,25 @@ const ClockInOrOutPromptView = ItemView.extend({
     },
 
     events: {
-        'click .js-register-timecard': 'registerTimecard',
+        'click .js-finish': 'finish',
         'click .js-express-clock-in': 'expressClockIn',
         'submit @ui.form': 'onFormSubmit'
     },
 
     channel: Radio.channel('terminal'),
 
-    registerTimecard() {
-        TerminalService.request('register:timecard');
+    templateHelpers() {
+        return {
+            job: this.job
+        };
     },
 
-    expressClockIn() {
-        TerminalService.request('express:job');
+    initialize(options) {
+        this.job = options.job;
+    },
+
+    finish() {
+        TerminalService.request('index');
     },
 
     onShow() {
@@ -50,7 +55,7 @@ const ClockInOrOutPromptView = ItemView.extend({
         e.preventDefault();
         nprogress.start();
         let timecard = this.ui.input.val();
-        api.post('terminal/clock', null, {terminal_key: timecard})
+        api.post('terminal/clock', null, {terminal_key: timecard, job_id: this.job.get('id')})
             .then(this.handleResponse.bind(this))
             .catch((errors) => {
                 console.log(errors);
@@ -76,10 +81,8 @@ const ClockInOrOutPromptView = ItemView.extend({
         } else if (response.status === Status.CLOCKED_IN) {
             this.channel.trigger('clock:in', response.data);
             NotificationService.request('notify:clock:in', response.data);
-        } else {
-            TerminalService.request('select:job', new EmployeeModel(response.data));
         }
     },
 });
 
-export default ClockInOrOutPromptView;
+export default ExpressClockInPromptView;

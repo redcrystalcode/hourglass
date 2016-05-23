@@ -23,6 +23,7 @@ class CreateJobShiftsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->json('productivity')->nullable();
+            $table->text('comments')->nullable();
             $table->boolean('closed')->default(false);
             $table->timestamps();
         });

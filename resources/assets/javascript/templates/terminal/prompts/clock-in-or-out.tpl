@@ -10,7 +10,7 @@
 		</div>
 	</form>
 	<div class="prompt__toolbar">
-		<button class="toolbar__button mdl-js-button mdl-js-ripple-effect">
+		<button class="js-express-clock-in toolbar__button mdl-js-button mdl-js-ripple-effect">
 			<i class="button__icon material-icons">timer</i>
 			<span class="button__text">Express Clock In</span>
 		</button>

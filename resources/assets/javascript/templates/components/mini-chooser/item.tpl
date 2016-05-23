@@ -1,7 +1,7 @@
 <div class="mini-chooser__list-item-icon">
 	<i class="material-icons">{{icon}}</i>
 </div>
-<div class="mini-chooser__list-item-body">
+<div class="mini-chooser__list-item-body" title="{{primary}} ({{secondary}})">
 	{{primary}}
 	<span class="mini-chooser__list-item-body-secondary">
 		{{secondary}}

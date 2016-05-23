@@ -84,6 +84,9 @@
     .mini-chooser__list-item-body {
       font-size: 16px;
       flex-grow: 2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       .mini-chooser__list-item-body-secondary {
         color: $color-text-gray-light;

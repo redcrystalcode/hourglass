@@ -49,6 +49,7 @@ const AddEmployeeView = LayoutView.extend({
         this.model.set('location_id', location.get('id'));
     },
     onSaveSuccess() {
+        this.collection.fetch();
         this.close();
     },
     save() {

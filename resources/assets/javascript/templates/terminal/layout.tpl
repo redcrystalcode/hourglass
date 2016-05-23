@@ -6,5 +6,6 @@
 				<div class="prompt-region"></div>
 			</div>
 		</div>
+		<div class="shifts-region"></div>
 	</main>
 </div>

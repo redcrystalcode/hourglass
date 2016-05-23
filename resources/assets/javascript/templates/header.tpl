@@ -18,9 +18,11 @@
 				            </a>
 			            </div>
 		            {{/primary_links}}
+	                {{!
 	                <div class="selector__footer">
 	                    <a href="#" class="selector__footer-link">Help</a>
 	                </div>
+	                }}
 	            </div>
 	        </div>
 	    {{/logged_in}}
@@ -45,12 +47,14 @@
 						    <div class="profile__email">{{user.email}}</div>
 					    </div>
 				    </div>
+				    {{!
 				    <div class="selector__option">
 					    <a href="#">
 						    <i class="option__icon material-icons">person</i>
 						    <span class="option__label">Profile</span>
 					    </a>
 				    </div>
+				    }}
 				    <div class="selector__option">
 					    <a href="/logout">
 						    <i class="option__icon material-icons">lock</i>
