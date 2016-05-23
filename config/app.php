@@ -155,11 +155,6 @@ return [
         Hourglass\Providers\AuthServiceProvider::class,
         Hourglass\Providers\EventServiceProvider::class,
         Hourglass\Providers\RouteServiceProvider::class,
-
-        /*
-         * Third Party Service Providers...
-         */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
