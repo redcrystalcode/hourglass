@@ -282,4 +282,25 @@
       display: block;
     }
   }
+
+  .content__empty {
+    margin-top: 12px;
+    color: rgba(255, 255, 255, 0.67);
+    padding: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    .empty__text {
+      margin-left: 16px;
+    }
+    .empty__heading {
+      font-size: 18px;
+      margin: 0;
+    }
+    .empty__subhead {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
 }

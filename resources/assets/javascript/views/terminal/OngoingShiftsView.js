@@ -3,6 +3,7 @@ import {CompositeView, ItemView} from 'backbone.marionette';
 import moment from 'moment';
 import TerminalService from 'services/TerminalService';
 import OngoingShiftsCollection from 'collections/OngoingShiftsCollection';
+import EmptyView from 'components/EmptyView';
 import layout from 'templates/terminal/shifts/layout.tpl';
 import item from 'templates/terminal/shifts/item.tpl';
 
@@ -27,6 +28,11 @@ const OngoingShiftsView = CompositeView.extend({
     className: 'shifts-container',
     childView: ShiftItemView,
     childViewContainer: '.js-shifts-list-container',
+    emptyView: EmptyView.extend({
+        icon: 'assignment_turned_in',
+        heading: "No ongoing shifts!",
+        subhead: 'As employees clock in, new shifts will be added here.'
+    }),
     initialize() {
         this.collection = new OngoingShiftsCollection();
         this.listenTo(this.collection, {

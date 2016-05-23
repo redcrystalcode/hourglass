@@ -23,7 +23,7 @@
                         </div>
                         <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--6-col-tablet">
                             <div class="navbar__logo">
-                                <span class="hidden">hourglass</span>
+                                <span class="hidden">Hourglass</span>
                             </div>
                         </div>
                         <div class="mdl-cell mdl-cell--4-col mdl-cell--middle mdl-cell--1-col-tablet text-right">
