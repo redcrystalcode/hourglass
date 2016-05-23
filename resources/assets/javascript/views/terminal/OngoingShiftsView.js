@@ -1,4 +1,5 @@
 import {Collection} from 'backbone';
+import Radio from 'backbone.radio';
 import {CompositeView, ItemView} from 'backbone.marionette';
 import moment from 'moment';
 import TerminalService from 'services/TerminalService';
@@ -33,11 +34,15 @@ const OngoingShiftsView = CompositeView.extend({
         heading: "No ongoing shifts!",
         subhead: 'As employees clock in, new shifts will be added here.'
     }),
+    channel: Radio.channel('terminal'),
     initialize() {
         this.collection = new OngoingShiftsCollection();
         this.listenTo(this.collection, {
             request: this.onRequest,
             sync: this.onSync,
+        });
+        this.listenTo(this.channel, 'clock:in', () => {
+            this.collection.fetch();
         });
     },
     onShow() {
