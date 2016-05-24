@@ -3,6 +3,8 @@
 namespace Hourglass\Models;
 
 use Hourglass\Models\Relations\BelongsToAccount;
+use Hourglass\Models\Scopes\IsSearchable;
+use Hourglass\Models\Scopes\IsSortable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,7 +25,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Agency extends Model
 {
-    use BelongsToAccount;
-    
+    use BelongsToAccount, IsSortable, IsSearchable;
+
+    protected $sortable = ['name', 'created_at'];
+
+    protected $searchable = ['name'];
+
     protected $fillable = ['name'];
 }

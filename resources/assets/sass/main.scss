@@ -98,3 +98,8 @@ a[data-internal] * {
     background-size: auto 30px;
   }
 }
+
+// Helpers
+.text--hint {
+  color: $color-text-gray-light;
+}

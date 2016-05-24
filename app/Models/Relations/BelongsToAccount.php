@@ -6,7 +6,7 @@ use Hourglass\Models\Account;
 trait BelongsToAccount
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
      */
     public function account()
     {

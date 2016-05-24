@@ -2,6 +2,7 @@ import {Collection} from 'backbone';
 import {LayoutView} from 'backbone.marionette';
 import EmployeeModel from 'models/EmployeeModel';
 import LocationsCollection from 'collections/LocationsCollection';
+import PageableAgenciesCollection from 'collections/PageableAgenciesCollection';
 import FormManager from 'components/FormManager';
 import MiniChooser from 'components/MiniChooser';
 import AddsModelLoadingStateToActionSheet from 'views/mixins/AddsModelLoadingStateToActionSheet';
@@ -22,21 +23,32 @@ const AddEmployeeView = LayoutView.extend({
         }
     },
     regions: {
-        locationChooser: '.location-chooser-region'
+        locationChooserRegion: '.location-chooser-region',
+        agencyChooserRegion: '.agency-chooser-region',
     },
     initialize() {
         this.model = new EmployeeModel();
         this.locations = new LocationsCollection();
+        this.agencies = new PageableAgenciesCollection();
     },
     onBeforeShow() {
-        this.chooser = new MiniChooser({
+        this.locationChooser = new MiniChooser({
             showCreateField: false,
             itemIcon: 'business',
             collection: this.locations,
         });
-        this.showChildView('locationChooser', this.chooser);
+        this.showChildView('locationChooserRegion', this.locationChooser);
         this.locations.fetch();
-        this.listenTo(this.chooser, 'selected', this.onLocationSelected);
+        this.listenTo(this.locationChooser, 'selected', this.onLocationSelected);
+
+        this.agencyChooser = new MiniChooser({
+            showCreateField: false,
+            itemIcon: 'business_center',
+            collection: this.agencies,
+        });
+        this.showChildView('agencyChooserRegion', this.agencyChooser);
+        this.agencies.fetch();
+        this.listenTo(this.agencyChooser, 'selected', this.onAgencySelected);
     },
     onShow() {
         this.formManager = new FormManager({
@@ -47,6 +59,9 @@ const AddEmployeeView = LayoutView.extend({
     },
     onLocationSelected(location) {
         this.model.set('location_id', location.get('id'));
+    },
+    onAgencySelected(agency) {
+        this.model.set('agency_id', agency.get('id'));
     },
     onSaveSuccess() {
         this.collection.fetch();

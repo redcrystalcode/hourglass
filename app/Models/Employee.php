@@ -45,7 +45,7 @@ class Employee extends Model
     protected $sortable = ['name', 'created_at'];
 
     protected $fillable = [
-        'name', 'position', 'terminal_key', 'location_id'
+        'name', 'position', 'terminal_key', 'location_id', 'agency_id'
     ];
 
     /**
@@ -54,4 +54,20 @@ class Employee extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
+     */
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

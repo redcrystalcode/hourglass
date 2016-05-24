@@ -36,6 +36,11 @@ class CreateEmployeeRequest extends Request
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
                     ->where('account_id', $accountId)
+                    ->toString(),
+            ],
+            'agency_id' => [
+                (new ExistsValidationRule('agencies', 'id'))
+                    ->where('account_id', $accountId)
                     ->toString()
             ]
         ];

@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
     Route::post('employees/{employee}/register', 'EmployeeController@register');
     Route::resource('jobs', 'JobController');
     Route::resource('locations', 'LocationController');
+    Route::resource('agencies', 'AgencyController');
 
     // Terminal Routes
     Route::post('terminal/clock', 'TerminalController@clock');

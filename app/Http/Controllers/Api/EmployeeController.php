@@ -56,7 +56,7 @@ class EmployeeController extends BaseController
     public function store(CreateEmployeeRequest $request)
     {
         $employee = new Employee($request->only([
-            'name', 'position', 'terminal_key', 'location_id'
+            'name', 'position', 'terminal_key', 'location_id', 'agency_id'
         ]));
         $this->account->employees()->save($employee);
 
