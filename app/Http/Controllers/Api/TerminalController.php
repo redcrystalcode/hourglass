@@ -162,12 +162,11 @@ class TerminalController extends BaseController
     private function clockIn(Employee $employee, Job $job)
     {
         /** @var JobShift $shift */
-        $shift = JobShift::firstOrNew([
-            'account_id' => $this->account->id,
-            'job_id' => $job->id,
-            'closed' => false
-        ]);
-        if (!$shift->exists()) {
+        $shift = $this->account->shifts()->where('job_id', $job->id)->where('closed', false)->first();
+        if (!$shift) {
+            $shift = new JobShift();
+            $shift->job_id = $job->id;
+            $shift->closed = false;
             $this->account->shifts()->save($shift);
         }
 
