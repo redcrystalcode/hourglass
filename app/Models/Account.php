@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Location[] $locations
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Timesheet[] $timesheets
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\JobShift[] $shifts
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Agency[] $agencies
  */
 class Account extends Model
 {
@@ -73,5 +74,13 @@ class Account extends Model
     public function shifts()
     {
         return $this->hasMany(JobShift::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function agencies()
+    {
+        return $this->hasMany(Agency::class);
     }
 }

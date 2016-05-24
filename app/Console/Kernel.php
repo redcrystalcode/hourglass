@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
          Commands\SetupTeamworkAccount::class,
+         Commands\MigrateReportrData::class,
          Commands\ModelFactory::class,
     ];
 

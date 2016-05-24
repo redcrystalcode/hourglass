@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('name')->index();
-            $table->string('position');
+            $table->string('position')->nullable();
             $table->string('terminal_key')->nullable();
             $table->integer('location_id')->unsigned()->index();
             $table->foreign('location_id')->references('id')->on('locations')

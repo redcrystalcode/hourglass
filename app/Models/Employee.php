@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee search($keyword)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee sort($column, $direction)
+ * @property integer $agency_id
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee whereAgencyId($value)
  */
 class Employee extends Model
 {
