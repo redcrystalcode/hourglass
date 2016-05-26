@@ -23,10 +23,12 @@ Route::auth();
 
 //Route::get('/home', 'HomeController@index');
 
-Route::get('/app', 'TerminalController@index');
-Route::get('app/{path?}', 'TerminalController@index')->where('path', '.+');
+Route::group(['middleware' => ['web', 'auth']], function() {
+    Route::get('/app', 'TerminalController@index');
+    Route::get('app/{path?}', 'TerminalController@index')->where('path', '.+');
+});
 
-Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
+Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', 'auth']], function () {
     Route::resource('employees', 'EmployeeController');
     Route::post('employees/{employee}/register', 'EmployeeController@register');
     Route::resource('jobs', 'JobController');
