@@ -12,6 +12,11 @@
         <!-- Favicons -->
         <meta name="theme-color" content="#00796B">
 
+        @if (App::environment('production'))
+            <!-- Error Tracking -->
+            <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="94e126e5132891331c05828423f4b288"></script>
+        @endif
+
     </head>
 
     <body>
