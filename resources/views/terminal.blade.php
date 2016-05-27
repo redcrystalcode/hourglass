@@ -15,6 +15,10 @@
         @if (App::environment('production'))
             <!-- Error Tracking -->
             <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js" data-apikey="94e126e5132891331c05828423f4b288"></script>
+            <script type="text/javascript">
+                /* Bugsnag Config */
+                Bugsnag.user = {{ json_encode($bootstrap['user']) }};
+            </script>
         @endif
 
     </head>

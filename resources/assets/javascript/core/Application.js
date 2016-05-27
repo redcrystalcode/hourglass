@@ -20,6 +20,9 @@ export default Application.extend({
         });
     },
     onBeforeEnterRoute() {
+        if (window.Bugsnag !== undefined) {
+            window.Bugsnag.refresh();
+        }
         console.log('onBeforeEnterRoute');
         this.transitioning = true;
         // Don't show for synchronous route changes
