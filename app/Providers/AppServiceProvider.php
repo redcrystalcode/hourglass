@@ -4,6 +4,7 @@ namespace Hourglass\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Jenssegers\Rollbar\RollbarServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('local')) {
             $this->app->register(IdeHelperServiceProvider::class);
+        } elseif ($this->app->environment('production')) {
+            $this->app->register(RollbarServiceProvider::class);
         }
     }
 }
