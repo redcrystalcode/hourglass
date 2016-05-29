@@ -18,6 +18,7 @@
         "new-cap": ["error", {
             "capIsNewExceptions": ["Deferred"]
         }],
-        "no-warning-comments": ["off"]
+        "no-warning-comments": ["off"],
+        "no-new": ["off"]
     }
 }

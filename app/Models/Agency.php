@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency sort($column, $direction)
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency search($keyword)
  */
 class Agency extends Model
 {

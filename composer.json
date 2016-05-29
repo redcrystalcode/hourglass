@@ -10,7 +10,8 @@
         "redcrystal/laravel-validation-rules": "^1.0",
         "league/fractal": "^0.13.0",
         "league/csv": "^8.0",
-        "jenssegers/rollbar": "^1.5"
+        "jenssegers/rollbar": "^1.5",
+        "ramsey/uuid": "^3.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

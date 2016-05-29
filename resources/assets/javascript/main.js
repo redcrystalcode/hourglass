@@ -9,6 +9,7 @@ import api from 'core/Api';
 
 import DefaultRouter from 'routing/DefaultRouter';
 import AccountRouter from 'routing/AccountRouter';
+import ReportsRouter from 'routing/ReportsRouter';
 import TerminalRouter from 'routing/TerminalRouter';
 import SettingsRouter from 'routing/SettingsRouter';
 import JobsRouter from 'routing/JobsRouter';
@@ -63,6 +64,9 @@ app.on('start', () => {
         //     container: app.layout.content
         // }),
         jobs: new JobsRouter({
+            container: app.layout.content
+        }),
+        reports: new ReportsRouter({
             container: app.layout.content
         }),
         // settings: new SettingsRouter({

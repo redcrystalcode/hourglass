@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee sort($column, $direction)
  * @property integer $agency_id
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee whereAgencyId($value)
+ * @property-read \Hourglass\Models\Agency $agency
+ * @property-read \Hourglass\Models\Location $location
  */
 class Employee extends Model
 {
