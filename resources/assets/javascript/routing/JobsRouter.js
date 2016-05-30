@@ -14,7 +14,7 @@ const JobsRouter = BaseRouter.extend({
     },
 
     routes: {
-        jobs: 'jobs'
+        jobs: 'jobs',
     },
 
     jobs() {

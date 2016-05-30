@@ -29,7 +29,7 @@ const ReportItemView = LayoutView.extend({
             type: types[type],
             link: () => {
                 let id = this.model.get('id');
-                return `/reports/${id}`;
+                return `/app/reports/${id}`;
             }
         };
     },

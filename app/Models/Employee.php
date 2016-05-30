@@ -72,4 +72,12 @@ class Employee extends Model
     {
         return $this->belongsTo(Location::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany||\Illuminate\Database\Query\Builder
+     */
+    public function timesheets()
+    {
+        return $this->belongsTo(Timesheet::class);
+    }
 }

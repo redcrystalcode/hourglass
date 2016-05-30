@@ -2,8 +2,13 @@
 
 namespace Hourglass\Http\Controllers\Api;
 
+use Carbon\Carbon;
+use DateTime;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
+use Hourglass\Models\Employee;
 use Hourglass\Models\Report;
+use Hourglass\Models\Timesheet;
+use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\ReportTransformer;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -52,7 +57,16 @@ class ReportController extends BaseController
      */
     public function show($id)
     {
-        //
+        /** @var Report $report */
+        $report = $this->account->reports()->find($id);
+
+        if (!$report) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        return [
+            'data' => $this->generateReportData($report)
+        ];
     }
 
 
@@ -105,5 +119,48 @@ class ReportController extends BaseController
                 'end' => $request->get('end'),
             ];
         }
+    }
+
+    private function generateReportData(Report $report)
+    {
+        $parameters = $report->parameters;
+        if ($report->type === 'timesheet') {
+            /** @var Employee $employee */
+            $employee = $this->account->employees()
+                ->with('agency')->with('location')
+                ->findOrFail($parameters['employee_id']);
+            $start = Carbon::parse($parameters['start'] . ' 00:00:00', 'America/Los_Angeles');
+            $end = Carbon::parse($parameters['end'] . ' 23:59:59', 'America/Los_Angeles');
+            $timesheets = $this->getEmployeeTimesheets($employee, $start, $end);
+            return [
+                'employee' => [
+                    'name' => $employee->name,
+                    'location' => $employee->location->name,
+                    'agency' => $employee->agency->name ?? $this->account->name,
+                ],
+                'start' => $start->tz('America/Los_Angeles')->toDateTimeString(),
+                'end' => $end->tz('America/Los_Angeles')->toDateTimeString(),
+                'timesheets' => $timesheets,
+            ];
+        }
+    }
+
+    /**
+     * @param \Hourglass\Models\Employee $employee
+     * @param \Carbon\Carbon $start
+     * @param \Carbon\Carbon $end
+     *
+     * @return \Hourglass\Models\Timesheet[]
+     */
+    private function getEmployeeTimesheets(Employee $employee, Carbon $start, Carbon $end)
+    {
+        /** @var Timesheet[] $timesheets */
+        $timesheets = Timesheet::with('job')
+            ->where('time_in', '>=', $start)
+            ->where('time_out', '<=', $end)
+            ->where('employee_id', $employee->id)
+            ->get();
+
+        return $timesheets;
     }
 }
