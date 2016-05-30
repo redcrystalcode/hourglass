@@ -37,7 +37,7 @@ const ReportItemView = LayoutView.extend({
     menuOptions() {
         return {
             items: [
-                {key: 'print', label: 'Print'},
+                // {key: 'print', label: 'Print'},
                 {key: 'delete', label: 'Delete'},
             ]
         };
