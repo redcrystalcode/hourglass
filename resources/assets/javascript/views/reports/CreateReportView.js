@@ -4,9 +4,9 @@ import {LayoutView} from 'backbone.marionette';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import PageableShiftsCollection from 'collections/PageableShiftsCollection';
 import ReportModel from 'models/ReportModel';
-import FormValidator from 'components/FormValidator';
 import MiniChooser from 'components/MiniChooser';
 import DatePicker from 'components/DatePicker';
+import ApplicationService from 'services/ApplicationService';
 import AddsModelLoadingStateToActionSheet from 'views/mixins/AddsModelLoadingStateToActionSheet';
 import SearchesCollection from 'views/mixins/SearchesCollection';
 import {mixin, getFormData} from 'helpers';
@@ -148,7 +148,7 @@ const CreateReportView = LayoutView.extend({
         this.model.set(getFormData(this.ui.form));
         this.model.save().then(() => {
             this.actionSheet.close();
-            this.collection.fetch();
+            ApplicationService.request('route', `/reports/${this.model.get('id')}`);
         });
     },
 });

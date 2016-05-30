@@ -39,9 +39,7 @@ const JobListView = LayoutView.extend({
 
     showCreateReportActionSheet() {
         var sheet = new ActionSheet({
-            view: new CreateReportView({
-                collection: this.reports
-            }),
+            view: new CreateReportView(),
         });
         sheet.open();
     }

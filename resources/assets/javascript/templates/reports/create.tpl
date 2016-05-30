@@ -12,10 +12,10 @@
 				<input class="mdl-radio__button" id="report-type-shift" name="type" type="radio" value="shift">
 				<span class="mdl-radio__label">Job Shift</span>
 			</label>
-			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="report-type-job">
-				<input class="mdl-radio__button" id="report-type-job" name="type" type="radio" value="job">
-				<span class="mdl-radio__label">Job Summary</span>
-			</label>
+			<!--<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="report-type-job">-->
+				<!--<input class="mdl-radio__button" id="report-type-job" name="type" type="radio" value="job">-->
+				<!--<span class="mdl-radio__label">Job Summary</span>-->
+			<!--</label>-->
 		</div>
 	</div>
 	<div class="report-parameters-region"></div>
