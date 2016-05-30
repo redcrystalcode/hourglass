@@ -70,7 +70,7 @@ const JobShiftReportView = CompositeView.extend({
         if (!productivity || !productivity.setup) {
             return null;
         }
-        return moment.duration(productivity.setup, 'hours');
+        return moment.duration(parseFloat(productivity.setup), 'hours');
     }
 });
 
