@@ -1,11 +1,10 @@
-import {Collection} from "backbone";
-import {CompositeView, ItemView} from "backbone.marionette";
-import moment from "moment";
-import _ from "lodash";
-import template from "templates/reports/detail.tpl";
-import item from "templates/reports/detail-item.tpl";
-// import ReportListView from 'views/reports/ReportListView';
-window.moment = moment;
+import {Collection} from 'backbone';
+import {CompositeView, ItemView} from 'backbone.marionette';
+import moment from 'moment';
+import _ from 'lodash';
+import template from 'templates/reports/detail/timesheet/report.tpl';
+import item from 'templates/reports/detail/timesheet/table-row.tpl';
+
 const TableRowView = ItemView.extend({
     tagName: 'tr',
     template: item,
@@ -30,14 +29,10 @@ const TableRowView = ItemView.extend({
     },
 });
 
-const ReportDetailView = CompositeView.extend({
+const EmployeeTimesheetReportView = CompositeView.extend({
     template,
     childView: TableRowView,
     childViewContainer: 'tbody',
-    regions: {
-        reportsRegion: '.reports-region',
-    },
-
     templateHelpers() {
         let view = this;
         return {
@@ -60,10 +55,6 @@ const ReportDetailView = CompositeView.extend({
     initialize() {
         this.collection = new Collection(this.model.get('timesheets'));
     },
-
-    onBeforeShow() {
-        // this.showChildView('reportsRegion', new ReportListView());
-    },
 });
 
-export default ReportDetailView;
+export default EmployeeTimesheetReportView;

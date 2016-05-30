@@ -133,6 +133,7 @@ class ReportController extends BaseController
             $end = Carbon::parse($parameters['end'] . ' 23:59:59', 'America/Los_Angeles');
             $timesheets = $this->getEmployeeTimesheets($employee, $start, $end);
             return [
+                'type' => $report->type,
                 'employee' => [
                     'name' => $employee->name,
                     'location' => $employee->location->name,
