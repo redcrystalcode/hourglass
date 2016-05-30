@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Hourglass\Http\Requests;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Employee;
+use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
 use Hourglass\Models\Timesheet;
@@ -128,6 +129,12 @@ class ReportController extends BaseController
                 'job_shift_id' => $request->get('job_shift_id')
             ];
         }
+
+        if ($type === 'job') {
+            return [
+                'job_id' => $request->get('job_id')
+            ];
+        }
     }
 
     private function generateReportData(Report $report)
@@ -173,6 +180,26 @@ class ReportController extends BaseController
                     'productivity' => $shift->productivity,
                     'score' => $this->calculateProductivityScore($shift, $timesheets),
                 ],
+                'timesheets' => $timesheets,
+            ];
+        }
+
+        if ($report->type === 'job') {
+            /** @var Job $job */
+            $job = $this->account->jobs()->with('shifts')->findOrFail($parameters['job_id']);
+            $timesheets = Timesheet::with('employee')->where('job_id', $job->id)->get();
+            return [
+                'type' => $report->type,
+                'job' => [
+                    'name' => $job->name,
+                    'customer' => $job->customer,
+                    'number' => $job->number,
+                    'location' => $job->location->name,
+                    'productivity' => $job->productivity
+                ],
+                'start' => $timesheets->first()->time_in->toDateTimeString(),
+                'end' => $timesheets->last()->time_out->toDateTimeString(),
+                'score' => 89, //$this->calculateProductivityScoreForJob($job, $timesheets),
                 'timesheets' => $timesheets,
             ];
         }

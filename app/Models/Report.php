@@ -57,6 +57,10 @@ class Report extends Model
             $shift = JobShift::with('job')->findOrFail($this->parameters['job_shift_id']);
             $start = $shift->created_at->format('D, M d, Y');
             $this->name = "#{$shift->job->number} Shift Report - {$start}";
+        } elseif ($this->type === 'job') {
+            /** @var Job $job */
+            $job = Job::findOrFail($this->parameters['job_id']);
+            $this->name = "Job Summary #{$job->number} - {$job->name}";
         }
     }
 }

@@ -3,6 +3,7 @@ import moment from 'moment';
 import {LayoutView} from 'backbone.marionette';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import PageableShiftsCollection from 'collections/PageableShiftsCollection';
+import PageableJobsCollection from 'collections/PageableJobsCollection';
 import ReportModel from 'models/ReportModel';
 import MiniChooser from 'components/MiniChooser';
 import DatePicker from 'components/DatePicker';
@@ -88,7 +89,32 @@ mixin(ShiftParametersView, SearchesCollection);
  * Form for creating a Job Summary Report
  */
 const JobParametersView = LayoutView.extend({
-    template: job
+    template: job,
+    regions: {jobChooser: '.job-chooser-region'},
+    onBeforeShow() {
+        this.collection = new PageableJobsCollection();
+        this.chooser = new MiniChooser({
+            isFixedHeight: true,
+            isScrollable: true,
+            itemIcon: 'assignment',
+            primaryField(model) {
+                return '#' + model.get('number');
+            },
+            secondaryField: 'name',
+            collection: this.collection,
+        });
+        this.showChildView('jobChooser', this.chooser);
+        this.collection.fetch();
+        this.listenTo(this.chooser, 'selected', this.onJobSelected);
+    },
+    onShow() {
+        mdl.upgradeAllRegistered();
+        new DatePicker({field: this.ui.startDate});
+        new DatePicker({field: this.ui.endDate});
+    },
+    onJobSelected(job) {
+        this.model.set('job_id', job.get('id'));
+    },
 });
 mixin(JobParametersView, SearchesCollection);
 

@@ -66,10 +66,18 @@ class Job extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Illuminate\Database\Query\Builder
      */
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function shifts()
+    {
+        return $this->hasMany(JobShift::class);
     }
 }
