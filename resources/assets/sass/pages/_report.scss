@@ -101,8 +101,30 @@
     .total__data {
       color: $color-brand-accent;
       font-weight: 400;
+      width: 48px;
+      display: inline-block;
     }
   }
+
+  .report__data-adjustment {
+    border-top: $data-table-dividers;
+    border-bottom: $data-table-dividers;
+
+    .adjustment__label {
+      margin-right: 24px;
+    }
+    .adjustment__data {
+      width: 48px;
+      font-weight: 400;
+      display: inline-block;
+    }
+    &--negative {
+      .adjustment__data {
+        color: #F44336;
+      }
+    }
+  }
+
   .report__data--job-col {
     max-width: 180px;
   }

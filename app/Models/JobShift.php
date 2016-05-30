@@ -3,6 +3,8 @@
 namespace Hourglass\Models;
 
 use Hourglass\Models\Relations\BelongsToAccount;
+use Hourglass\Models\Scopes\IsSearchable;
+use Hourglass\Models\Scopes\IsSortable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -30,12 +32,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class JobShift extends Model
 {
-    use BelongsToAccount;
+    use BelongsToAccount, IsSortable;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $fillable = ['account_id', 'job_id', 'closed'];
+
+    protected $sortable = ['created_at'];
 
     protected $casts = [
         'productivity' => 'array'

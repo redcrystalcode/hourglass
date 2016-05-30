@@ -3,16 +3,16 @@
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use DateTime;
+use Hourglass\Http\Requests;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Employee;
+use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
 use Hourglass\Models\Timesheet;
-use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\ReportTransformer;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Hourglass\Http\Requests;
+use Illuminate\Support\Collection;
 use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -52,7 +52,8 @@ class ReportController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -86,10 +87,12 @@ class ReportController extends BaseController
 
         return $this->respondWithItem($report);
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -119,6 +122,12 @@ class ReportController extends BaseController
                 'end' => $request->get('end'),
             ];
         }
+
+        if ($type === 'shift') {
+            return [
+                'job_shift_id' => $request->get('job_shift_id')
+            ];
+        }
     }
 
     private function generateReportData(Report $report)
@@ -144,6 +153,29 @@ class ReportController extends BaseController
                 'timesheets' => $timesheets,
             ];
         }
+
+        if ($report->type === 'shift') {
+            /** @var JobShift $shift */
+            $shift = $this->account->shifts()->with('job.location')->findOrFail($parameters['job_shift_id']);
+            $timesheets = Timesheet::with('employee')->where('job_shift_id', $shift->id)->get();
+            return [
+                'type' => $report->type,
+                'job' => [
+                    'name' => $shift->job->name,
+                    'customer' => $shift->job->customer,
+                    'number' => $shift->job->number,
+                    'location' => $shift->job->location->name,
+                    'productivity' => $shift->job->productivity
+                ],
+                'start' => $shift->created_at->toDateTimeString(),
+                'end' => $shift->updated_at->toDateTimeString(),
+                'shift' => [
+                    'productivity' => $shift->productivity,
+                    'score' => $this->calculateProductivityScore($shift, $timesheets),
+                ],
+                'timesheets' => $timesheets,
+            ];
+        }
     }
 
     /**
@@ -163,5 +195,60 @@ class ReportController extends BaseController
             ->get();
 
         return $timesheets;
+    }
+
+    /**
+     * @param \Hourglass\Models\JobShift $shift
+     * @param \Illuminate\Support\Collection|\Hourglass\Models\Timesheet[] $timesheets
+     *
+     * @return int
+     */
+    private function calculateProductivityScore(JobShift $shift, Collection $timesheets)
+    {
+        /**
+         * Formula for Calculating Productivity Score:
+         * GIVEN AT JOB ENTRY:
+         *   numberOfEmployeesRequired
+         *   projectedQuantityPerHour
+         * GIVEN AT END OF JOB:
+         *   actualQuantity
+         *   setupTime
+         * CALCULATED AT END OF JOB
+         *   estimatedManHours = projectedQuantityPerHour/numberOfEmployeesRequired
+         *   totalHours (+= every employee's time on the job) - setupTime
+         *   actualManHours = actualQuantity/totalHours
+         *   productivityScore = actualManHours/estManHours
+         */
+        $projectedQuantityPerHour = (int)$shift->job->productivity['quantity'];
+        $numberOfPeopleRequired = (int)$shift->job->productivity['employees'];
+        if ($numberOfPeopleRequired === 0) {
+            return 0; // Prevent divide by zero.
+        }
+
+        $estimatedManHours = $projectedQuantityPerHour / $numberOfPeopleRequired;
+
+        if ($estimatedManHours <= 0) {
+            return 0; // Prevent divide by zero.
+        }
+
+        // Add up employee hours.
+        $totalMinutes = 0;
+        foreach ($timesheets as $timesheet) {
+            $minutes = $timesheet->time_out->diffInMinutes($timesheet->time_in);
+            $totalMinutes += $minutes;
+        }
+
+        $totalHours = $totalMinutes / 60;
+
+        // Deduct Setup Time
+        $totalHours -= (float)$shift->productivity['setup'];
+
+        if ($totalHours <= 0) {
+            return 0; // prevent negative score or divide by zero.
+        }
+
+        $actualManHours = (int)$shift->productivity['quantity'] / $totalHours;
+
+        return round(($actualManHours / $estimatedManHours) * 100);
     }
 }

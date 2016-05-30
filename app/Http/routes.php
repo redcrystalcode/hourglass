@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', '
     Route::resource('reports', 'ReportController');
     Route::resource('locations', 'LocationController');
     Route::resource('agencies', 'AgencyController');
+    Route::resource('shifts', 'ShiftController');
 
     // Terminal Routes
     Route::post('terminal/clock', 'TerminalController@clock');

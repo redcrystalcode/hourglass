@@ -17,6 +17,7 @@ class JobShiftTransformer extends Transformer
             'productivity' => $shift->productivity,
             'closed' => (bool)$shift->closed,
             'created_at' => $shift->created_at->toDateTimeString(),
+            'updated_at' => $shift->updated_at->toDateTimeString(),
         ];
     }
 }
