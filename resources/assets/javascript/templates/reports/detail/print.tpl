@@ -14,9 +14,15 @@
 	</head>
 
 	<body>
+		<header class="print-header">
+			<img src="/images/logo/logo-512-color.png" alt="Hourglass">
+		</header>
 		<div class="app"></div>
+
 		<script src="//code.jquery.com/jquery-2.1.1.js"></script>
-		<script defer src="//code.getmdl.io/1.1.1/material.min.js"></script>
-		<script defer src="/js/main.js"></script>
+		<script>$(function() {
+			window.print();
+			window.close();
+		})</script>
 	</body>
 </html>

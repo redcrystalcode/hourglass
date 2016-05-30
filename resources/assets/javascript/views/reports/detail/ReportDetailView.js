@@ -36,7 +36,11 @@ const ReportDetailView = LayoutView.extend({
     },
 
     print() {
-        var printable = window.open(null, '_blank');
+        var printable = window.open(
+            null,
+            '_blank',
+            'toolbar=no,scrollbars=no,resizable=no,width=1200,height=800'
+        );
 
         var View = ViewMap[this.model.get('type')];
         var view = new PrintReportView({
@@ -47,8 +51,6 @@ const ReportDetailView = LayoutView.extend({
         var printableDoc = printable.document.open();
         printableDoc.write(view.$el.html());
         printableDoc.close();
-        printable.print();
-        // $(printable.document).html(view.render().$el.html());
     },
 });
 

@@ -216,3 +216,40 @@
   }
 
 }
+
+.print-header {
+  padding: 24px;
+  //margin-bottom: 24px;
+  border-bottom: 1px solid #ddd;
+  img {
+    width: 100px;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+    margin: 0
+  }
+  .report__icon {
+    display: none !important;
+  }
+  button {
+    display: none !important;
+  }
+  table tbody tr{
+    height: auto !important;
+  }
+  .table thead th, .table tfoot th {
+    height: auto !important;
+  }
+  .table td {
+    height: auto !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  .report__info-details {
+    font-size: 13px !important;
+  }
+}
