@@ -13,7 +13,10 @@ use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\JobShiftTransformer;
 use Hourglass\Transformers\TerminalTimesheetTransformer;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,6 +38,17 @@ class TerminalController extends BaseController
         $terminalKey = $request->get('terminal_key');
 
         $employee = $this->account->employees()->where('terminal_key', $terminalKey)->first();
+
+        /** @var PausedTimesheet $paused */
+        $paused = PausedTimesheet::with('shift.job')->whereEmployeeId($employee->id)->first();
+
+        if ($paused) {
+            throw new HttpResponseException(new JsonResponse([
+                'terminal_key' => "This employee is currently clocked in to the paused shift for "
+                    . "Job #{$paused->shift->job->number}."
+            ], 422));
+        }
+
         if ($this->isEmployeeClockedIn($employee)) {
             $timesheet = $this->clockOut($employee);
             return [
@@ -121,7 +135,7 @@ class TerminalController extends BaseController
 
         $shift->paused = true;
         $clockOutTime = Carbon::now();
-        foreach ($shift->timesheets as $timesheet) {
+        foreach ($shift->timesheets()->whereNull('time_out')->get() as $timesheet) {
             $timesheet->time_out = $clockOutTime;
             $timesheet->save();
 
