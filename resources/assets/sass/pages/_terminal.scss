@@ -226,6 +226,10 @@
     border-radius: 4px;
     color: $color-text-gray;
 
+    &.shift-item--paused .shift-item__icon {
+      background: $color-brand-accent;
+    }
+
     .shift-item__icon {
       flex: none;
       background: $color-brand-primary;
