@@ -65,10 +65,6 @@
     padding: 8px;
     display: flex;
     flex-flow: row-reverse;
-
-    .mdl-button {
-      color: $color-brand-dark;
-    }
   }
 
   &.dialog--visible {

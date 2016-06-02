@@ -8,7 +8,7 @@
 		{{/if}}
 	</div>
 	<div class="dialog__actions">
-		<button class="js-primary-action mdl-button mdl-js-button mdl-js-ripple-effect">{{primaryAction}}</button>
+		<button class="js-primary-action mdl-button--colored mdl-button mdl-js-button mdl-js-ripple-effect">{{primaryAction}}</button>
 		<button class="js-secondary-action mdl-button mdl-js-button mdl-js-ripple-effect">{{secondaryAction}}</button>
 	</div>
 </div>
