@@ -8,10 +8,16 @@ use Hourglass\Http\Requests\Terminal\EndShiftRequest;
 use Hourglass\Models\Employee;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
+use Hourglass\Models\PausedTimesheet;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\JobShiftTransformer;
 use Hourglass\Transformers\TerminalTimesheetTransformer;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TerminalController extends BaseController
@@ -32,6 +38,17 @@ class TerminalController extends BaseController
         $terminalKey = $request->get('terminal_key');
 
         $employee = $this->account->employees()->where('terminal_key', $terminalKey)->first();
+
+        /** @var PausedTimesheet $paused */
+        $paused = PausedTimesheet::with('shift.job')->whereEmployeeId($employee->id)->first();
+
+        if ($paused) {
+            throw new HttpResponseException(new JsonResponse([
+                'terminal_key' => "This employee is currently clocked in to the paused shift for "
+                    . "Job #{$paused->shift->job->number}."
+            ], 422));
+        }
+
         if ($this->isEmployeeClockedIn($employee)) {
             $timesheet = $this->clockOut($employee);
             return [
@@ -96,6 +113,82 @@ class TerminalController extends BaseController
             ->get();
 
         return $this->respondWithCollection($shifts, new JobShiftTransformer());
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function pauseShift($id)
+    {
+        /** @var JobShift $shift */
+        $shift = $this->account->shifts()->with('timesheets')->find($id);
+
+        if (!$shift) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        if ($shift->paused) {
+            throw new BadRequestHttpException('This shift is already paused.');
+        }
+
+        $shift->paused = true;
+        $clockOutTime = Carbon::now();
+        foreach ($shift->timesheets()->whereNull('time_out')->get() as $timesheet) {
+            $timesheet->time_out = $clockOutTime;
+            $timesheet->save();
+
+            $paused = new PausedTimesheet();
+            $paused->account_id = $timesheet->account_id;
+            $paused->employee_id = $timesheet->employee_id;
+            $paused->job_shift_id = $timesheet->job_shift_id;
+            $paused->save();
+        }
+
+        $shift->save();
+
+        return $this->respondWithCollection($shift->timesheets, new TerminalTimesheetTransformer());
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resumeShift($id)
+    {
+        /** @var JobShift $shift */
+        $shift = $this->account->shifts()->with('pausedTimesheets')->find($id);
+
+        if (!$shift) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        if (!$shift->paused) {
+            throw new BadRequestHttpException('This shift is not yet paused.');
+        }
+
+        $shift->paused = false;
+        $clockInTime = Carbon::now();
+        $timesheets = new Collection();
+        foreach ($shift->pausedTimesheets as $paused) {
+            $timesheet = new Timesheet();
+            $timesheet->account_id = $paused->account_id;
+            $timesheet->employee_id = $paused->employee_id;
+            $timesheet->job_shift_id = $paused->job_shift_id;
+            $timesheet->job_id = $shift->job_id;
+            $timesheet->time_in = $clockInTime;
+            $timesheet->save();
+
+            $paused->delete();
+
+            $timesheets->push($timesheet);
+        }
+
+        $shift->save();
+
+        return $this->respondWithCollection($timesheets, new TerminalTimesheetTransformer());
     }
 
     /**

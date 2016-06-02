@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Timesheet[] $timesheets
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\JobShift[] $shifts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Agency[] $agencies
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Report[] $reports
  */
 class Account extends Model
 {
