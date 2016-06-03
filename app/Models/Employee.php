@@ -5,6 +5,7 @@ namespace Hourglass\Models;
 use Hourglass\Models\Relations\BelongsToAccount;
 use Hourglass\Models\Scopes\IsSearchable;
 use Hourglass\Models\Scopes\IsSortable;
+use Hourglass\Models\Scopes\SortsTrashedLast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Employee extends Model
 {
-    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable;
+    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable, SortsTrashedLast;
 
     protected $searchable = ['name'];
 

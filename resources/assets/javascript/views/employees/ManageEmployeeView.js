@@ -7,27 +7,30 @@ import FormManager from 'components/FormManager';
 import MiniChooser from 'components/MiniChooser';
 import AddsModelLoadingStateToActionSheet from 'views/mixins/AddsModelLoadingStateToActionSheet';
 import {mixin} from 'helpers';
-import template from 'templates/terminal/add-employee.tpl';
+import template from 'templates/employees/manage-employee.tpl';
 
-const AddEmployeeView = LayoutView.extend({
+const ManageEmployeeView = LayoutView.extend({
     template,
-    actionSheetOptions: {
-        title: 'New Employee',
-        primaryAction: {
-            label: 'Create',
-            action: 'save'
-        },
-        secondaryAction: {
-            label: 'Cancel',
-            action: 'close'
-        }
+    actionSheetOptions() {
+        var model = this.model;
+        return {
+            title: model.isNew() ? 'New Employee' : 'Edit Employee',
+            primaryAction: {
+                label: model.isNew() ? 'Create' : 'Save',
+                action: 'save'
+            },
+            secondaryAction: {
+                label: 'Cancel',
+                action: 'close'
+            }
+        };
     },
     regions: {
         locationChooserRegion: '.location-chooser-region',
         agencyChooserRegion: '.agency-chooser-region',
     },
-    initialize() {
-        this.model = new EmployeeModel();
+    initialize(options) {
+        this.model = options.model || new EmployeeModel();
         this.locations = new LocationsCollection();
         this.agencies = new PageableAgenciesCollection();
     },
@@ -38,7 +41,13 @@ const AddEmployeeView = LayoutView.extend({
             collection: this.locations,
         });
         this.showChildView('locationChooserRegion', this.locationChooser);
-        this.locations.fetch();
+        this.locations.fetch().then(() => {
+            let location = this.model.get('location');
+            if (!location) {
+                return;
+            }
+            this.locations.findWhere({id: location.id}).set('selected', true);
+        });
         this.listenTo(this.locationChooser, 'selected', this.onLocationSelected);
 
         this.agencyChooser = new MiniChooser({
@@ -47,7 +56,13 @@ const AddEmployeeView = LayoutView.extend({
             collection: this.agencies,
         });
         this.showChildView('agencyChooserRegion', this.agencyChooser);
-        this.agencies.fetch();
+        this.agencies.fetch().then(() => {
+            let agency = this.model.get('agency');
+            if (!agency) {
+                return;
+            }
+            this.agencies.findWhere({id: agency.id}).set('selected', true);
+        });
         this.listenTo(this.agencyChooser, 'selected', this.onAgencySelected);
     },
     onShow() {
@@ -68,7 +83,6 @@ const AddEmployeeView = LayoutView.extend({
         this.close();
     },
     save() {
-        console.log(this.model.toJSON());
         this.formManager.submit();
     },
     close() {
@@ -76,6 +90,6 @@ const AddEmployeeView = LayoutView.extend({
     },
 });
 
-mixin(AddEmployeeView, AddsModelLoadingStateToActionSheet);
+mixin(ManageEmployeeView, AddsModelLoadingStateToActionSheet);
 
-export default AddEmployeeView;
+export default ManageEmployeeView;

@@ -11,6 +11,7 @@ import DefaultRouter from 'routing/DefaultRouter';
 import AccountRouter from 'routing/AccountRouter';
 import ReportsRouter from 'routing/ReportsRouter';
 import TerminalRouter from 'routing/TerminalRouter';
+import EmployeesRouter from 'routing/EmployeesRouter';
 import SettingsRouter from 'routing/SettingsRouter';
 import JobsRouter from 'routing/JobsRouter';
 
@@ -64,6 +65,9 @@ app.on('start', () => {
         //     container: app.layout.content
         // }),
         jobs: new JobsRouter({
+            container: app.layout.content
+        }),
+        employees: new EmployeesRouter({
             container: app.layout.content
         }),
         reports: new ReportsRouter({
