@@ -35,6 +35,7 @@ class JobController extends BaseController
     public function index(Request $request)
     {
         $query = $this->account->jobs()
+            ->with('location')
             ->search($request->get('search'))
             ->sortTrashedLast()
             ->sort($request->get('sort_by'), $request->get('order'));
