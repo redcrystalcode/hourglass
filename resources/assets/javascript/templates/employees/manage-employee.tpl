@@ -2,6 +2,8 @@
 	Fill out the fields below to create a new employee.
 </p>
 <form>
+	{{! Prevent Chrome Password Autofill from Taking Over !}}
+	<input type="password" style="width: 0;height: 0; visibility: hidden;position:absolute;left:0;top:0;"/>
 	<div class="mdl-textfield mdl-textfield--floating-label mdl-textfield--full-width mdl-js-textfield">
 		<input class="mdl-textfield__input" type="text" id="name" name="name" value="{{name}}" tabindex="10">
 		<label class="mdl-textfield__label" for="name">Name</label>
