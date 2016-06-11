@@ -192,6 +192,8 @@ class ReportController extends BaseController
 
             return [
                 'type' => $report->type,
+                'include_archived' => $parameters['include_archived'],
+                'include_empty' => $parameters['include_empty'],
                 'agency' => [
                     'name' => $agency->name,
                 ],

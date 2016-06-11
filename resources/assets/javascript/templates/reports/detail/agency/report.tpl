@@ -9,6 +9,10 @@
 				<div class="report__icon"><i class="material-icons">business_center</i></div>
 				<div class="report__info">
 					<div class="report__info-title">{{agency.name}}</div>
+					<ul class="report__info-details">
+						{{#if include_archived}}<li>Including <strong>Archived</strong> Employees</li>{{/if}}
+						{{#if include_empty}}<li>Including <strong>Non-Working</strong> Employees</li>{{/if}}
+					</ul>
 				</div>
 			</div>
 			<div class="report__header-summary">
