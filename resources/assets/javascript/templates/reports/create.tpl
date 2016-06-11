@@ -8,6 +8,10 @@
 				<input class="mdl-radio__button" id="report-type-timesheet" name="type" type="radio" value="timesheet">
 				<span class="mdl-radio__label">Employee Timesheet</span>
 			</label>
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="report-type-agency">
+				<input class="mdl-radio__button" id="report-type-agency" name="type" type="radio" value="agency">
+				<span class="mdl-radio__label">Agency Employee Timesheets</span>
+			</label>
 			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="report-type-shift">
 				<input class="mdl-radio__button" id="report-type-shift" name="type" type="radio" value="shift">
 				<span class="mdl-radio__label">Job Shift</span>

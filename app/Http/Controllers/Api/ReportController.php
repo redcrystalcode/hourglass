@@ -5,6 +5,7 @@ namespace Hourglass\Http\Controllers\Api;
 use Carbon\Carbon;
 use Hourglass\Http\Requests;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
+use Hourglass\Models\Agency;
 use Hourglass\Models\Employee;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
@@ -123,6 +124,16 @@ class ReportController extends BaseController
             ];
         }
 
+        if ($type === 'agency') {
+            return [
+                'agency_id' => $request->get('agency_id'),
+                'start' => $request->get('start'),
+                'end' => $request->get('end'),
+                'include_empty' => (bool)$request->get('include_empty', false),
+                'include_archived' => (bool)$request->get('include_archived', false)
+            ];
+        }
+
         if ($type === 'shift') {
             return [
                 'job_shift_id' => $request->get('job_shift_id')
@@ -151,6 +162,42 @@ class ReportController extends BaseController
                 'start' => $start->tz('America/Los_Angeles')->toDateTimeString(),
                 'end' => $end->tz('America/Los_Angeles')->toDateTimeString(),
                 'timesheets' => $timesheets,
+            ];
+        }
+
+        if ($report->type === 'agency') {
+            /** @var Agency $agency */
+            $agency = $this->account->agencies()->with('employees.location')->findOrFail($parameters['agency_id']);
+            $start = Carbon::parse($parameters['start'] . ' 00:00:00', 'America/Los_Angeles');
+            $end = Carbon::parse($parameters['end'] . ' 23:59:59', 'America/Los_Angeles');
+
+            $employees = [];
+            foreach ($agency->employees as $employee) {
+                if (!$parameters['include_archived'] && $employee->trashed()) {
+                    continue;
+                }
+                $timesheets = $this->getEmployeeTimesheets($employee, $start, $end);
+                if (!$parameters['include_empty'] && count($timesheets) === 0) {
+                    continue;
+                }
+                $employees[] = [
+                    'employee' => [
+                        'name' => $employee->name,
+                        'location' => $employee->location->name,
+                        'agency' => $employee->agency->name ?? $this->account->name,
+                    ],
+                    'timesheets' => $timesheets,
+                ];
+            }
+
+            return [
+                'type' => $report->type,
+                'agency' => [
+                    'name' => $agency->name,
+                ],
+                'employees' => $employees,
+                'start' => $start->tz('America/Los_Angeles')->toDateTimeString(),
+                'end' => $end->tz('America/Los_Angeles')->toDateTimeString(),
             ];
         }
 

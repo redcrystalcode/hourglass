@@ -1,14 +1,16 @@
-import $ from "jquery";
-import {LayoutView} from "backbone.marionette";
-import EmployeeTimesheetReportView from "views/reports/detail/EmployeeTimesheetReportView";
-import JobShiftReportView from "views/reports/detail/JobShiftReportView";
-import CreateReportView from "views/reports/CreateReportView";
-import PrintReportView from "views/reports/detail/PrintReportView";
-import ActionSheet from "components/ActionSheet";
-import template from "templates/reports/detail/layout.tpl";
+import $ from 'jquery';
+import {LayoutView} from 'backbone.marionette';
+import EmployeeTimesheetReportView from 'views/reports/detail/EmployeeTimesheetReportView';
+import AgencyTimesheetsReportView from 'views/reports/detail/AgencyTimesheetsReportView';
+import JobShiftReportView from 'views/reports/detail/JobShiftReportView';
+import CreateReportView from 'views/reports/create/CreateReportView';
+import PrintReportView from 'views/reports/detail/PrintReportView';
+import ActionSheet from 'components/ActionSheet';
+import template from 'templates/reports/detail/layout.tpl';
 
 const ViewMap = {
     timesheet: EmployeeTimesheetReportView,
+    agency: AgencyTimesheetsReportView,
     shift: JobShiftReportView,
     // job: JobSummaryReportView,
 };

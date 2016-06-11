@@ -6,7 +6,7 @@
 		</div>
 		<div class="report__header-main">
 			<div class="report__header-details">
-				<div class="report__icon report__icon--avatar"><i class="material-icons">person</i></div>
+				<div class="report__icon"><i class="material-icons">assignment</i></div>
 				<div class="report__info">
 					<div class="report__info-title">#{{job.number}} - {{job.name}}</div>
 					<div class="report__info-details">

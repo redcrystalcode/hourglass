@@ -3,6 +3,7 @@
   background: white;
   border-radius: 2px;
   overflow: hidden;
+  margin-bottom: 28px;
 }
 
 .report__header {
@@ -33,6 +34,10 @@
 
   .report__header-details {
     display: flex;
+  }
+
+  .report__info {
+    align-self: center;
   }
 
   .report__info-title {
@@ -69,7 +74,7 @@
     }
 
     i.material-icons {
-      font-size: 64px;
+      font-size: 40px;
       align-self: center;
       margin: 0 auto;
     }
@@ -215,6 +220,12 @@
     text-align: left;
   }
 
+  .table__cell--empty {
+    text-align: center;
+    color: $color-text-gray-lighter;
+    font-weight: 400;
+  }
+
 }
 
 .print-header {
@@ -232,13 +243,16 @@
     color: black;
     margin: 0
   }
+  .report {
+    page-break-inside: avoid;
+  }
   .report__icon {
     display: none !important;
   }
   button {
     display: none !important;
   }
-  table tbody tr{
+  table tbody tr {
     height: auto !important;
   }
   .table thead th, .table tfoot th {
@@ -249,7 +263,16 @@
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
+  .report__info-title {
+    font-size: 18px !important;
+  }
   .report__info-details {
     font-size: 13px !important;
+  }
+  .report__header-summary-stat {
+    font-size: 24px !important;
+  }
+  .report__header-summary-title {
+    font-size: 12px !important;
   }
 }

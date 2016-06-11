@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency sort($column, $direction)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Agency search($keyword)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Employee[] $employees
  */
 class Agency extends Model
 {
@@ -34,4 +35,12 @@ class Agency extends Model
     protected $searchable = ['name'];
 
     protected $fillable = ['name'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function employees()
+    {
+        return $this->hasMany(Employee::class)->withTrashed();
+    }
 }
