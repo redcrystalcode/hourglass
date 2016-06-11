@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job search($keyword)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job sort($column, $direction)
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Job sortTrashedLast()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\JobShift[] $shifts
  */
 class Job extends Model
 {

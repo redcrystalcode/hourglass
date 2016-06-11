@@ -32,6 +32,7 @@ const JobShiftReportView = CompositeView.extend({
     templateHelpers() {
         let view = this;
         return {
+            show_header: !this.hideHeader,
             date() {
                 let start = moment.utc(view.model.get('start')).local().format('M/DD/YY');
                 let end = moment.utc(view.model.get('end')).local().format('M/DD/YY')
@@ -61,7 +62,8 @@ const JobShiftReportView = CompositeView.extend({
         };
     },
 
-    initialize() {
+    initialize(options) {
+        this.hideHeader = Boolean(options.hideHeader);
         this.collection = new Collection(this.model.get('timesheets'));
     },
 

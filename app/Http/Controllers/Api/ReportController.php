@@ -227,7 +227,7 @@ class ReportController extends BaseController
                 'end' => $shift->updated_at->toDateTimeString(),
                 'shift' => [
                     'productivity' => $shift->productivity,
-                    'score' => $this->calculateProductivityScore($shift, $timesheets),
+                    'score' => $this->calculateProductivityScoreForShift($shift, $timesheets),
                 ],
                 'timesheets' => $timesheets,
             ];
@@ -235,8 +235,25 @@ class ReportController extends BaseController
 
         if ($report->type === 'job') {
             /** @var Job $job */
-            $job = $this->account->jobs()->with('shifts')->findOrFail($parameters['job_id']);
-            $timesheets = Timesheet::with('employee')->where('job_id', $job->id)->get();
+            $job = $this->account->jobs()->with('location')
+                ->findOrFail($parameters['job_id']);
+            $shifts = $job->shifts()->orderBy('created_at', 'asc')
+                ->where('closed', true)
+                ->with('timesheets.employee')
+                ->get();
+
+            $shiftReports = [];
+            foreach ($shifts as $shift) {
+                $shiftReports[] = [
+                    'start' => $shift->timesheets->first()->time_in->toDateTimeString(),
+                    'end' => $shift->timesheets->last()->time_out->toDateTimeString(),
+                    'shift' => [
+                        'productivity' => $shift->productivity,
+                    ],
+                    'timesheets' => $shift->timesheets,
+                ];
+            }
+
             return [
                 'type' => $report->type,
                 'job' => [
@@ -246,10 +263,10 @@ class ReportController extends BaseController
                     'location' => $job->location->name,
                     'productivity' => $job->productivity
                 ],
-                'start' => $timesheets->first()->time_in->toDateTimeString(),
-                'end' => $timesheets->last()->time_out->toDateTimeString(),
-                'score' => 89, //$this->calculateProductivityScoreForJob($job, $timesheets),
-                'timesheets' => $timesheets,
+                'start' => $shifts->first()->created_at->toDateTimeString(),
+                'end' => $shifts->last()->updated_at->toDateTimeString(),
+                'score' => $this->calculateProductivityScoreForJob($job, $shiftReports),
+                'shifts' => $shiftReports,
             ];
         }
     }
@@ -279,33 +296,10 @@ class ReportController extends BaseController
      *
      * @return int
      */
-    private function calculateProductivityScore(JobShift $shift, Collection $timesheets)
+    private function calculateProductivityScoreForShift(JobShift $shift, Collection $timesheets)
     {
-        /**
-         * Formula for Calculating Productivity Score:
-         * GIVEN AT JOB ENTRY:
-         *   numberOfEmployeesRequired
-         *   projectedQuantityPerHour
-         * GIVEN AT END OF JOB:
-         *   actualQuantity
-         *   setupTime
-         * CALCULATED AT END OF JOB
-         *   estimatedManHours = projectedQuantityPerHour/numberOfEmployeesRequired
-         *   totalHours (+= every employee's time on the job) - setupTime
-         *   actualManHours = actualQuantity/totalHours
-         *   productivityScore = actualManHours/estManHours
-         */
         $projectedQuantityPerHour = (int)$shift->job->productivity['quantity'];
         $numberOfPeopleRequired = (int)$shift->job->productivity['employees'];
-        if ($numberOfPeopleRequired === 0) {
-            return 0; // Prevent divide by zero.
-        }
-
-        $estimatedManHours = $projectedQuantityPerHour / $numberOfPeopleRequired;
-
-        if ($estimatedManHours <= 0) {
-            return 0; // Prevent divide by zero.
-        }
 
         // Add up employee hours.
         $totalMinutes = 0;
@@ -319,12 +313,85 @@ class ReportController extends BaseController
         // Deduct Setup Time
         $totalHours -= (float)$shift->productivity['setup'];
 
-        if ($totalHours <= 0) {
-            return 0; // prevent negative score or divide by zero.
+        return $this->calculateProductivityScore(
+            $projectedQuantityPerHour,
+            $numberOfPeopleRequired,
+            $totalHours,
+            $shift->productivity['quantity']
+        );
+    }
+
+    /**
+     * Formula for Calculating Productivity Score:
+     * GIVEN AT JOB ENTRY:
+     *   numberOfEmployeesRequired
+     *   projectedQuantityPerHour
+     * GIVEN AT END OF JOB:
+     *   actualQuantity
+     *   setupTime
+     * CALCULATED AT END OF JOB
+     *   estimatedManHours = projectedQuantityPerHour/numberOfEmployeesRequired
+     *   totalHours (+= every employee's time on the job) - setupTime
+     *   actualManHours = actualQuantity/totalHours
+     *   productivityScore = actualManHours/estManHours
+     *
+     * @param int $projectedQuantityPerHour
+     * @param int $numberOfPeopleRequired
+     * @param float $hoursWorked
+     * @param int $totalQuantityProduced
+     *
+     * @return int
+     */
+    private function calculateProductivityScore(
+        int $projectedQuantityPerHour,
+        int $numberOfPeopleRequired,
+        float $hoursWorked,
+        int $totalQuantityProduced
+    ) {
+        if ($numberOfPeopleRequired === 0 || $hoursWorked <= 0) {
+            return 0; // Prevent divide by zero.
         }
 
-        $actualManHours = (int)$shift->productivity['quantity'] / $totalHours;
+        $estimatedManHours = $projectedQuantityPerHour / $numberOfPeopleRequired;
 
-        return round(($actualManHours / $estimatedManHours) * 100);
+        if ($estimatedManHours <= 0) {
+            return 0; // Prevent divide by zero.
+        }
+
+        $actualManHours = $totalQuantityProduced / $hoursWorked;
+
+        return (int)round(($actualManHours / $estimatedManHours) * 100);
+    }
+
+    private function calculateProductivityScoreForJob(Job $job, array $shiftReports)
+    {
+        $projectedQuantityPerHour = $job->productivity['quantity'];
+        $numberOfPeopleRequired = $job->productivity['employees'];
+
+        $minutesWorked = 0;
+        $totalQuantityProduced = 0;
+
+        foreach ($shiftReports as $report) {
+            $shift = $report['shift'];
+            foreach ($report['timesheets'] as $timesheet) {
+                $minutes = $timesheet->time_out->diffInMinutes($timesheet->time_in);
+                $minutesWorked += $minutes;
+            }
+
+            // Deduct setup time (in hours)
+            $minutesWorked -= ($shift['productivity']['setup'] * 60);
+
+            // Tally up quantity
+            $totalQuantityProduced += $shift['productivity']['quantity'];
+        }
+
+        $hoursWorked = $minutesWorked / 60;
+
+        return $this->calculateProductivityScore(
+            $projectedQuantityPerHour,
+            $numberOfPeopleRequired,
+            $hoursWorked,
+            $totalQuantityProduced
+        );
     }
 }

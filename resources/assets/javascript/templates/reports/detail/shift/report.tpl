@@ -1,31 +1,33 @@
 <div class="report">
 	<div class="report__header">
-		<div class="report__header-meta">
+		<div class="report__header-meta {{#unless show_header}}report__header-meta--no-margin{{/unless}}">
 			<div class="report__title">Job Shift Report</div>
 			<div class="report__date-range">{{{date}}}</div>
 		</div>
-		<div class="report__header-main">
-			<div class="report__header-details">
-				<div class="report__icon"><i class="material-icons">assignment</i></div>
-				<div class="report__info">
-					<div class="report__info-title">#{{job.number}} - {{job.name}}</div>
-					<div class="report__info-details">
-						<strong>Location:</strong> {{job.location}}<br>
-						<strong>Customer:</strong> {{job.customer}}<br>
-						<strong>Projected Qty. Per Hour:</strong> {{job.productivity.quantity}}<br>
-						<strong>No. of Employees Required:</strong> {{job.productivity.employees}}
+		{{#if show_header}}
+			<div class="report__header-main">
+				<div class="report__header-details">
+					<div class="report__icon"><i class="material-icons">assignment</i></div>
+					<div class="report__info">
+						<div class="report__info-title">#{{job.number}} - {{job.name}}</div>
+						<div class="report__info-details">
+							<strong>Location:</strong> {{job.location}}<br>
+							<strong>Customer:</strong> {{job.customer}}<br>
+							<strong>Projected Qty. Per Hour:</strong> {{job.productivity.quantity}}<br>
+							<strong>No. of Employees Required:</strong> {{job.productivity.employees}}
+						</div>
+					</div>
+				</div>
+				<div class="report__header-summary">
+					<div class="report__header-summary-title">
+						Productivity Score
+					</div>
+					<div class="report__header-summary-stat">
+						{{shift.score}}
 					</div>
 				</div>
 			</div>
-			<div class="report__header-summary">
-				<div class="report__header-summary-title">
-					Productivity Score
-				</div>
-				<div class="report__header-summary-stat">
-					{{shift.score}}
-				</div>
-			</div>
-		</div>
+		{{/if}}
 	</div>
 	<table class="report__data table">
 		<thead>

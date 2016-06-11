@@ -3,6 +3,7 @@ import {LayoutView} from 'backbone.marionette';
 import EmployeeTimesheetReportView from 'views/reports/detail/EmployeeTimesheetReportView';
 import AgencyTimesheetsReportView from 'views/reports/detail/AgencyTimesheetsReportView';
 import JobShiftReportView from 'views/reports/detail/JobShiftReportView';
+import JobSummaryReportView from 'views/reports/detail/JobSummaryReportView';
 import CreateReportView from 'views/reports/create/CreateReportView';
 import PrintReportView from 'views/reports/detail/PrintReportView';
 import ActionSheet from 'components/ActionSheet';
@@ -12,7 +13,7 @@ const ViewMap = {
     timesheet: EmployeeTimesheetReportView,
     agency: AgencyTimesheetsReportView,
     shift: JobShiftReportView,
-    // job: JobSummaryReportView,
+    job: JobSummaryReportView,
 };
 const ReportDetailView = LayoutView.extend({
     template,

@@ -1,7 +1,6 @@
 import {LayoutView} from 'backbone.marionette';
 import PageableJobsCollection from 'collections/PageableJobsCollection';
 import MiniChooser from 'components/MiniChooser';
-import DatePicker from 'components/DatePicker';
 import SearchesCollection from 'views/mixins/SearchesCollection';
 import {mixin} from 'helpers';
 import mdl from 'mdl';
@@ -20,7 +19,7 @@ const JobParametersView = LayoutView.extend({
         this.chooser = new MiniChooser({
             isFixedHeight: true,
             isScrollable: true,
-            itemIcon: 'assignment',
+            itemIcon: 'work',
             primaryField(model) {
                 return '#' + model.get('number');
             },
@@ -33,8 +32,6 @@ const JobParametersView = LayoutView.extend({
     },
     onShow() {
         mdl.upgradeAllRegistered();
-        new DatePicker({field: this.ui.startDate});
-        new DatePicker({field: this.ui.endDate});
     },
     onJobSelected(job) {
         this.model.set('job_id', job.get('id'));
