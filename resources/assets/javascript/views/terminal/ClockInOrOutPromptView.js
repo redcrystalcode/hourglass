@@ -10,6 +10,7 @@ import template from 'templates/terminal/prompts/clock-in-or-out.tpl';
 import mdl from 'mdl';
 
 const Status = {
+    PAUSED: 'paused',
     CLOCKED_IN: 'clocked_in',
     CLOCKED_OUT: 'clocked_out',
     SELECT_JOB: 'select_job',
@@ -69,7 +70,6 @@ const ClockInOrOutPromptView = ItemView.extend({
         // Fix MDL Textfield bug where label stays as if input exists.
         this.ui.input.parent()[0].MaterialTextfield.checkDirty();
 
-        // If clocked out:
         if (response.status === Status.CLOCKED_OUT) {
             this.channel.trigger('clock:out', response.data);
             NotificationService.request('notify:clock:out', response.data);

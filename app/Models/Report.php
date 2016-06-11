@@ -52,6 +52,10 @@ class Report extends Model
             /** @var Employee $employee */
             $employee = Employee::withTrashed()->findOrFail($this->parameters['employee_id']);
             $this->name = "{$employee->name} - {$this->parameters['start']} to {$this->parameters['end']}";
+        } elseif ($this->type === 'agency') {
+            /** @var Agency $agency */
+            $agency = Agency::findOrFail($this->parameters['agency_id']);
+            $this->name = "{$agency->name} Employee Timesheets - {$this->parameters['start']} to {$this->parameters['end']}";
         } elseif ($this->type === 'shift') {
             /** @var JobShift $shift */
             $shift = JobShift::with('job')->findOrFail($this->parameters['job_shift_id']);

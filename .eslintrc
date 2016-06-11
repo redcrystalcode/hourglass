@@ -4,7 +4,7 @@
         "browser": true
     },
     "rules": {
-        "indent": ["error", 4],
+        "indent": ["error", 4, {"SwitchCase": 1}],
         "comma-dangle": ["error", "only-multiline"],
         "valid-jsdoc": ["error", {
             "requireReturnDescription": false,

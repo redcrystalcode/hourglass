@@ -38,10 +38,17 @@ class EmployeeController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginate = $this->account->employees()
+        $query = $this->account->employees()
+            ->with('location', 'agency')
             ->search($request->get('search'))
-            ->sort($request->get('sort_by'), $request->get('order'))
-            ->paginate($request->get('per_page', 10));
+            ->sortTrashedLast()
+            ->sort($request->get('sort_by'), $request->get('order'));
+
+        if ($request->get('include_deleted')) {
+            $query->withTrashed();
+        }
+
+        $paginate = $query->paginate($request->get('per_page', 10));
 
         return $this->respondWithPaginator($paginate);
     }
@@ -147,6 +154,14 @@ class EmployeeController extends BaseController
      */
     public function destroy($id)
     {
-        // TODO - Implement destroy()
+        /** @var Employee $employee */
+        $employee = $this->account->employees()->find($id);
+
+        if (!$employee) {
+            throw new NotFoundHttpException('Not Found');
+        }
+
+        $employee->delete();
+        return $this->respondWithItem($employee);
     }
 }

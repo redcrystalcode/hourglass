@@ -5,7 +5,7 @@ import api from 'core/Api';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
-import AddEmployeeView from 'views/terminal/AddEmployeeView';
+import ManageEmployeeView from 'views/employees/ManageEmployeeView';
 import ActionSheet from 'components/ActionSheet';
 import Dialog from 'components/Dialog';
 import FormValidator from 'components/FormValidator';
@@ -69,7 +69,7 @@ const RegisterTimecardPromptView = LayoutView.extend({
 
     showNewEmployeeActionSheet() {
         this.sheet = new ActionSheet({
-            view: new AddEmployeeView({
+            view: new ManageEmployeeView({
                 collection: this.employees
             })
         });

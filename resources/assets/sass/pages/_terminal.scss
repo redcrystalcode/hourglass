@@ -220,11 +220,15 @@
   .shift-item {
     @include shadow-2dp();
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     background: white;
     border-radius: 4px;
-    padding: 8px 12px;
     color: $color-text-gray;
+
+    &.shift-item--paused .shift-item__icon {
+      background: $color-brand-accent;
+    }
 
     .shift-item__icon {
       flex: none;
@@ -233,7 +237,7 @@
       height: 40px;
       border-radius: 50%;
       text-align: center;
-      margin-right: 12px;
+      margin: 8px 4px 8px 12px;
       i.material-icons {
         color: white;
         line-height: 40px;
@@ -242,6 +246,7 @@
     .shift-item__content {
       flex-grow: 2;
       margin-right: 12px;
+      padding: 8px 12px;
       white-space: nowrap;
       overflow: hidden;
 
@@ -253,7 +258,7 @@
         overflow: hidden;
       }
       .shift-item__content-line-one {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 400;
         display: block;
       }
@@ -263,6 +268,12 @@
         color: $color-text-gray-light;
         line-height: 14px;
       }
+    }
+    .shift-item__actions {
+      padding: 6px 12px;
+      background: rgba(0, 0, 0, 0.08);
+      flex: none;
+      width: 100%;
     }
   }
 

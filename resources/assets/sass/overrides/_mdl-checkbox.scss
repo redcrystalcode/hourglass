@@ -1,0 +1,15 @@
+.mdl-checkbox {
+  display: block;
+  margin-bottom: 8px;
+
+  .mdl-checkbox__label {
+    font-size: 15px;
+    font-weight: 300;
+
+    .material-icons {
+      font-size: 19px;
+      vertical-align: text-bottom;
+      color: #777;
+    }
+  }
+}

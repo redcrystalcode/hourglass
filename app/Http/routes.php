@@ -43,4 +43,6 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', '
     Route::get('terminal/clocked-in', 'TerminalController@clockedInEmployees');
     Route::get('terminal/shifts', 'TerminalController@ongoingShifts');
     Route::post('terminal/shifts/{id}/end', 'TerminalController@endShift');
+    Route::post('terminal/shifts/{id}/pause', 'TerminalController@pauseShift');
+    Route::post('terminal/shifts/{id}/resume', 'TerminalController@resumeShift');
 });

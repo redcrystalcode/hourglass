@@ -5,7 +5,7 @@ import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import ReportItemView from 'views/reports/ReportItemView';
 import PageableReportsCollection from 'collections/PageableReportsCollection';
-import CreateReportView from 'views/reports/CreateReportView';
+import CreateReportView from 'views/reports/create/CreateReportView';
 import template from 'templates/reports/list.tpl';
 
 const JobListView = LayoutView.extend({

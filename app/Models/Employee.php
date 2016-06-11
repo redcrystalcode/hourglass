@@ -5,6 +5,7 @@ namespace Hourglass\Models;
 use Hourglass\Models\Relations\BelongsToAccount;
 use Hourglass\Models\Scopes\IsSearchable;
 use Hourglass\Models\Scopes\IsSortable;
+use Hourglass\Models\Scopes\SortsTrashedLast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,10 +38,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee whereAgencyId($value)
  * @property-read \Hourglass\Models\Agency $agency
  * @property-read \Hourglass\Models\Location $location
+ * @property-read \Hourglass\Models\Timesheet $timesheets
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee sortTrashedLast()
  */
 class Employee extends Model
 {
-    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable;
+    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable, SortsTrashedLast;
 
     protected $searchable = ['name'];
 

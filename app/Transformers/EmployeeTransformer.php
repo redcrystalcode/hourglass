@@ -10,7 +10,19 @@ class EmployeeTransformer extends Transformer
         return [
             'id' => $employee->id,
             'name' => $employee->name,
-            'terminal_key' => $employee->terminal_key
+            'position' => $employee->position,
+            'terminal_key' => $employee->terminal_key,
+            'archived' => $employee->trashed(),
+            'location' => [
+                'id' => $employee->location->id,
+                'name' => $employee->location->name,
+            ],
+            'agency' => (is_null($employee->agency)) ? [
+                'name' => $employee->account->name,
+            ] : [
+                'id' => $employee->agency->id,
+                'name' => $employee->agency->name
+            ],
         ];
     }
 }

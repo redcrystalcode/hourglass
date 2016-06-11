@@ -29,6 +29,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Hourglass\Models\Job $job
  * @property string $comments
  * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift whereComments($value)
+ * @property boolean $paused
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Timesheet[] $timesheets
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift wherePaused($value)
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\JobShift sort($column, $direction)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\PausedTimesheet[] $pausedTimesheets
  */
 class JobShift extends Model
 {
@@ -49,5 +54,21 @@ class JobShift extends Model
     public function job()
     {
         return $this->belongsTo(Job::class)->withTrashed();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function timesheets()
+    {
+        return $this->hasMany(Timesheet::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function pausedTimesheets()
+    {
+        return $this->hasMany(PausedTimesheet::class);
     }
 }
