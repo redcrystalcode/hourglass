@@ -2,7 +2,9 @@ import $ from 'jquery';
 import {LayoutView} from 'backbone.marionette';
 import ReportModel from 'models/ReportModel';
 import ApplicationService from 'services/ApplicationService';
+import FormValidator from 'components/FormValidator';
 import TimesheetParameterView from 'views/reports/create/TimesheetParameterView';
+import AgencyParameterView from 'views/reports/create/AgencyParameterView';
 import ShiftParameterView from 'views/reports/create/ShiftParameterView';
 import JobParameterView from 'views/reports/create/JobParameterView';
 import AddsModelLoadingStateToActionSheet from 'views/mixins/AddsModelLoadingStateToActionSheet';
@@ -14,6 +16,7 @@ import template from 'templates/reports/create.tpl';
  */
 const ParameterViews = {
     timesheet: TimesheetParameterView,
+    agency: AgencyParameterView,
     shift: ShiftParameterView,
     job: JobParameterView,
 };
@@ -50,6 +53,9 @@ const CreateReportView = LayoutView.extend({
         // Store job parameters here.
         this.model = new ReportModel();
     },
+    onShow() {
+        this.validator = new FormValidator({form: this.ui.form});
+    },
     onTypeChanged(e) {
         var type = $(e.currentTarget).val();
         this.showReportParametersForm(type);
@@ -66,6 +72,8 @@ const CreateReportView = LayoutView.extend({
         this.model.save().then(() => {
             this.actionSheet.close();
             ApplicationService.request('route', `/reports/${this.model.get('id')}`);
+        }).catch((errors) => {
+            this.validator.showServerErrors(errors);
         });
     },
 });

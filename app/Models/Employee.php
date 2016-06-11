@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Hourglass\Models\Agency $agency
  * @property-read \Hourglass\Models\Location $location
  * @property-read \Hourglass\Models\Timesheet $timesheets
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Employee sortTrashedLast()
  */
 class Employee extends Model
 {

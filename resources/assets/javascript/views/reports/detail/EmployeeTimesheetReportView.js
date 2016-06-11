@@ -4,6 +4,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import template from 'templates/reports/detail/timesheet/report.tpl';
 import item from 'templates/reports/detail/timesheet/table-row.tpl';
+import empty from 'templates/reports/detail/timesheet/empty.tpl';
 
 const TableRowView = ItemView.extend({
     tagName: 'tr',
@@ -33,6 +34,10 @@ const EmployeeTimesheetReportView = CompositeView.extend({
     template,
     childView: TableRowView,
     childViewContainer: 'tbody',
+    emptyView: ItemView.extend({
+        tagName: 'tr',
+        template: empty,
+    }),
     templateHelpers() {
         let view = this;
         return {
@@ -48,11 +53,12 @@ const EmployeeTimesheetReportView = CompositeView.extend({
                 // let minutes = total % 60;
                 // return `${hours}h ${minutes}m`;
                 return `${Math.floor(total.asHours())}h ${Math.floor(total.minutes())}m`;
-            }
+            },
+            show_meta: !this.hideMetaHeader
         };
     },
-
-    initialize() {
+    initialize(options) {
+        this.hideMetaHeader = options.hideMetaHeader || false;
         this.collection = new Collection(this.model.get('timesheets'));
     },
 });

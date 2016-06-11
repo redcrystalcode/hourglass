@@ -1,9 +1,11 @@
 <div class="report">
 	<div class="report__header">
-		<div class="report__header-meta">
-			<div class="report__title">Employee Timesheet</div>
-			<div class="report__date-range">{{start}} &mdash; {{end}}</div>
-		</div>
+		{{#if show_meta}}
+			<div class="report__header-meta">
+				<div class="report__title">Employee Timesheet</div>
+				<div class="report__date-range">{{start}} &mdash; {{end}}</div>
+			</div>
+		{{/if}}
 		<div class="report__header-main">
 			<div class="report__header-details">
 				<div class="report__icon report__icon--avatar"><i class="material-icons">person</i></div>

@@ -15,11 +15,13 @@ const ReportItemView = LayoutView.extend({
         let type = this.model.get('type');
         const icons = {
             timesheet: 'timer',
+            agency: 'business_center',
             shift: 'assignment',
             job: 'work',
         };
         const types = {
             timesheet: 'Employee Timesheet',
+            agency: 'Agency Employee Timesheets',
             shift: 'Job Shift Report',
             job: 'Job Summary Report',
         };
