@@ -9,6 +9,7 @@ use Hourglass\Models\Employee;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\PausedTimesheet;
+use Hourglass\Models\Report;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\JobShiftTransformer;
@@ -215,6 +216,8 @@ class TerminalController extends BaseController
 
         $shift->save();
 
+        $this->createShiftReport($shift);
+
         return $this->respondWithItem($shift, new JobShiftTransformer());
     }
 
@@ -287,5 +290,20 @@ class TerminalController extends BaseController
         $timesheet->save();
 
         return $timesheet;
+    }
+
+    /**
+     * TODO - DRY this up.
+     * @param \Hourglass\Models\JobShift $shift
+     */
+    private function createShiftReport(JobShift $shift)
+    {
+        $report = new Report();
+        $report->type = 'shift';
+        $report->parameters = [
+            'job_shift_id' => $shift->id,
+        ];
+        $report->generateName();
+        $this->account->reports()->save($report);
     }
 }
