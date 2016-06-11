@@ -129,6 +129,8 @@ class ReportController extends BaseController
                 'agency_id' => $request->get('agency_id'),
                 'start' => $request->get('start'),
                 'end' => $request->get('end'),
+                'include_empty' => (bool)$request->get('include_empty', false),
+                'include_archived' => (bool)$request->get('include_archived', false)
             ];
         }
 
@@ -171,8 +173,13 @@ class ReportController extends BaseController
 
             $employees = [];
             foreach ($agency->employees as $employee) {
+                if (!$parameters['include_archived'] && $employee->trashed()) {
+                    continue;
+                }
                 $timesheets = $this->getEmployeeTimesheets($employee, $start, $end);
-
+                if (!$parameters['include_empty'] && count($timesheets) === 0) {
+                    continue;
+                }
                 $employees[] = [
                     'employee' => [
                         'name' => $employee->name,

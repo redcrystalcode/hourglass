@@ -12,9 +12,15 @@ export function getFormData($form) {
 
     // Support nested properties using dot notation.
     $form.find('[name]').each(function() {
-        let name = $(this).attr('name');
+        // Exclude checkboxes, which are handled properly above.
+        let $el = $(this);
+        if ($el.attr('type') === 'checkbox') {
+            return;
+        }
+
+        let name = $el.attr('name');
         if (!_.get(data, name)) {
-            _.set(data, name, $(this).val());
+            _.set(data, name, $el.val());
         }
     });
 
