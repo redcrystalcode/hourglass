@@ -93,6 +93,11 @@ const ActionSheet = LayoutView.extend({
         }
         var view = this.view;
 
+        if (action === 'close') {
+            this.close();
+            return;
+        }
+
         if (_.isFunction(action)) {
             action.call(view);
             return;
