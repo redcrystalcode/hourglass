@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
          Commands\SetupTeamworkAccount::class,
          Commands\MigrateReportrData::class,
          Commands\ModelFactory::class,
+         Commands\SyncDatabase::class,
     ];
 
     /**
