@@ -2,7 +2,7 @@
 	<div class="report__header">
 		<div class="report__header-meta">
 			<div class="report__title">Job Summary Report</div>
-			<div class="report__date-range">{{start}} &mdash; {{end}}</div>
+			<div class="report__date-range">{{{dates}}}</div>
 		</div>
 		<div class="report__header-main">
 			<div class="report__header-details">

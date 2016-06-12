@@ -253,7 +253,6 @@ class ReportController extends BaseController
                     'timesheets' => $shift->timesheets,
                 ];
             }
-
             return [
                 'type' => $report->type,
                 'job' => [
@@ -263,8 +262,8 @@ class ReportController extends BaseController
                     'location' => $job->location->name,
                     'productivity' => $job->productivity
                 ],
-                'start' => $shifts->first()->created_at->toDateTimeString(),
-                'end' => $shifts->last()->updated_at->toDateTimeString(),
+                'start' => count($shifts) > 0 ? $shifts->first()->created_at->toDateTimeString() : null,
+                'end' => count($shifts) > 0 ? $shifts->last()->updated_at->toDateTimeString() : null,
                 'score' => $this->calculateProductivityScoreForJob($job, $shiftReports),
                 'shifts' => $shiftReports,
             ];

@@ -12,9 +12,19 @@ const JobSummaryReportView = CompositeView.extend({
     },
     childViewContainer: '.reports-container',
     templateHelpers() {
+        var model = this.model;
         return {
-            start: moment(this.model.get('start')).format('M/DD/YY'),
-            end: moment(this.model.get('end')).format('M/DD/YY'),
+            dates() {
+                let start = model.get('start');
+                let end = model.get('end');
+                if (start === null) {
+                    return 'Not Started';
+                }
+                if (start === end) {
+                    return moment(start).format('M/DD/YY');
+                }
+                return `${moment(start).format('M/DD/YY')} &mdash; ${moment(end).format('M/DD/YY')}`;
+            },
         };
     },
     initialize() {
