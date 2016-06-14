@@ -237,6 +237,7 @@ class ReportController extends BaseController
             /** @var Job $job */
             $job = $this->account->jobs()->with('location')
                 ->findOrFail($parameters['job_id']);
+            /** @var JobShift[] $shifts */
             $shifts = $job->shifts()->orderBy('created_at', 'asc')
                 ->where('closed', true)
                 ->with('timesheets.employee')
@@ -244,13 +245,16 @@ class ReportController extends BaseController
 
             $shiftReports = [];
             foreach ($shifts as $shift) {
+                // Clocked Out Only
+                /** @var \Illuminate\Support\Collection|Timesheet[] $timesheets */
+                $timesheets = $shift->timesheets()->whereNotNull('time_out')->with('employee')->get();
                 $shiftReports[] = [
-                    'start' => $shift->timesheets->first()->time_in->toDateTimeString(),
-                    'end' => $shift->timesheets->last()->time_out->toDateTimeString(),
+                    'start' => $timesheets->first()->time_in->toDateTimeString(),
+                    'end' => $timesheets->last()->time_out->toDateTimeString(),
                     'shift' => [
                         'productivity' => $shift->productivity,
                     ],
-                    'timesheets' => $shift->timesheets,
+                    'timesheets' => $timesheets,
                 ];
             }
             return [
