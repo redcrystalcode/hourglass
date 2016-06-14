@@ -213,7 +213,7 @@ class ReportController extends BaseController
         if ($report->type === 'shift') {
             /** @var JobShift $shift */
             $shift = $this->account->shifts()->with('job.location')->findOrFail($parameters['job_shift_id']);
-            $timesheets = Timesheet::with('employee')->where('job_shift_id', $shift->id)->get();
+            $timesheets = $shift->timesheets()->with('employee')->whereNotNull('time_out')->get();
             return [
                 'type' => $report->type,
                 'job' => [
@@ -240,7 +240,6 @@ class ReportController extends BaseController
             /** @var JobShift[] $shifts */
             $shifts = $job->shifts()->orderBy('created_at', 'asc')
                 ->where('closed', true)
-                ->with('timesheets.employee')
                 ->get();
 
             $shiftReports = [];
