@@ -61,9 +61,6 @@ app.on('start', () => {
         terminal: new TerminalRouter({
             container: app.layout.content
         }),
-        // account: new AccountRouter({
-        //     container: app.layout.content
-        // }),
         jobs: new JobsRouter({
             container: app.layout.content
         }),
@@ -71,6 +68,9 @@ app.on('start', () => {
             container: app.layout.content
         }),
         reports: new ReportsRouter({
+            container: app.layout.content
+        }),
+        account: new AccountRouter({
             container: app.layout.content
         }),
         // settings: new SettingsRouter({

@@ -10,8 +10,7 @@ const AccountLayoutView = LayoutView.extend({
     regions: {
         loading: '.account-loading-region',
         hero: '.account-hero-region',
-        details: '.account-details-region',
-        members: '.account-members-region',
+        details: '.account-details-region'
     },
 
     onBeforeShow() {
@@ -19,9 +18,6 @@ const AccountLayoutView = LayoutView.extend({
             model: this.model
         }));
         this.showChildView('details', new AccountDetailsView({
-            model: this.model
-        }));
-        this.showChildView('members', new AccountMembersView({
             model: this.model
         }));
     },

@@ -37,6 +37,10 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', '
     Route::resource('agencies', 'AgencyController');
     Route::resource('shifts', 'ShiftController');
 
+    Route::get('account', 'AccountController@show');
+    Route::put('account', 'AccountController@update');
+    Route::patch('account', 'AccountController@update');
+
     // Terminal Routes
     Route::post('terminal/clock', 'TerminalController@clock');
     Route::get('terminal/timecards', 'TerminalController@timecards');
