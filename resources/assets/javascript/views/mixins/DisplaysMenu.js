@@ -17,6 +17,10 @@ const DisplaysMenu = {
         }
     },
 
+    onShow() {
+        this.onDomRefresh();
+    },
+
     onDomRefresh() {
         if (this._isMenuDisabled()) {
             return;
