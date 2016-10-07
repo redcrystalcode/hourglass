@@ -2,6 +2,7 @@ import {Collection} from 'backbone';
 import {CompositeView, ItemView} from 'backbone.marionette';
 import moment from 'moment';
 import _ from 'lodash';
+import {time} from 'helpers';
 import template from 'templates/reports/detail/timesheet/report.tpl';
 import item from 'templates/reports/detail/timesheet/table-row.tpl';
 import empty from 'templates/reports/detail/timesheet/empty.tpl';
@@ -13,8 +14,10 @@ const TableRowView = ItemView.extend({
         var model = this.model;
         return {
             date: moment.utc(model.get('time_in')).local().format('ddd, MMM D, Y'),
-            time_in: moment.utc(model.get('time_in')).local().format('hh:mm A'),
-            time_out: moment.utc(model.get('time_out')).local().format('hh:mm A'),
+            time_in: time(model.get('time_in')),
+            time_out: time(model.get('time_out')),
+            original_time_in: time(model.get('original_time_in')),
+            original_time_out: time(model.get('original_time_out')),
             job() {
                 var job = model.get('job');
                 return `#${job.number} - ${job.name}`;

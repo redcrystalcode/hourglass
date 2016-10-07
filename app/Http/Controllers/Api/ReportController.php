@@ -436,13 +436,23 @@ class ReportController extends BaseController
         $rules = $this->getRoundingRules();
         foreach ($timesheets as &$timesheet) {
             foreach ($rules as $rule) {
-                $timesheet->setAttribute('original_time_in', $timesheet->time_in->toDateTimeString());
-                $timesheet->setAttribute('original_time_out', $timesheet->time_out->toDateTimeString());
                 if ($rule->appliesToClockInTime()) {
-                    $timesheet->time_in = $this->applyRoundingRule($rule, $timesheet->time_in);
+                    $time = $timesheet->time_in;
+                    $rounded = $this->applyRoundingRule($rule, $time);
+
+                    if ($rounded !== $time) {
+                        $timesheet->setAttribute('original_time_in', $time->toDateTimeString());
+                        $timesheet->time_in = $rounded;
+                    }
                 }
                 if ($rule->appliesToClockOutTime()) {
-                    $timesheet->time_out = $this->applyRoundingRule($rule, $timesheet->time_out);
+                    $time = $timesheet->time_out;
+                    $rounded = $this->applyRoundingRule($rule, $time);
+
+                    if ($rounded !== $time) {
+                        $timesheet->setAttribute('original_time_out', $time->toDateTimeString());
+                        $timesheet->time_out = $rounded;
+                    }
                 }
             }
         }

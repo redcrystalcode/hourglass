@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import moment from 'moment';
 import Cocktail from 'backbone.cocktail';
 
 /**
@@ -101,4 +102,11 @@ export function softDeletes(target) {
 
         return xhr;
     };
+}
+
+export function time(val) {
+    if (!val) {
+        return null;
+    }
+    return moment.utc(val).local().format('hh:mm A');
 }
