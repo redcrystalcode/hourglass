@@ -6,4 +6,66 @@
   .hero__title {
     line-height: calc(220px - 80px);
   }
+
+  .rounding-rules {
+    position: relative;
+
+    .rounding-rules__add {
+      @include shadow-4dp();
+      position: absolute;
+      top: (56px/2);
+      right: (56px/2) + 36;
+      z-index: 2;
+    }
+
+    .rounding-rules__table {
+      width: 100%;
+
+      .rounding-rules__empty {
+        text-align: center;
+        padding: 50px;
+        background: #f8f8f8;
+      }
+
+      th.rounding-rules__rule-column,
+      th.rounding-rules__criteria-column,
+      th.rounding-rules__result-column {
+        width: 29%;
+      }
+
+      th.rounding-rules__edit-column {
+        width: 13%;
+      }
+
+      td.rounding-rules__result-column {
+        font-weight: bold;
+      }
+
+      td.rounding-rules__rule-column {
+        .rounding-rules__time-input {
+          font-size: 13px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .rounding-rules__time-separator {
+          width: 30px;
+          text-align: center;
+          display: inline-block;
+        }
+      }
+
+      td.rounding-rules__edit-column {
+        overflow: visible;
+        .mdl-button {
+          i.material-icons {
+            font-size: 16px;
+            color: $color-text-gray-lighter;
+            &:hover {
+              color: $color-brand-accent;
+            }
+          }
+        }
+      }
+    }
+  }
 }

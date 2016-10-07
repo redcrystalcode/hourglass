@@ -1,7 +1,7 @@
 import {LayoutView} from 'backbone.marionette';
 import AccountHeroView from 'views/account/AccountHeroView';
 import AccountDetailsView from 'views/account/AccountDetailsView';
-import AccountMembersView from 'views/account/AccountMembersView';
+import RoundingRulesView from 'views/account/RoundingRulesView';
 import template from 'templates/account/layout.tpl';
 
 const AccountLayoutView = LayoutView.extend({
@@ -11,7 +11,7 @@ const AccountLayoutView = LayoutView.extend({
         loading: '.account-loading-region',
         hero: '.account-hero-region',
         details: '.account-details-region',
-        members: '.account-members-region',
+        rounding: '.rounding-rules-region',
     },
 
     onBeforeShow() {
@@ -21,8 +21,8 @@ const AccountLayoutView = LayoutView.extend({
         this.showChildView('details', new AccountDetailsView({
             model: this.model
         }));
-        this.showChildView('members', new AccountMembersView({
-            model: this.model
+        this.showChildView('rounding', new RoundingRulesView({
+            collection: this.options.roundingRulesCollection
         }));
     },
 });

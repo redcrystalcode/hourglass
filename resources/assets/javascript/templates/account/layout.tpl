@@ -4,7 +4,9 @@
 		<div class="mdl-grid mdl-grid--no-spacing">
 			<div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset">
 				<div class="account-details-region"></div>
-				<div class="account-members-region"></div>
+			</div>
+			<div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset">
+				<div class="rounding-rules-region"></div>
 			</div>
 		</div>
 	</main>

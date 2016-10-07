@@ -2,6 +2,7 @@
 
 namespace Hourglass\Models;
 
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,6 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\JobShift[] $shifts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Agency[] $agencies
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\Report[] $reports
+ * @property string $timezone
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Hourglass\Models\RoundingRule[] $roundingRules
+ * @method static \Illuminate\Database\Query\Builder|\Hourglass\Models\Account whereTimezone($value)
  */
 class Account extends Model
 {
@@ -64,6 +68,14 @@ class Account extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
      */
+    public function roundingRules()
+    {
+        return $this->hasMany(RoundingRule::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
     public function reports()
     {
         return $this->hasMany(Report::class);
@@ -91,5 +103,13 @@ class Account extends Model
     public function agencies()
     {
         return $this->hasMany(Agency::class);
+    }
+
+    /**
+     * @return \DateTimeZone
+     */
+    public function getTimezone()
+    {
+        return new DateTimeZone($this->timezone);
     }
 }

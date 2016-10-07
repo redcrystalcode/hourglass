@@ -9,6 +9,10 @@
   background-color: white;
   border-radius: 2px;
 
+  &--flush {
+    padding: 0;
+  }
+
   &--0dp {
     box-shadow: none;
   }
