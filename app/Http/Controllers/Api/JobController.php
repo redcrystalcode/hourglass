@@ -27,10 +27,8 @@ class JobController extends BaseController
 
     /**
      * Display a listing of the resource.
-     
      *
-*@param \Illuminate\Http\Request $request
-     
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */

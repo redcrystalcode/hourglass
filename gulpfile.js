@@ -10,7 +10,6 @@ var now = require('performance-now');
 var _ = require('lodash');
 var browserSync = require('browser-sync').create();
 var reload = browserSync.reload;
-require('./register-hb-helpers.js');
 
 var paths = {
     sass: {
