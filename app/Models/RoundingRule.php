@@ -31,6 +31,10 @@ class RoundingRule extends Model
 {
     use BelongsToAccount;
     
+    const CRITERIA_TIME_ALL = 'all';
+    const CRITERIA_TIME_IN = 'clock_in';
+    const CRITERIA_TIME_OUT = 'clock_out';
+
     protected $casts = [
         'criteria' => 'array'
     ];
@@ -41,4 +45,20 @@ class RoundingRule extends Model
         'criteria',
         'resolution'
     ];
+
+    /**
+     * @return bool
+     */
+    public function appliesToClockInTime()
+    {
+        return in_array($this->criteria['time'], [self::CRITERIA_TIME_ALL, self::CRITERIA_TIME_IN]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function appliesToClockOutTime()
+    {
+        return in_array($this->criteria['time'], [self::CRITERIA_TIME_ALL, self::CRITERIA_TIME_OUT]);
+    }
 }

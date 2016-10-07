@@ -22,5 +22,16 @@
 			</label>
 		</div>
 	</div>
+	<h4 class="action-sheet__form-header">Report Settings</h4>
+	<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="use-rounding-rules">
+		<input class="mdl-checkbox__input" id="use-rounding-rules" name="use_rounding_rules" type="checkbox" value="true" checked>
+		<span class="mdl-checkbox__label">
+			Apply Rounding Rules
+			<i class="material-icons" id="use-rounding-rules-tt">info_outline</i>
+		</span>
+		<span class="mdl-tooltip mdl-tooltip--large" for="use-rounding-rules-tt">
+			If you check this box, rounding rules you have configured will be applied to this report.
+		</span>
+	</label>
 	<div class="report-parameters-region"></div>
 </form>

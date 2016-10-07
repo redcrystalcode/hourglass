@@ -3,13 +3,13 @@
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use Hourglass\Http\Requests;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Models\Employee;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
+use Hourglass\Models\RoundingRule;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\ReportTransformer;
 use Illuminate\Contracts\Auth\Guard;
@@ -117,8 +117,12 @@ class ReportController extends BaseController
     {
         $type = $request->get('type');
 
+        $parameters = [
+            'use_rounding_rules' => (bool)$request->get('use_rounding_rules'),
+        ];
+
         if ($type === 'timesheet') {
-            return [
+            return $parameters + [
                 'employee_id' => $request->get('employee_id'),
                 'start' => $request->get('start'),
                 'end' => $request->get('end'),
@@ -126,28 +130,33 @@ class ReportController extends BaseController
         }
 
         if ($type === 'agency') {
-            return [
+            return $parameters + [
                 'agency_id' => $request->get('agency_id'),
                 'start' => $request->get('start'),
                 'end' => $request->get('end'),
                 'include_empty' => (bool)$request->get('include_empty', false),
-                'include_archived' => (bool)$request->get('include_archived', false)
+                'include_archived' => (bool)$request->get('include_archived', false),
             ];
         }
 
         if ($type === 'shift') {
-            return [
-                'job_shift_id' => $request->get('job_shift_id')
+            return $parameters + [
+                'job_shift_id' => $request->get('job_shift_id'),
             ];
         }
 
         if ($type === 'job') {
-            return [
-                'job_id' => $request->get('job_id')
+            return $parameters + [
+                'job_id' => $request->get('job_id'),
             ];
         }
     }
 
+    /**
+     * @param \Hourglass\Models\Report $report
+     *
+     * @return array
+     */
     private function generateReportData(Report $report)
     {
         $parameters = $report->parameters;
@@ -159,6 +168,11 @@ class ReportController extends BaseController
             $start = Carbon::parse($parameters['start'] . ' 00:00:00', 'America/Los_Angeles');
             $end = Carbon::parse($parameters['end'] . ' 23:59:59', 'America/Los_Angeles');
             $timesheets = $this->getEmployeeTimesheets($employee, $start, $end);
+
+            if (array_get($parameters, 'use_rounding_rules', false) === true) {
+                $timesheets = $this->roundTimesheets($timesheets);
+            }
+
             return [
                 'type' => $report->type,
                 'employee' => [
@@ -187,6 +201,9 @@ class ReportController extends BaseController
                 if (!$parameters['include_empty'] && count($timesheets) === 0) {
                     continue;
                 }
+                if (array_get($parameters, 'use_rounding_rules', false) === true) {
+                    $timesheets = $this->roundTimesheets($timesheets);
+                }
                 $employees[] = [
                     'employee' => [
                         'name' => $employee->name,
@@ -214,6 +231,9 @@ class ReportController extends BaseController
             /** @var JobShift $shift */
             $shift = $this->account->shifts()->with('job.location')->findOrFail($parameters['job_shift_id']);
             $timesheets = $shift->timesheets()->with('employee')->whereNotNull('time_out')->get();
+            if (array_get($parameters, 'use_rounding_rules', false) === true) {
+                $timesheets = $this->roundTimesheets($timesheets);
+            }
             return [
                 'type' => $report->type,
                 'job' => [
@@ -247,6 +267,9 @@ class ReportController extends BaseController
                 // Clocked Out Only
                 /** @var \Illuminate\Support\Collection|Timesheet[] $timesheets */
                 $timesheets = $shift->timesheets()->whereNotNull('time_out')->with('employee')->get();
+                if (array_get($parameters, 'use_rounding_rules', false) === true) {
+                    $timesheets = $this->roundTimesheets($timesheets);
+                }
                 $shiftReports[] = [
                     'start' => $timesheets->first()->time_in->toDateTimeString(),
                     'end' => $timesheets->last()->time_out->toDateTimeString(),
@@ -365,6 +388,12 @@ class ReportController extends BaseController
         return (int)round(($actualManHours / $estimatedManHours) * 100);
     }
 
+    /**
+     * @param \Hourglass\Models\Job $job
+     * @param array $shiftReports
+     *
+     * @return int
+     */
     private function calculateProductivityScoreForJob(Job $job, array $shiftReports)
     {
         $projectedQuantityPerHour = $job->productivity['quantity'];
@@ -395,5 +424,64 @@ class ReportController extends BaseController
             $hoursWorked,
             $totalQuantityProduced
         );
+    }
+
+    /**
+     * @param \Hourglass\Models\Timesheet[] $timesheets
+     *
+     * @return \Hourglass\Models\Timesheet[]
+     */
+    private function roundTimesheets($timesheets)
+    {
+        $rules = $this->getRoundingRules();
+        foreach ($timesheets as &$timesheet) {
+            foreach ($rules as $rule) {
+                $timesheet->setAttribute('original_time_in', $timesheet->time_in->toDateTimeString());
+                $timesheet->setAttribute('original_time_out', $timesheet->time_out->toDateTimeString());
+                if ($rule->appliesToClockInTime()) {
+                    $timesheet->time_in = $this->applyRoundingRule($rule, $timesheet->time_in);
+                }
+                if ($rule->appliesToClockOutTime()) {
+                    $timesheet->time_out = $this->applyRoundingRule($rule, $timesheet->time_out);
+                }
+            }
+        }
+        return $timesheets;
+    }
+
+    /**
+     * @param \Hourglass\Models\RoundingRule $rule
+     * @param \Carbon\Carbon|null $time
+     *
+     * @return \Carbon\Carbon|null
+     */
+    private function applyRoundingRule(RoundingRule $rule, Carbon $time = null)
+    {
+        if ($time === null) {
+            return $time;
+        }
+
+        $timezone = $this->account->getTimezone();
+        $compare = $time->copy()->setTimezone($timezone);
+        $start = Carbon::parse($rule->start, $timezone)
+            ->setDate($compare->year, $compare->month, $compare->day);
+        $end = Carbon::parse($rule->end, $timezone)
+            ->setDate($compare->year, $compare->month, $compare->day);
+
+        if ($compare->between($start, $end)) {
+            return Carbon::parse($rule->resolution, $timezone)
+                ->setDate($compare->year, $compare->month, $compare->day)
+                ->setTimezone('UTC');
+        }
+
+        return $time;
+    }
+
+    /**
+     * @return \Hourglass\Models\RoundingRule[]
+     */
+    private function getRoundingRules()
+    {
+        return $this->account->roundingRules()->get();
     }
 }
