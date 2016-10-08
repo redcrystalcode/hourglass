@@ -142,14 +142,6 @@
     max-width: 180px;
   }
 
-  .report__data--time-tooltip {
-    transform: none;
-    display: none;
-    will-change: auto;
-    &.is-active {
-      display: block;
-    }
-  }
   .report__data--time-tooltip-icon {
     vertical-align: text-bottom;
     font-size: 17px;

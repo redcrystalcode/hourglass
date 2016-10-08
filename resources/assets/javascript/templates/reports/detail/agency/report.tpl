@@ -25,6 +25,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="js-summary-container"></div>
 </div>
 
-<div class="reports-container"></div>
+<div class="js-reports-container"></div>

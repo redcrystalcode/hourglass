@@ -52,9 +52,6 @@ const EmployeeTimesheetReportView = CompositeView.extend({
                     let diffInSeconds = moment(timesheet.time_out).diff(moment(timesheet.time_in), 'seconds');
                     total.add(moment.duration(diffInSeconds, 'seconds'));
                 });
-                // let hours = Math.floor(total / 60);
-                // let minutes = total % 60;
-                // return `${hours}h ${minutes}m`;
                 return `${Math.floor(total.asHours())}h ${Math.floor(total.minutes())}m`;
             },
             show_meta: !this.hideMetaHeader

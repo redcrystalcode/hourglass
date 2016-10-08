@@ -136,6 +136,7 @@ class ReportController extends BaseController
                 'end' => $request->get('end'),
                 'include_empty' => (bool)$request->get('include_empty', false),
                 'include_archived' => (bool)$request->get('include_archived', false),
+                'summary_only' => (bool)$request->get('summary_only', false),
             ];
         }
 
@@ -211,6 +212,7 @@ class ReportController extends BaseController
                         'agency' => $employee->agency->name ?? $this->account->name,
                     ],
                     'timesheets' => $timesheets,
+                    'total_time_minutes' => $this->sumTimesheets($timesheets),
                 ];
             }
 
@@ -218,6 +220,7 @@ class ReportController extends BaseController
                 'type' => $report->type,
                 'include_archived' => $parameters['include_archived'],
                 'include_empty' => $parameters['include_empty'],
+                'summary_only' => $parameters['summary_only'],
                 'agency' => [
                     'name' => $agency->name,
                 ],
@@ -493,5 +496,19 @@ class ReportController extends BaseController
     private function getRoundingRules()
     {
         return $this->account->roundingRules()->get();
+    }
+
+    /**
+     * @param \Hourglass\Models\Timesheet[] $timesheets
+     *
+     * @return int
+     */
+    private function sumTimesheets($timesheets)
+    {
+        $total = 0;
+        foreach ($timesheets as $timesheet) {
+            $total += $timesheet->time_out->diffInMinutes($timesheet->time_in);
+        }
+        return $total;
     }
 }

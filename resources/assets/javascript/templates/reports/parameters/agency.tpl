@@ -24,9 +24,7 @@
 		<i class="material-icons" id="include-no-hours-tt">info_outline</i>
 	</span>
 	<span class="mdl-tooltip mdl-tooltip--large" for="include-no-hours-tt">
-		If you check this box, employees that did not work during the dates you've selected
-		above will show up in the generated report. If you only want to see reports for
-		employees that logged some time, leave this box unchecked.
+		Include employees that did not work during the date range selected.
 	</span>
 </label>
 <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="include-archived">
@@ -37,5 +35,15 @@
 	</span>
 	<span class="mdl-tooltip mdl-tooltip--large" for="include-archived-tt">
 		Check this box if you want the report to include employees that you've archived.
+	</span>
+</label>
+<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="summary-only">
+	<input class="mdl-checkbox__input" id="summary-only" name="summary_only" type="checkbox" value="true">
+	<span class="mdl-checkbox__label">
+		Summary Page Only
+		<i class="material-icons" id="summary-only-tt">info_outline</i>
+	</span>
+	<span class="mdl-tooltip mdl-tooltip--large" for="summary-only-tt">
+		Check this box if you only want the summary page of this report.
 	</span>
 </label>
