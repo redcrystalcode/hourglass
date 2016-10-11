@@ -28,7 +28,7 @@
 
 	</div>
 	<h4 class="action-sheet__form-header">Agency</h4>
-	<p>What agency is this employee from? <span class="text-hint">(Optional)</span></p>
+	<p>What agency is this employee from?</p>
 	<div class="agency-chooser-region">
 
 	</div>

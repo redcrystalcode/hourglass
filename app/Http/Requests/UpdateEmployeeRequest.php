@@ -37,8 +37,14 @@ class UpdateEmployeeRequest extends Request
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
                     ->where('account_id', $accountId)
-                    ->toString()
-            ]
+                    ->toString(),
+            ],
+            'agency_id' => [
+                'required',
+                (new ExistsValidationRule('agencies', 'id'))
+                    ->where('account_id', $accountId)
+                    ->toString(),
+            ],
         ];
     }
 }

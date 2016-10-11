@@ -17,9 +17,7 @@ class EmployeeTransformer extends Transformer
                 'id' => $employee->location->id,
                 'name' => $employee->location->name,
             ],
-            'agency' => (is_null($employee->agency)) ? [
-                'name' => $employee->account->name,
-            ] : [
+            'agency' => [
                 'id' => $employee->agency->id,
                 'name' => $employee->agency->name
             ],
