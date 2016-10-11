@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import {ItemView, CompositeView} from 'backbone.marionette';
-import {Collection} from 'backbone';
 import layout from 'templates/components/mini-chooser/layout.tpl';
 import item from 'templates/components/mini-chooser/item.tpl';
 

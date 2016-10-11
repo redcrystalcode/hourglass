@@ -2,6 +2,7 @@
 
 namespace Hourglass\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use Hourglass\Http\Requests\RoundingRules\CreateRoundingRuleRequest;
 use Hourglass\Models\RoundingRule;
 use Hourglass\Transformers\RoundingRuleTransformer;
@@ -28,7 +29,7 @@ class RoundingRuleController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -41,16 +42,15 @@ class RoundingRuleController extends BaseController
      *
      * @param \Hourglass\Http\Requests\RoundingRules\CreateRoundingRuleRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateRoundingRuleRequest $request)
     {
-        $rule = new RoundingRule($request->only([
-            'start',
-            'end',
-            'criteria',
-            'resolution'
-        ]));
+        $rule = new RoundingRule();
+        $rule->criteria = $request->get('criteria');
+        $rule->start = $this->parseTimeString($request->get('start'));
+        $rule->end = $this->parseTimeString($request->get('end'));
+        $rule->resolution = $this->parseTimeString($request->get('resolution'));
         
         $this->account->roundingRules()->save($rule);
         
@@ -62,7 +62,7 @@ class RoundingRuleController extends BaseController
      *
      * @param  int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -76,7 +76,7 @@ class RoundingRuleController extends BaseController
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -86,13 +86,11 @@ class RoundingRuleController extends BaseController
         if (!$rule) {
             throw new ModelNotFoundException();
         }
-        
-        $rule->fill($request->only([
-            'start',
-            'end',
-            'criteria',
-            'resolution'
-        ]));
+
+        $rule->criteria = $request->get('criteria');
+        $rule->start = $this->parseTimeString($request->get('start'));
+        $rule->end = $this->parseTimeString($request->get('end'));
+        $rule->resolution = $this->parseTimeString($request->get('resolution'));
         
         $this->account->roundingRules()->save($rule);
         
@@ -102,7 +100,7 @@ class RoundingRuleController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      */
     public function destroy($id)
     {
@@ -114,5 +112,10 @@ class RoundingRuleController extends BaseController
         }
         
         $rule->delete();
+    }
+
+    private function parseTimeString($time)
+    {
+        return Carbon::createFromFormat('g:i a', $time, $this->account->timezone)->toTimeString();
     }
 }
