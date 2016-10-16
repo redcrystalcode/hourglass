@@ -1,0 +1,38 @@
+.fragment {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-content: flex-start;
+  align-items: stretch;
+  flex-flow: row;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  .fragment__panel {
+    @include shadow-4dp();
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+
+    &:last-of-type {
+      box-shadow: none;
+    }
+    &--small {
+      max-width: 300px;
+    }
+
+    .fragment__hint {
+      margin-bottom: 4px;
+      background: rgba(0,0,0,0.08);
+      padding: 4px 24px;
+    }
+
+    .mdl-list {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

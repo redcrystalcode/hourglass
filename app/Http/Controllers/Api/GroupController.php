@@ -2,12 +2,8 @@
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Hourglass\Http\Requests;
-//use Hourglass\Http\Requests\CreateAgencyRequest;
-//use Hourglass\Http\Requests\Agencies\RegisterTimecardRequest;
-//use Hourglass\Http\Requests\UpdateAgencyRequest;
-use Hourglass\Http\Requests\Agencies\CreateAgencyRequest;
-use Hourglass\Http\Requests\Agencies\UpdateAgencyRequest;
+use Hourglass\Http\Requests\Groups\CreateGroupRequest;
+use Hourglass\Http\Requests\Groups\UpdateGroupRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Transformers\AgencyTransformer;
 use Illuminate\Contracts\Auth\Guard;
@@ -15,7 +11,7 @@ use Illuminate\Http\Request;
 use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class AgencyController extends BaseController
+class GroupController extends BaseController
 {
     /**
      * AgencyController constructor.
@@ -54,7 +50,7 @@ class AgencyController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateAgencyRequest $request)
+    public function store(CreateGroupRequest $request)
     {
         $agencies = new Agency($request->only(['name']));
         $this->account->agencies()->save($agencies);
@@ -89,7 +85,7 @@ class AgencyController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAgencyRequest $request, $id)
+    public function update(UpdateGroupRequest $request, $id)
     {
         /** @var Agency $agency */
         $agency = $this->account->agencies()->find($id);

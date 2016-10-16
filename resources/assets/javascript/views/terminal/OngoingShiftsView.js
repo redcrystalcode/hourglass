@@ -7,7 +7,7 @@ import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
 import OngoingShiftsCollection from 'collections/OngoingShiftsCollection';
 import EmptyView from 'components/EmptyView';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import layout from 'templates/terminal/shifts/layout.tpl';
 import item from 'templates/terminal/shifts/item.tpl';
 
@@ -33,7 +33,7 @@ const ShiftItemView = ItemView.extend({
         TerminalService.endShift(this.model);
     },
     pauseShift() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Pause shift?',
             body: 'Pausing this shift will clock out all employees currently clocked in to this shift. '
                 + 'You can resume a shift at any time. All employees will be clocked back in upon resuming.',
@@ -44,7 +44,7 @@ const ShiftItemView = ItemView.extend({
         });
     },
     resumeShift() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Resume shift?',
             body: 'Resuming this shift will clock in all employees that were clocked in at the time you paused '
                 + 'this shift.',

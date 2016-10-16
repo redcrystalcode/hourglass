@@ -1,6 +1,6 @@
 import BaseRoute from 'routing/routes/BaseRoute';
 import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
-import PageableAgenciesCollection from 'collections/PageableAgenciesCollection';
+import PageableGroupsCollection from 'collections/PageableGroupsCollection';
 import EmployeesLayoutView from 'views/employees/EmployeesLayoutView';
 import ApplicationService from 'services/ApplicationService';
 
@@ -14,7 +14,7 @@ const IndexRoute = BaseRoute.extend({
                 include_deleted: true,
             }
         });
-        this.groups = new PageableAgenciesCollection();
+        this.groups = new PageableGroupsCollection();
         return Promise.all([
             this.employees.fetch(),
             this.groups.fetch(),

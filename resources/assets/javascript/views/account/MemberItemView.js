@@ -3,7 +3,7 @@ import UserManager from 'managers/UserManager';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
 import Str from 'util/Str';
 import {mixin} from 'helpers';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import template from 'templates/account/member-item.tpl';
 
 const MemberItemView = LayoutView.extend({
@@ -57,7 +57,7 @@ const MemberItemView = LayoutView.extend({
     },
 
     revokeInvitation() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Revoke invitation?',
             body: "This member won't be able to sign up to your account unless you send them another invitation.",
             primaryAction: 'Revoke',

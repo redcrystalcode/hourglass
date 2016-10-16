@@ -1,10 +1,10 @@
 import BasePageableCollection from "collections/BasePageableCollection";
-import AgencyModel from "models/AgencyModel";
+import GroupModel from "models/GroupModel";
 import {setUpDefaultSort} from "helpers";
 
-const PageableAgenciesCollection = BasePageableCollection.extend({
-    url: '/agencies',
-    model: AgencyModel,
+const PageableGroupsCollection = BasePageableCollection.extend({
+    url: '/groups',
+    model: GroupModel,
     sortRules: {
         alpha: {attr: 'name', dir: -1, label: 'Alphabetical'},
         new: {attr: 'created_at', dir: 1, label: 'Newest First'},
@@ -13,6 +13,6 @@ const PageableAgenciesCollection = BasePageableCollection.extend({
     defaultSort: 'alpha',
 });
 
-setUpDefaultSort(PageableAgenciesCollection);
+setUpDefaultSort(PageableGroupsCollection);
 
-export default PageableAgenciesCollection;
+export default PageableGroupsCollection;

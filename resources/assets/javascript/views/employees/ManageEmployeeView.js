@@ -2,7 +2,7 @@ import {Collection} from 'backbone';
 import {LayoutView} from 'backbone.marionette';
 import EmployeeModel from 'models/EmployeeModel';
 import LocationsCollection from 'collections/LocationsCollection';
-import PageableAgenciesCollection from 'collections/PageableAgenciesCollection';
+import PageableGroupsCollection from 'collections/PageableGroupsCollection';
 import FormManager from 'components/FormManager';
 import MiniChooser from 'components/MiniChooser';
 import AddsModelLoadingStateToActionSheet from 'views/mixins/AddsModelLoadingStateToActionSheet';
@@ -32,7 +32,7 @@ const ManageEmployeeView = LayoutView.extend({
     initialize(options) {
         this.model = options.model || new EmployeeModel();
         this.locations = new LocationsCollection();
-        this.agencies = new PageableAgenciesCollection();
+        this.agencies = new PageableGroupsCollection();
     },
     onBeforeShow() {
         this.locationChooser = new MiniChooser({
@@ -52,7 +52,7 @@ const ManageEmployeeView = LayoutView.extend({
 
         this.agencyChooser = new MiniChooser({
             showCreateField: false,
-            itemIcon: 'business_center',
+            itemIcon: 'group',
             collection: this.agencies,
         });
         this.showChildView('agencyChooserRegion', this.agencyChooser);

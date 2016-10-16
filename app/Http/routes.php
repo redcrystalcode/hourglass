@@ -35,7 +35,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', '
     Route::resource('reports', 'ReportController');
     Route::resource('locations', 'LocationController');
     Route::resource('rounding-rules', 'RoundingRuleController');
-    Route::resource('agencies', 'AgencyController');
+    Route::resource('groups', 'GroupController');
+    Route::get('groups/{group}/employees/available', 'GroupEmployeeController@available');
+    Route::resource('groups/{group}/employees', 'GroupEmployeeController', ['only' => ['index', 'store', 'destroy']]);
     Route::resource('shifts', 'ShiftController');
 
     Route::get('account', 'AccountController@show');

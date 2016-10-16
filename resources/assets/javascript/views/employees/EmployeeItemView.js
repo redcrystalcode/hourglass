@@ -1,6 +1,6 @@
 import {LayoutView} from 'backbone.marionette';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import ActionSheet from 'components/ActionSheet';
 import ManageEmployeeView from 'views/employees/ManageEmployeeView';
 import {mixin} from 'helpers';
@@ -46,7 +46,7 @@ const EmployeeItemView = LayoutView.extend({
     },
 
     onArchiveSelected() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Archive this employee?',
             body: "After you archive this employee, they will no longer be able to clock in or out."
                 + "The employee will still be available for all your reports."

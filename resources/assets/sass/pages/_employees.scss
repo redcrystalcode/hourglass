@@ -4,3 +4,52 @@
     background-size: cover;
   }
 }
+
+.employee-item {
+  padding: 0;
+  height: auto;
+
+  .mdl-list__item-avatar {
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px;
+    height: 32px;
+    width: 32px;
+  }
+
+  .mdl-list__item-primary-content {
+    padding: 12px 24px;
+    height: 56px;
+    font-size: 14px;
+    color: $color-text-gray;
+  }
+
+  .mdl-list__item-secondary-content {
+    flex-flow: row;
+    margin: 0;
+    align-items: center;
+
+    padding: 12px;
+    height: 56px;
+
+    i.material-icons {
+      font-size: 16px;
+    }
+    .mdl-list__item-secondary-action:not(:first-of-type) {
+      margin-left: 8px;
+    }
+  }
+  .mdl-list__item-secondary-action {
+    @include link-style($color-text-gray-light, $color-text-gray);
+
+    &.mdl-list__item-secondary-action--highlighted {
+      color: $color-brand-accent;
+    }
+  }
+
+  .badge {
+    vertical-align: text-top;
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}

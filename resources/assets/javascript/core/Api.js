@@ -23,7 +23,7 @@ class Api {
     }
 
     url(endpoint, params = null) {
-        let url = params ? sprintf(endpoint, params) : endpoint;
+        let url = params ? sprintf(endpoint, ...params) : endpoint;
 
         // Remove leading slash from the URL
         if (url.charAt(0) === '/') {
