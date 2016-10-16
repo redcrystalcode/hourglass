@@ -2,11 +2,9 @@
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Hourglass\Http\Controllers\Controller;
-use Hourglass\Http\Requests;
-use Hourglass\Http\Requests\CreateEmployeeRequest;
+use Hourglass\Http\Requests\Employees\CreateEmployeeRequest;
 use Hourglass\Http\Requests\Employees\RegisterTimecardRequest;
-use Hourglass\Http\Requests\UpdateEmployeeRequest;
+use Hourglass\Http\Requests\Employees\UpdateEmployeeRequest;
 use Hourglass\Models\Employee;
 use Hourglass\Transformers\EmployeeTransformer;
 use Illuminate\Contracts\Auth\Guard;
@@ -34,7 +32,7 @@ class EmployeeController extends BaseController
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -63,8 +61,10 @@ class EmployeeController extends BaseController
     public function store(CreateEmployeeRequest $request)
     {
         $employee = new Employee($request->only([
-            'name', 'position', 'terminal_key', 'location_id', 'agency_id'
+            'name', 'position', 'terminal_key',
         ]));
+        $employee->location_id = $request->input('location.id');
+        $employee->agency_id = $request->input('agency.id');
         $this->account->employees()->save($employee);
 
         return $this->respondWithItem($employee);
@@ -106,7 +106,9 @@ class EmployeeController extends BaseController
             throw new NotFoundHttpException('Not found.');
         }
 
-        $employee->fill($request->only(['name', 'position', 'terminal_key', 'location_id']));
+        $employee->fill($request->only(['name', 'position', 'terminal_key']));
+        $employee->location_id = $request->input('location.id');
+        $employee->agency_id = $request->input('agency.id');
         $employee->save();
 
         $this->respondWithItem($employee);

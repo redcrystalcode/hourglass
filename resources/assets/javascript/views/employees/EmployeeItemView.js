@@ -11,7 +11,7 @@ const EmployeeItemView = LayoutView.extend({
     tagName: 'li',
     className: 'mdl-list__item mdl-list__item--two-line',
     modelEvents: {
-        change: 'render'
+        sync: 'render'
     },
 
     menuOptions() {
