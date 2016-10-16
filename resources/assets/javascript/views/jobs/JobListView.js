@@ -4,6 +4,8 @@ import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import JobItemView from 'views/jobs/JobItemView';
 import ManageJobView from 'views/jobs/ManageJobView';
+import PushesCollectionState from 'views/mixins/PushesCollectionState';
+import {mixin} from 'helpers';
 import template from 'templates/jobs/list.tpl';
 
 const JobListView = LayoutView.extend({
@@ -36,5 +38,6 @@ const JobListView = LayoutView.extend({
         sheet.open();
     }
 });
+mixin(JobListView, PushesCollectionState);
 
 export default JobListView;

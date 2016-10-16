@@ -18,7 +18,7 @@ const EmployeeItemView = LayoutView.extend({
         let items = [];
         if (this.model.get('archived')) {
             items = [
-                // {key: 'restore', label: 'Restore'}
+                {key: 'restore', label: 'Restore'}
             ];
         } else {
             items = [

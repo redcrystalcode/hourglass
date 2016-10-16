@@ -4,6 +4,8 @@ import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import EmployeeItemView from 'views/employees/EmployeeItemView';
 import ManageEmployeeView from 'views/employees/ManageEmployeeView';
+import PushesCollectionState from 'views/mixins/PushesCollectionState';
+import {mixin} from 'helpers';
 import template from 'templates/employees/list.tpl';
 
 const EmployeeListView = LayoutView.extend({
@@ -36,5 +38,7 @@ const EmployeeListView = LayoutView.extend({
         sheet.open();
     }
 });
+
+mixin(EmployeeListView, PushesCollectionState);
 
 export default EmployeeListView;

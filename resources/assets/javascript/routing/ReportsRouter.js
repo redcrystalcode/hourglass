@@ -18,10 +18,11 @@ const ReportsRouter = BaseRouter.extend({
         'reports/:id': 'showReport',
     },
 
-    reports() {
+    reports(query) {
         HeaderService.request('activate', 'reports');
         return new IndexRoute({
-            container: this.container
+            query,
+            container: this.container,
         });
     },
 

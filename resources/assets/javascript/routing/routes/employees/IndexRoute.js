@@ -9,7 +9,7 @@ import ApplicationService from 'services/ApplicationService';
  */
 const IndexRoute = BaseRoute.extend({
     fetch() {
-        this.employees = new PageableEmployeesCollection([], {
+        this.employees = PageableEmployeesCollection.fromQueryParameters(this.options.query, {
             queryParams: {
                 include_deleted: true,
             }

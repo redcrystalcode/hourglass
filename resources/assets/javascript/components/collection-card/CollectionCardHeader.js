@@ -29,7 +29,8 @@ const CollectionCardHeader = LayoutView.extend({
             title: this.options.title,
             show_sort_button: _.contains(this.options.actions, 'sort'),
             actions: this.options.actions.length > 0,
-            searchable: this.options.searchable
+            searchable: this.options.searchable,
+            search: this.collection.getSearchKeyword(),
         };
     },
 
@@ -68,7 +69,7 @@ const CollectionCardHeader = LayoutView.extend({
     clearSearch() {
         this.ui.searchClearButton.removeClass('search__clear--visible');
         this.ui.search.val('');
-        this.collection.fetch();
+        this.collection.search();
     }
 });
 
