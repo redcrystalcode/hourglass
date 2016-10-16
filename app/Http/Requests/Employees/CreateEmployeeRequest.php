@@ -1,12 +1,12 @@
 <?php
 
-namespace Hourglass\Http\Requests;
+namespace Hourglass\Http\Requests\Employees;
 
 use Hourglass\Http\Requests\Request;
 use RedCrystal\ValidationRules\ExistsValidationRule;
 use RedCrystal\ValidationRules\UniqueValidationRule;
 
-class UpdateEmployeeRequest extends Request
+class CreateEmployeeRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,21 +30,19 @@ class UpdateEmployeeRequest extends Request
             'name' => 'required',
             'terminal_key' => (new UniqueValidationRule('employees', 'terminal_key'))
                 ->where('account_id', $accountId)
-                ->ignore($this->get('id'))
                 ->whereNull('deleted_at')
                 ->toString(),
-            'location_id' => [
+            'location.id' => [
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
                     ->where('account_id', $accountId)
                     ->toString(),
             ],
-            'agency_id' => [
-                'required',
+            'agency.id' => [
                 (new ExistsValidationRule('agencies', 'id'))
                     ->where('account_id', $accountId)
-                    ->toString(),
-            ],
+                    ->toString()
+            ]
         ];
     }
 }
