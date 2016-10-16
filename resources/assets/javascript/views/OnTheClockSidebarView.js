@@ -19,7 +19,7 @@ const ChildView = ItemView.extend({
         dismiss: 'onClockOut'
     },
     templateHelpers() {
-        var model = this.model;
+        let model = this.model;
         return {
             time: moment.utc(model.get('time_in')).local().format('h:mm a'),
             date: moment.utc(model.get('time_in')).local().format('MMM D Y'),

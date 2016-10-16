@@ -11,7 +11,7 @@ import template from 'templates/jobs/manage-job.tpl';
 const ManageJobView = LayoutView.extend({
     template,
     actionSheetOptions() {
-        var model = this.model;
+        let model = this.model;
         return {
             title: model.isNew() ? 'New Job' : 'Edit Job',
             primaryAction: {

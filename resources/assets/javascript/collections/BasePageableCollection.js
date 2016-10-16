@@ -17,7 +17,7 @@ const BasePageableCollection = PageableCollection.extend({
         return response.data;
     },
     parseState(response) {
-        var pagination = response.meta.pagination;
+        let pagination = response.meta.pagination;
 
         return {
             totalRecords: pagination.total,
@@ -64,7 +64,7 @@ const BasePageableCollection = PageableCollection.extend({
      * @return {number}
      */
     getPageEnd() {
-        var end = this.getPageStart() + this.getPageSize() - 1;
+        let end = this.getPageStart() + this.getPageSize() - 1;
 
         if (end > this.getTotalRecords()) {
             return this.getTotalRecords();

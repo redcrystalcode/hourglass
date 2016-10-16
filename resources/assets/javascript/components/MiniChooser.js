@@ -13,7 +13,7 @@ const MiniChooserItemView = ItemView.extend({
         'change:selected': 'render'
     },
     templateHelpers() {
-        var view = this;
+        let view = this;
         return {
             icon: this.model.get('icon') || this.options.icon,
             primary() {

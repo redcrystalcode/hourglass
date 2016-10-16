@@ -12,12 +12,12 @@ const LoadingService = Service.extend({
     },
 
     startLoader(container = null) {
-        var target = container || this.container;
+        let target = container || this.container;
         target.show(new LoadingView());
     },
 
     stopLoader(container = null) {
-        var target = container || this.container;
+        let target = container || this.container;
         target.empty();
     }
 });

@@ -57,11 +57,11 @@ const CreateReportView = LayoutView.extend({
         this.validator = new FormValidator({form: this.ui.form});
     },
     onTypeChanged(e) {
-        var type = $(e.currentTarget).val();
+        let type = $(e.currentTarget).val();
         this.showReportParametersForm(type);
     },
     showReportParametersForm(type) {
-        var ViewClass = ParameterViews[type];
+        let ViewClass = ParameterViews[type];
 
         this.showChildView('parameters', new ViewClass({
             model: this.model

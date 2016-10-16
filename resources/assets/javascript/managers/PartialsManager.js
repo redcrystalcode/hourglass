@@ -7,7 +7,7 @@ class PartialsManager {
             loading
         };
 
-        for (var partial of Object.keys(partials)) {
+        for (let partial of Object.keys(partials)) {
             Handlebars.registerPartial(partial, partials[partial]);
         }
     }

@@ -29,7 +29,7 @@ const HeaderView = ItemView.extend({
     },
 
     templateHelpers() {
-        var self = this;
+        let self = this;
 
         return {
             user: self.user,
@@ -64,12 +64,12 @@ const HeaderView = ItemView.extend({
         e.stopPropagation();
 
         // Check if other navbar__selector is open.
-        var others = $('.navbar__selector--open');
+        let others = $('.navbar__selector--open');
         _.each(others, (selector) => {
             this.closeSelector.call(selector);
         });
 
-        var selector = e.currentTarget;
+        let selector = e.currentTarget;
         $(selector).addClass('navbar__selector--open');
         $('body').one('click', this.closeSelector.bind(selector));
     },

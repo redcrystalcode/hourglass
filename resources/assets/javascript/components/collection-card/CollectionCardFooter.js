@@ -16,7 +16,7 @@ const CollectionCardFooter = Marionette.ItemView.extend({
     },
 
     templateHelpers() {
-        var collection = this.collection;
+        let collection = this.collection;
         return {
             pagination: {
                 total: collection.getTotalRecords(),

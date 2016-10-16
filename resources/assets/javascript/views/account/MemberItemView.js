@@ -48,7 +48,7 @@ const MemberItemView = LayoutView.extend({
     },
 
     isSelf() {
-        var self = UserManager.getUser();
+        let self = UserManager.getUser();
         return (self.get('id') === this.model.get('id'));
     },
 

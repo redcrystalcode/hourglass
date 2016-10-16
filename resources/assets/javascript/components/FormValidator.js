@@ -29,11 +29,11 @@ const FormValidator = Marionette.Object.extend({
     },
 
     showError(name, errorText) {
-        var input = this.form.find('[name="' + name + '"]');
-        var errorTextEl;
+        let input = this.form.find('[name="' + name + '"]');
+        let errorTextEl;
 
         if (input.length) {
-            var textfield = input.parent();
+            let textfield = input.parent();
             textfield.addClass(this.errorClass)
                 .find('.' + this.errorTextClass);
             errorTextEl = textfield.find('.' + this.errorTextClass);

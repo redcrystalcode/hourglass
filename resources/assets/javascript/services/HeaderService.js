@@ -34,7 +34,7 @@ const HeaderService = Service.extend({
             path = path.substring(0, dotPosition);
         }
         this.collection.invoke('set', 'active', false);
-        var model = this.collection.findWhere({path});
+        let model = this.collection.findWhere({path});
         if (model) {
             model.set('active', true);
             model.set('subpath', sub);

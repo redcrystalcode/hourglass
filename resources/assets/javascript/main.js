@@ -99,7 +99,7 @@ app.start();
 
 // Route all anchor tags with [data-internal] attribute.
 $(document).on('click', 'a', function(e) {
-    var href = $(this).attr('href');
+    let href = $(this).attr('href');
     if (href.substring(0, 4) === '/app') {
         e.preventDefault();
         Backbone.history.navigate(href.substring(4), true);

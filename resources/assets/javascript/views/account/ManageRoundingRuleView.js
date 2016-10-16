@@ -6,7 +6,7 @@ import template from 'templates/account/rounding-rule-edit.tpl';
 const ManageRoundingRuleView = ItemView.extend({
     template,
     actionSheetOptions() {
-        var model = this.model;
+        let model = this.model;
         return {
             title: model.isNew() ? 'New Rounding Rule' : 'Edit Rounding Rule',
             primaryAction: {

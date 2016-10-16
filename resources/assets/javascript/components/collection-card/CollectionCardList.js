@@ -35,7 +35,7 @@ const CollectionCardList = CollectionView.extend({
 
     buildChildView(child, ChildViewClass, childViewOptions) {
         // Attach the collection to the childview.
-        var options = _.extend({
+        let options = _.extend({
             model: child,
             collection: this.collection
         }, childViewOptions);

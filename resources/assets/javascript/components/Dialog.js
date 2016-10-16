@@ -25,7 +25,7 @@ const Dialog = ItemView.extend({
     },
 
     templateHelpers() {
-        var self = this;
+        let self = this;
         return {
             title: self.title,
             body: self.body,

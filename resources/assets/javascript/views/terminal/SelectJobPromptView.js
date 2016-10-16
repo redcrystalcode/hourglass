@@ -99,7 +99,7 @@ const SelectJobPromptView = LayoutView.extend({
     },
 
     handleSearchInput() {
-        var val = this.ui.search.val();
+        let val = this.ui.search.val();
 
         if (val.length < 1) {
             this.clearSearch();
@@ -127,7 +127,7 @@ const SelectJobPromptView = LayoutView.extend({
     },
 
     showAddJobActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageJobView({collection: this.jobs})
         });
         sheet.open();

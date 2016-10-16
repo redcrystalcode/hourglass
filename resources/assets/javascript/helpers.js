@@ -66,13 +66,13 @@ export function softDeletes(target) {
 
         // After a successful server-side save, the client is (optionally)
         // updated with the server-side state.
-        var model = this;
-        var success = options.success;
-        var attributes = this.attributes;
+        let model = this;
+        let success = options.success;
+        let attributes = this.attributes;
         options.success = function(resp) {
             // Ensure attributes are restored during synchronous saves.
             model.attributes = attributes;
-            var serverAttrs = options.parse ? model.parse(resp, options) : resp;
+            let serverAttrs = options.parse ? model.parse(resp, options) : resp;
             if (serverAttrs && !model.set(serverAttrs, options)) {
                 return false;
             }
@@ -82,8 +82,8 @@ export function softDeletes(target) {
             model.trigger('sync', model, resp, options);
         };
 
-        var wrapError = function(model, options) {
-            var error = options.error;
+        let wrapError = function(model, options) {
+            let error = options.error;
             options.error = function(resp) {
                 if (error) {
                     error.call(options.context, model, resp, options);
@@ -92,7 +92,7 @@ export function softDeletes(target) {
             };
         };
 
-        var xhr = false;
+        let xhr = false;
         if (this.isNew()) {
             _.defer(options.success);
         } else {

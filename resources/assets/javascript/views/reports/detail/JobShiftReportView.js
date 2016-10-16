@@ -10,7 +10,7 @@ const TableRowView = ItemView.extend({
     tagName: 'tr',
     template: item,
     templateHelpers() {
-        var model = this.model;
+        let model = this.model;
         return {
             date: moment.utc(model.get('time_in')).local().format('ddd, MMM D, Y'),
             time_in: time(model.get('time_in')),

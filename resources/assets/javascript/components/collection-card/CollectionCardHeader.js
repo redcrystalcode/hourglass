@@ -42,7 +42,7 @@ const CollectionCardHeader = LayoutView.extend({
     },
 
     handleSearchInput() {
-        var val = this.ui.search.val();
+        let val = this.ui.search.val();
 
         if (val.length < 1) {
             this.clearSearch();

@@ -25,33 +25,33 @@ const ReportDetailView = LayoutView.extend({
         'click .js-print-button': 'print',
     },
     onBeforeShow() {
-        var View = ViewMap[this.model.get('type')];
+        let View = ViewMap[this.model.get('type')];
         this.showChildView('reportRegion', new View({
             model: this.model
         }));
     },
 
     showCreateReportActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new CreateReportView(),
         });
         sheet.open();
     },
 
     print() {
-        var printable = window.open(
+        let printable = window.open(
             null,
             '_blank',
             'toolbar=no,scrollbars=no,resizable=no,width=1200,height=800'
         );
 
-        var View = ViewMap[this.model.get('type')];
-        var view = new PrintReportView({
+        let View = ViewMap[this.model.get('type')];
+        let view = new PrintReportView({
             contentView: new View({model: this.model})
         });
 
         view.render().onBeforeShow();
-        var printableDoc = printable.document.open();
+        let printableDoc = printable.document.open();
         printableDoc.write(view.$el.html());
         printableDoc.close();
     },

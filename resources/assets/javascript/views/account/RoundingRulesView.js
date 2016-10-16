@@ -28,7 +28,7 @@ const RoundingRuleItemView = LayoutView.extend({
     },
 
     templateHelpers() {
-        var model = this.model;
+        let model = this.model;
         return {
             start: model.formatTime('start'),
             end: model.formatTime('end'),
@@ -49,7 +49,7 @@ const RoundingRuleItemView = LayoutView.extend({
     },
 
     onEditSelected() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageRoundingRuleView({
                 model: this.model,
             })
@@ -83,7 +83,7 @@ const RoundingRulesView = CompositeView.extend({
     },
 
     showAddRuleActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageRoundingRuleView({
                 collection: this.collection,
             })
