@@ -1,6 +1,3 @@
-<p>
-	Fill out the fields below to create a new employee.
-</p>
 <form>
 	{{! Prevent Chrome Password Autofill from Taking Over !}}
 	<input type="password" style="width: 0;height: 0; visibility: hidden;position:absolute;left:0;top:0;"/>
@@ -23,12 +20,14 @@
 		</div>
 	</div>
 	<h4 class="action-sheet__form-header">Location</h4>
+	<div class="form-validation-error" data-validation-error-for="location.id"></div>
 	<p>Choose the location this employee will primarily work in.</p>
 	<div class="location-chooser-region">
 
 	</div>
-	<h4 class="action-sheet__form-header">Agency</h4>
-	<p>What agency is this employee from?</p>
+	<h4 class="action-sheet__form-header">Group</h4>
+	<div class="form-validation-error" data-validation-error-for="agency.id"></div>
+	<p>Assign this employee to a group.</p>
 	<div class="agency-chooser-region">
 
 	</div>

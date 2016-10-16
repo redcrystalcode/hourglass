@@ -14,17 +14,17 @@ const IndexRoute = BaseRoute.extend({
                 include_deleted: true,
             }
         });
-        this.agencies = new PageableAgenciesCollection();
+        this.groups = new PageableAgenciesCollection();
         return Promise.all([
             this.employees.fetch(),
-            this.agencies.fetch(),
+            this.groups.fetch(),
         ]);
     },
     render() {
         ApplicationService.request('sidebar:hide');
         this.container.show(new EmployeesLayoutView({
             employees: this.employees,
-            agencies: this.agencies,
+            groups: this.groups,
         }));
     }
 });

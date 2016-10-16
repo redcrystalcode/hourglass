@@ -36,7 +36,7 @@ export function setUpDefaultSort(Collection) {
     let proto = Collection.prototype;
     let rule = proto.sortRules[proto.defaultSort];
 
-    _.extend(proto.state, {
+    Collection.prototype.state = _.extend({}, proto.state, {
         sortKey: rule.attr,
         order: rule.dir,
     });

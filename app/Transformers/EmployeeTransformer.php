@@ -17,10 +17,10 @@ class EmployeeTransformer extends Transformer
                 'id' => $employee->location->id,
                 'name' => $employee->location->name,
             ],
-            'agency' => [
+            'agency' => $employee->agency ? [
                 'id' => $employee->agency->id,
                 'name' => $employee->agency->name
-            ],
+            ] : null,
         ];
     }
 }

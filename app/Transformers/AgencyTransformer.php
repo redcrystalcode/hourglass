@@ -10,6 +10,7 @@ class AgencyTransformer extends Transformer
         return [
             'id' => $agency->id,
             'name' => $agency->name,
+            'count' => $agency->activeEmployees()->count(),
         ];
     }
 }
