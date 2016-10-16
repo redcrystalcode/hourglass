@@ -78,10 +78,17 @@ const MiniChooser = CompositeView.extend({
         this.uniqueId = _.uniqueId();
     },
     onItemSelected(child) {
+        let currentSelection = this.collection.findWhere({selected: true});
         this.collection.invoke('set', {selected: false});
-        child.model.set('selected', true);
+
+        // Deselect if selecting the same one.
+        if (child.model === currentSelection) {
+            this.trigger('selected', null);
+            return;
+        }
+
         this.trigger('selected', child.model);
-        // this.render();
+        child.model.set('selected', true);
     },
     onRequest() {
         this.setLoadingState(true);

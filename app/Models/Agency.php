@@ -43,4 +43,12 @@ class Agency extends Model
     {
         return $this->hasMany(Employee::class)->withTrashed();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder
+     */
+    public function activeEmployees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 }

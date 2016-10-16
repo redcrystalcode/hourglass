@@ -76,7 +76,7 @@ const ManageEmployeeView = LayoutView.extend({
         this.model.set('location', location.toJSON());
     },
     onAgencySelected(agency) {
-        this.model.set('agency', agency.toJSON());
+        this.model.set('agency', agency ? agency.toJSON() : null);
     },
     onSaveSuccess() {
         this.collection.fetch();

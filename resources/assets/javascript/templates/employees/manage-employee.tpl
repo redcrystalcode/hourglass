@@ -20,12 +20,14 @@
 		</div>
 	</div>
 	<h4 class="action-sheet__form-header">Location</h4>
+	<div class="form-validation-error" data-validation-error-for="location.id"></div>
 	<p>Choose the location this employee will primarily work in.</p>
 	<div class="location-chooser-region">
 
 	</div>
-	<h4 class="action-sheet__form-header">Agency</h4>
-	<p>What agency is this employee from?</p>
+	<h4 class="action-sheet__form-header">Group</h4>
+	<div class="form-validation-error" data-validation-error-for="agency.id"></div>
+	<p>Assign this employee to a group.</p>
 	<div class="agency-chooser-region">
 
 	</div>

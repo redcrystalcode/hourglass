@@ -13,7 +13,7 @@
 					<div class="report__info-title">{{employee.name}}</div>
 					<div class="report__info-details">
 						<strong>Location:</strong> {{employee.location}}<br>
-						<strong>Agency:</strong> {{employee.agency}}
+						<strong>Group:</strong> {{employee.agency}}
 					</div>
 				</div>
 			</div>

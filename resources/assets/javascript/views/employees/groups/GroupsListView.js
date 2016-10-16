@@ -11,7 +11,7 @@ import itemTemplate from 'templates/employees/groups/item.tpl';
 const GroupItemView = LayoutView.extend({
     template: itemTemplate,
     tagName: 'li',
-    className: 'mdl-list__item',
+    className: 'mdl-list__item mdl-list__item--two-line',
 
     menuOptions: {
         items: [

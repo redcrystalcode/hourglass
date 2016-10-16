@@ -40,10 +40,21 @@ class UpdateEmployeeRequest extends Request
                     ->toString(),
             ],
             'agency.id' => [
-                'required',
                 (new ExistsValidationRule('agencies', 'id'))
                     ->where('account_id', $accountId)
                     ->toString(),
+            ],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'location.id.required' => [
+                'Please select a location.'
+            ],
+            'agency.id.exists' => [
+                'That group no longer exists. Try another one.'
             ],
         ];
     }

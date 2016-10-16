@@ -1,7 +1,6 @@
 import Backbone from 'backbone';
 import $ from 'jquery';
 import _ from 'lodash';
-Backbone.$ = $;
 import Marionette from 'backbone.marionette';
 import PartialsManager from 'managers/PartialsManager';
 import Handlebars from 'hbsfy/runtime';
@@ -12,6 +11,7 @@ import 'backbone-query-parameters';
 import 'babel-polyfill';
 import 'form-serializer';
 import 'date-util';
+Backbone.$ = $;
 
 // Register partials.
 PartialsManager.register();
@@ -115,4 +115,11 @@ Handlebars.registerHelper('compare', function(lvalue, operator, rvalue, options)
         return options.fn(this);
     }
     return options.inverse(this);
+});
+
+Handlebars.registerHelper('pluralize', function(number, single, plural) {
+    if (number === 1) {
+        return single;
+    }
+    return plural;
 });
