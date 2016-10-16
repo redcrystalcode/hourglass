@@ -3,6 +3,8 @@
 namespace Hourglass\Models;
 
 use Hourglass\Models\Relations\BelongsToAccount;
+use Hourglass\Models\Scopes\IsSearchable;
+use Hourglass\Models\Scopes\IsSortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,8 +28,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Location extends Model
 {
-    use BelongsToAccount, SoftDeletes;
-    
+    use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable;
+
+    protected $sortable = ['name', 'created_at'];
+
+    protected $searchable = ['name'];
+
     protected $fillable = [
         'name'
     ];
