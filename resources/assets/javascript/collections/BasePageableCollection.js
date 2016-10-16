@@ -93,7 +93,7 @@ const BasePageableCollection = PageableCollection.extend({
 
     search(keyword) {
         this.trigger('search');
-        this.fetch({data: {search: keyword}});
+        this.getFirstPage({data: {search: keyword}});
     }
 });
 
