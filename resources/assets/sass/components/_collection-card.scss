@@ -145,11 +145,6 @@
 .collection-card__content {
   position: relative;
 
-  &--fixed .mdl-list {
-    // Height of 10 items. 9 extra pixels to account for borders.
-    min-height: (72px * 10) + 9px;
-  }
-
   .mdl-list {
     margin: 0;
     padding: 0;
@@ -165,6 +160,13 @@
         text-align: center;
         font-size: 24px;
         line-height: 40px;
+
+        .collection-card--slim & {
+          font-size: 18px;
+          line-height: 32px;
+          height: 32px;
+          width: 32px;
+        }
       }
 
       .mdl-list__item-primary-content {
@@ -173,7 +175,14 @@
         flex-shrink: 1;
         min-width: 0;
         color: $color-text-gray-light;
-        //transition: background-color 0.2s;
+
+        .collection-card--slim & {
+          padding: 12px 24px;
+          height: 56px;
+          font-size: 14px;
+          color: $color-text-gray;
+        }
+
         .mdl-list__item-sub-title {
           overflow: hidden;
           white-space: nowrap;
@@ -189,6 +198,16 @@
         flex-flow: row;
         margin: 0;
         align-items: center;
+
+        .collection-card--slim & {
+          padding: 12px;
+          height: 56px;
+
+          .menu-button i {
+            font-size: 16px;
+          }
+        }
+
         .mdl-list__item-secondary-action:not(:first-of-type) {
           margin-left: 8px;
         }
