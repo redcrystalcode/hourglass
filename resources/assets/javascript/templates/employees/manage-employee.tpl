@@ -1,6 +1,3 @@
-<p>
-	Fill out the fields below to create a new employee.
-</p>
 <form>
 	{{! Prevent Chrome Password Autofill from Taking Over !}}
 	<input type="password" style="width: 0;height: 0; visibility: hidden;position:absolute;left:0;top:0;"/>

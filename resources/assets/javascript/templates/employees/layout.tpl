@@ -12,5 +12,10 @@
 				<div class="employee-list-region"></div>
 			</div>
 		</div>
+		<div class="mdl-grid mdl-grid--no-spacing">
+			<div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset">
+				<div class="groups-list-region"></div>
+			</div>
+		</div>
 	</main>
 </div>

@@ -12,7 +12,7 @@ import template from 'templates/employees/manage-employee.tpl';
 const ManageEmployeeView = LayoutView.extend({
     template,
     actionSheetOptions() {
-        var model = this.model;
+        let model = this.model;
         return {
             title: model.isNew() ? 'New Employee' : 'Edit Employee',
             primaryAction: {

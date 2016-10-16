@@ -6,6 +6,8 @@ use Hourglass\Http\Requests;
 //use Hourglass\Http\Requests\CreateAgencyRequest;
 //use Hourglass\Http\Requests\Agencies\RegisterTimecardRequest;
 //use Hourglass\Http\Requests\UpdateAgencyRequest;
+use Hourglass\Http\Requests\Agencies\CreateAgencyRequest;
+use Hourglass\Http\Requests\Agencies\UpdateAgencyRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Transformers\AgencyTransformer;
 use Illuminate\Contracts\Auth\Guard;
@@ -52,15 +54,13 @@ class AgencyController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-//    public function store(CreateAgencyRequest $request)
-//    {
-//        $employee = new Agency($request->only([
-//            'name', 'position', 'terminal_key', 'location_id'
-//        ]));
-//        $this->account->employees()->save($employee);
-//
-//        return $this->respondWithItem($employee);
-//    }
+    public function store(CreateAgencyRequest $request)
+    {
+        $agencies = new Agency($request->only(['name']));
+        $this->account->agencies()->save($agencies);
+
+        return $this->respondWithItem($agencies);
+    }
 
     /**
      * Display the specified resource.
@@ -69,17 +69,17 @@ class AgencyController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-//    public function show($id)
-//    {
-//        /** @var Agency $employee */
-//        $employee = $this->account->employees()->find($id);
-//
-//        if (!$employee) {
-//            throw new NotFoundHttpException('Not found.');
-//        }
-//
-//        return $this->respondWithItem($employee);
-//    }
+    public function show($id)
+    {
+        /** @var Agency $agency */
+        $agency = $this->account->agencies()->find($id);
+
+        if (!$agency) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        return $this->respondWithItem($agency);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -89,20 +89,20 @@ class AgencyController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-//    public function update(UpdateAgencyRequest $request, $id)
-//    {
-//        /** @var Agency $employee */
-//        $employee = $this->account->employees()->find($id);
-//
-//        if (!$employee) {
-//            throw new NotFoundHttpException('Not found.');
-//        }
-//
-//        $employee->fill($request->only(['name', 'position', 'terminal_key', 'location_id']));
-//        $employee->save();
-//
-//        $this->respondWithItem($employee);
-//    }
+    public function update(UpdateAgencyRequest $request, $id)
+    {
+        /** @var Agency $agency */
+        $agency = $this->account->agencies()->find($id);
+
+        if (!$agency) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        $agency->fill($request->only(['name']));
+        $agency->save();
+
+        $this->respondWithItem($agency);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -113,6 +113,15 @@ class AgencyController extends BaseController
      */
     public function destroy($id)
     {
-        // TODO - Implement destroy()
+        // TODO - Allow deleting an agency.
+        throw new \Exception('Cannot delete agency.');
+        /** @var Agency $agency */
+        $agency = $this->account->agencies()->find($id);
+
+        if (!$agency) {
+            throw new NotFoundHttpException('Not found.');
+        }
+
+        $agency->delete();
     }
 }
