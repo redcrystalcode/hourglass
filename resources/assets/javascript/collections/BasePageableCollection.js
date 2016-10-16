@@ -1,4 +1,5 @@
 import PageableCollection from 'backbone.paginator';
+import _ from 'lodash';
 
 /**
  * This is the "abstract" base collection for all
@@ -25,6 +26,18 @@ const BasePageableCollection = PageableCollection.extend({
             pageSize: pagination.per_page,
             totalPages: pagination.total_pages
         };
+    },
+
+    fetch(options) {
+        options = options || {};
+        options.data = _.extend({}, options.data ? _.extend(options.data, this.queryParams) : this.queryParams);
+        return PageableCollection.prototype.fetch.call(this, options);
+    },
+
+    setSorting(sortKey, order, options) {
+        let result = PageableCollection.prototype.setSorting.apply(this, arguments);
+        this.trigger('pageable:state:change');
+        return result;
     },
 
     /**
@@ -73,6 +86,22 @@ const BasePageableCollection = PageableCollection.extend({
         return end;
     },
 
+    /**
+     * Get the current search keyword applied to this collection.
+     * @returns {?string}
+     */
+    getSearchKeyword() {
+        return this.queryParams ? this.queryParams.search : undefined;
+    },
+
+    /**
+     * Get the current search keyword applied to this collection.
+     * @returns {?string}
+     */
+    getSortState() {
+        return _.findKey(this.sortRules, {attr: this.state.sortKey, dir: this.state.order});
+    },
+
     getPreviousPage() {
         if (!this.hasPreviousPage()) {
             return;
@@ -92,9 +121,52 @@ const BasePageableCollection = PageableCollection.extend({
     },
 
     search(keyword) {
+        if (!keyword) {
+            delete this.queryParams.search;
+        } else {
+            this.queryParams.search = keyword;
+        }
         this.trigger('search');
-        this.getFirstPage({data: {search: keyword}});
-    }
+        this.trigger('pageable:state:change');
+        this.getFirstPage();
+    },
+
+    /**
+     * Ingest query params to configure the collection's state.
+     *
+     * @param {object} query
+     * @param {string} query.search
+     * @param {int} query.page
+     * @param {string} query.sort
+     */
+    ingestQueryParameters(query) {
+        if (!query) {
+            return;
+        }
+        if (query.search) {
+            this.queryParams.search = query.search;
+        }
+        if (query.page) {
+            this.state.currentPage = query.page;
+        }
+        if (query.sort) {
+            let rules = this.sortRules[query.sort];
+            this.setSorting(rules.attr, rules.dir);
+        }
+    },
+}, {
+    /**
+     * Create an instance with a predetermined state using query parameters.
+     *
+     * @param {object} query
+     * @param {object} options
+     * @returns {*}
+     */
+    fromQueryParameters(query, options = {}) {
+        let collection = new this([], options);
+        collection.ingestQueryParameters(query);
+        return collection;
+    },
 });
 
 export default BasePageableCollection;

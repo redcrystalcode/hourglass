@@ -8,7 +8,7 @@ import PageableJobsCollection from 'collections/PageableJobsCollection';
  */
 const IndexRoute = BaseRoute.extend({
     fetch() {
-        this.jobs = new PageableJobsCollection([], {
+        this.jobs = PageableJobsCollection.fromQueryParameters(this.options.query, {
             queryParams: {
                 include_deleted: true,
             }

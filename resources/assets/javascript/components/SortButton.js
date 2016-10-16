@@ -17,8 +17,9 @@ const SortButton = SelectButton.extend({
             });
         });
 
+        let currentSortState = collection.getSortState()
         let defaultSelection = _.findIndex(items, function(item) {
-            return item.key === collection.defaultSort;
+            return item.key === currentSortState;
         });
 
         options = {

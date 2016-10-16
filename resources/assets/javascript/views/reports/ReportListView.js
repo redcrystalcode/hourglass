@@ -4,9 +4,11 @@ import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import ReportItemView from 'views/reports/ReportItemView';
 import CreateReportView from 'views/reports/create/CreateReportView';
+import PushesCollectionState from 'views/mixins/PushesCollectionState';
+import {mixin} from 'helpers';
 import template from 'templates/reports/list.tpl';
 
-const JobListView = LayoutView.extend({
+const ReportListView = LayoutView.extend({
     template,
 
     regions: {
@@ -38,4 +40,6 @@ const JobListView = LayoutView.extend({
     }
 });
 
-export default JobListView;
+mixin(ReportListView, PushesCollectionState);
+
+export default ReportListView;

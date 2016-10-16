@@ -16,10 +16,11 @@ const JobsRouter = BaseRouter.extend({
         jobs: 'jobs',
     },
 
-    jobs() {
+    jobs(query) {
         HeaderService.request('activate', 'jobs');
         return new IndexRoute({
-            container: this.container
+            query,
+            container: this.container,
         });
     }
 });

@@ -74,6 +74,7 @@
     "moment": "^2.13.0",
     "nprogress": "^0.2.0",
     "pikaday": "^1.4.0",
+    "query-string": "^4.2.3",
     "smoothscroll": "^0.2.2",
     "sprintf-js": "^1.0.3"
   },

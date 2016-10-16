@@ -7,6 +7,7 @@ const ApplicationService = Service.extend({
 
     requests: {
         'route': 'route',
+        'navigate': 'navigate',
         'user': 'user',
         'sidebar:hide': 'hideSidebar',
         'sidebar:show': 'showSidebar'
@@ -14,6 +15,10 @@ const ApplicationService = Service.extend({
 
     route(route) {
         return this.app.router.go(route);
+    },
+
+    navigate(route) {
+        return this.app.router.navigate(route);
     },
 
     user() {

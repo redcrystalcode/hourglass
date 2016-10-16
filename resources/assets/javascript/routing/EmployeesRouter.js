@@ -16,10 +16,11 @@ const EmployeesRouter = BaseRouter.extend({
         employees: 'employees',
     },
 
-    employees() {
+    employees(query) {
         HeaderService.request('activate', 'employees');
         return new IndexRoute({
-            container: this.container
+            query,
+            container: this.container,
         });
     }
 });

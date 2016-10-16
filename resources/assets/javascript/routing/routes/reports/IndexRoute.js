@@ -8,7 +8,7 @@ import PageableReportsCollection from 'collections/PageableReportsCollection';
  */
 const IndexRoute = BaseRoute.extend({
     fetch() {
-        this.reports = new PageableReportsCollection();
+        this.reports = PageableReportsCollection.fromQueryParameters(this.options.query);
         return this.reports.fetch();
     },
     render() {
