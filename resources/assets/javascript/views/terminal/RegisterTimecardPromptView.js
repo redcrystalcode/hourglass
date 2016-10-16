@@ -7,7 +7,7 @@ import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
 import ManageEmployeeView from 'views/employees/ManageEmployeeView';
 import ActionSheet from 'components/ActionSheet';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import FormValidator from 'components/FormValidator';
 import MiniChooser from 'components/MiniChooser';
 import template from 'templates/terminal/prompts/register-timecard.tpl';
@@ -85,7 +85,7 @@ const RegisterTimecardPromptView = LayoutView.extend({
         let existingTimecard = this.timecards.findWhere({terminal_key: this.ui.timecard.val()});
 
         if (existingTimecard && existingTimecard.get('id') !== this.selectedEmployee.get('id')) {
-            Dialog.open({
+            Confirm.confirm({
                 title: 'Reassign timecard?',
                 body: 'This timecard is already registered to ' + existingTimecard.get('name')
                     + '. Are you sure you want to reassign this timecard to ' + this.selectedEmployee.get('name')

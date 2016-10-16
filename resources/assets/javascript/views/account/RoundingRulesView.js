@@ -2,7 +2,7 @@ import {ItemView, LayoutView, CompositeView} from 'backbone.marionette';
 import ActionSheet from 'components/ActionSheet';
 import ManageRoundingRuleView from 'views/account/ManageRoundingRuleView';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import {mixin} from 'helpers';
 import template from 'templates/account/rounding-rules.tpl';
 import itemTemplate from 'templates/account/rounding-rules-item.tpl';
@@ -58,7 +58,7 @@ const RoundingRuleItemView = LayoutView.extend({
     },
 
     onDeleteSelected() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Delete rounding rule?',
             body: 'This rounding rule will no longer apply to any reports. Are you sure you want to delete it?',
             primaryAction: 'Delete',

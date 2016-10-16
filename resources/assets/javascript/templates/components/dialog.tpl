@@ -1,14 +1,20 @@
-<div class="dialog__wrapper">
-	<div class="dialog__content">
-		{{#if title}}
-			<h3 class="dialog__title">{{title}}</h3>
-		{{/if}}
-		{{#if body}}
-			<p class="dialog__body">{{{body}}}</p>
-		{{/if}}
+<header class="dialog__header">
+	<div class="header__icon js-close-button">
+		<i class="material-icons">close</i>
 	</div>
-	<div class="dialog__actions">
-		<button class="js-primary-action mdl-button--colored mdl-button mdl-js-button mdl-js-ripple-effect">{{primaryAction}}</button>
-		<button class="js-secondary-action mdl-button mdl-js-button mdl-js-ripple-effect">{{secondaryAction}}</button>
+	<div class="header__title">
+		{{{title}}}
 	</div>
-</div>
+	<div class="header__content"></div>
+</header>
+<main class="dialog__body"></main>
+{{#if has_footer}}
+	<footer class="dialog__footer">
+		{{#primary_action}}
+			<button tabindex="3" class="js-primary-action footer__button--positive mdl-button mdl-button--accent mdl-js-button mdl-js-ripple-effect">{{label}}</button>
+		{{/primary_action}}
+		{{#secondary_action}}
+			<button tabindex="4" class="js-secondary-action footer__button--negative mdl-button mdl-js-button mdl-js-ripple-effect">{{label}}</button>
+		{{/secondary_action}}
+	</footer>
+{{/if}}

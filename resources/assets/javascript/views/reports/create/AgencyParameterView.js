@@ -1,7 +1,7 @@
 import {LayoutView} from 'backbone.marionette';
 import MiniChooser from 'components/MiniChooser';
 import DatePicker from 'components/DatePicker';
-import PageableAgenciesCollection from 'collections/PageableAgenciesCollection';
+import PageableGroupsCollection from 'collections/PageableGroupsCollection';
 import SearchesCollection from 'views/mixins/SearchesCollection';
 import {mixin} from 'helpers';
 import mdl from 'mdl';
@@ -20,11 +20,11 @@ const AgencyParameterView = LayoutView.extend({
         endDate: '.js-date-end',
     },
     onBeforeShow() {
-        this.collection = new PageableAgenciesCollection();
+        this.collection = new PageableGroupsCollection();
         this.chooser = new MiniChooser({
             isFixedHeight: true,
             isScrollable: true,
-            itemIcon: 'business_center',
+            itemIcon: 'group',
             collection: this.collection,
         });
         this.showChildView('agencyChooser', this.chooser);

@@ -2,7 +2,9 @@ import {LayoutView} from 'backbone.marionette';
 import CollectionCard from 'components/collection-card/CollectionCard';
 import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
+import Dialog from 'components/Dialog';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
+import EditGroupView from 'views/employees/groups/EditGroupView';
 import ManageGroupView from 'views/employees/groups/ManageGroupView';
 import {mixin} from 'helpers';
 import template from 'templates/employees/groups/list.tpl';
@@ -16,6 +18,7 @@ const GroupItemView = LayoutView.extend({
     menuOptions: {
         items: [
             {key: 'edit', label: 'Edit'},
+            {key: 'manage', label: 'Manage'},
         ],
     },
 
@@ -25,12 +28,19 @@ const GroupItemView = LayoutView.extend({
 
     onEditSelected() {
         let sheet = new ActionSheet({
-            view: new ManageGroupView({
+            view: new EditGroupView({
                 collection: this.model.collection,
                 model: this.model,
             })
         });
         sheet.open();
+    },
+
+    onManageSelected() {
+        this.dialog = new Dialog({
+            view: new ManageGroupView({model: this.model}),
+        });
+        this.dialog.open();
     },
 });
 
@@ -59,7 +69,7 @@ const GroupsListView = LayoutView.extend({
 
     showAddGroupActionSheet() {
         let sheet = new ActionSheet({
-            view: new ManageGroupView({collection: this.collection})
+            view: new EditGroupView({collection: this.collection})
         });
         sheet.open();
     }

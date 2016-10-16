@@ -1,0 +1,76 @@
+@import 'base/variables';
+@import 'material-design-lite/src/mixins';
+
+@keyframes animate-confirm-in {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes animate-confirm-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
+
+.confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+
+  .confirm__wrapper {
+    @include shadow-8dp();
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+  }
+
+  .confirm__content {
+    padding: 24px;
+
+    .confirm__title {
+      color: $color-text-gray;
+      font-weight: 500;
+      font-size: 20px;
+      margin: 0 0 20px 0;
+    }
+    .confirm__body {
+      color: $color-text-gray-light;
+      font-size: 15px;
+      font-weight: 400;
+      margin: 0;
+
+      .confirm__body-subtext {
+        font-size: 12px;
+        display: block;
+        margin-top: 8px;
+      }
+    }
+  }
+
+  .confirm__actions {
+    padding: 8px;
+    display: flex;
+    flex-flow: row-reverse;
+  }
+
+  &.confirm--visible {
+    animation: animate-confirm-in 0.3s;
+  }
+  &.confirm--hiding {
+    animation: animate-confirm-out 0.2s;
+  }
+}

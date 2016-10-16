@@ -46,9 +46,12 @@ class EmployeeController extends BaseController
             $query->withTrashed();
         }
 
-        $paginate = $query->paginate($request->get('per_page', 10));
-
-        return $this->respondWithPaginator($paginate);
+        if ($request->get('per_page')) {
+            $paginate = $query->paginate($request->get('per_page', 10));
+            return $this->respondWithPaginator($paginate);
+        }
+    
+        return $this->respondWithCollection($query->get());
     }
 
     /**

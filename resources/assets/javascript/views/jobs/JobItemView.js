@@ -1,6 +1,6 @@
 import {LayoutView} from 'backbone.marionette';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
-import Dialog from 'components/Dialog';
+import Confirm from 'components/Confirm';;
 import ActionSheet from 'components/ActionSheet';
 import ManageJobView from 'views/jobs/ManageJobView';
 import {mixin} from 'helpers';
@@ -40,7 +40,7 @@ const JobItemView = LayoutView.extend({
     },
 
     onArchiveSelected() {
-        Dialog.open({
+        Confirm.confirm({
             title: 'Archive job?',
             body: "After you archive this job, employees will no longer be able to clock in to it. "
                 + "The job will still be available for all your reports."

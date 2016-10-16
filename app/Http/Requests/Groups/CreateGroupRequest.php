@@ -1,9 +1,9 @@
 <?php
-namespace Hourglass\Http\Requests\Agencies;
+namespace Hourglass\Http\Requests\Groups;
 
 use Hourglass\Http\Requests\Request;
 
-class UpdateAgencyRequest extends Request
+class CreateGroupRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
