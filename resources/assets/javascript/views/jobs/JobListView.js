@@ -34,13 +34,13 @@ const JobListView = LayoutView.extend({
                 icon: 'work',
                 heading: "There's nothing here.",
                 subhead: 'Looks like there are no jobs here. Try adding one!'
-            })
+            }),
         }));
         this.jobs.fetch();
     },
 
     showAddJobActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageJobView({collection: this.jobs})
         });
         sheet.open();
