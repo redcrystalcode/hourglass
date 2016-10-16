@@ -1,3 +1,10 @@
+.reports-page {
+  .container__hero {
+    background: url(/images/backgrounds/reports.jpg) center no-repeat;
+    background-size: cover;
+  }
+}
+
 .report {
   @include shadow-4dp();
   background: white;

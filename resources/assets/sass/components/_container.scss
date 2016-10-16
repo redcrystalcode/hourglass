@@ -47,6 +47,7 @@
   }
 }
 
+
 .container__hero {
   width: 100%;
   height: 300px;
@@ -59,6 +60,9 @@
     height: 100%;
     padding: 112px 24px 40px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &--overlay-dark {
       background: rgba(0, 0, 0, 0.6);
@@ -75,6 +79,17 @@
       font-weight: 300;
       font-size: 48px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      line-height: initial;
     }
+  }
+}
+
+
+.container__hero.container__hero--small {
+  height: 220px;
+
+  .hero__title {
+    font-size: 40px;
+    line-height: initial;
   }
 }
