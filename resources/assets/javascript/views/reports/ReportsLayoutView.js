@@ -10,7 +10,9 @@ const ReportsLayoutView = LayoutView.extend({
     },
 
     onBeforeShow() {
-        this.showChildView('reportsRegion', new ReportListView());
+        this.showChildView('reportsRegion', new ReportListView({
+            collection: this.options.reports,
+        }));
     },
 });
 

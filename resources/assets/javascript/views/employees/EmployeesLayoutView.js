@@ -10,7 +10,9 @@ const EmployeesLayoutView = LayoutView.extend({
     },
 
     onBeforeShow() {
-        this.showChildView('employees', new EmployeeListView());
+        this.showChildView('employees', new EmployeeListView({
+            collection: this.options.employees,
+        }));
     },
 });
 

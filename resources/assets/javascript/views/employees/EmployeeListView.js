@@ -3,7 +3,6 @@ import CollectionCard from 'components/collection-card/CollectionCard';
 import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import EmployeeItemView from 'views/employees/EmployeeItemView';
-import PageableEmployeesCollection from 'collections/PageableEmployeesCollection';
 import ManageEmployeeView from 'views/employees/ManageEmployeeView';
 import template from 'templates/employees/list.tpl';
 
@@ -18,17 +17,9 @@ const EmployeeListView = LayoutView.extend({
         'click .js-add-employee-button': 'showAddEmployeeActionSheet',
     },
 
-    initialize() {
-        this.employees = new PageableEmployeesCollection([], {
-            queryParams: {
-                include_deleted: true,
-            }
-        });
-    },
-
     onBeforeShow() {
         this.showChildView('employees', new CollectionCard({
-            collection: this.employees,
+            collection: this.collection,
             childView: EmployeeItemView,
             emptyView: EmptyView.extend({
                 icon: 'work',
@@ -36,12 +27,11 @@ const EmployeeListView = LayoutView.extend({
                 subhead: 'Looks like there are no employees here. Try adding one!'
             })
         }));
-        this.employees.fetch();
     },
 
     showAddEmployeeActionSheet() {
         var sheet = new ActionSheet({
-            view: new ManageEmployeeView({collection: this.employees})
+            view: new ManageEmployeeView({collection: this.collection})
         });
         sheet.open();
     }
