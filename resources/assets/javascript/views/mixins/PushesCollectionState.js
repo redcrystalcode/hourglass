@@ -7,7 +7,7 @@ const PushesCollectionState = {
         'pageable:state:change': '_pushCollectionState',
     },
 
-    _pushCollectionState: function() {
+    _pushCollectionState() {
         let route = history.getFragment().replace(history.getSearch(), '');
         let page = this.collection.getCurrentPage();
         let sort = this.collection.getSortState();
