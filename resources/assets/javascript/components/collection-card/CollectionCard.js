@@ -10,7 +10,13 @@ import template from 'templates/components/collection-card/card.tpl';
 const CollectionCard = LayoutView.extend({
     template,
 
-    className: 'collection-card',
+    className() {
+        let classes = ['collection-card'];
+        if (_.get(this.options, 'slim', false)) {
+            classes.push('collection-card--slim');
+        }
+        return classes.join(' ');
+    },
 
     regions: {
         list: '.collection-card__content',
@@ -40,6 +46,7 @@ const CollectionCard = LayoutView.extend({
     templateHelpers() {
         return {
             pageable: _.get(this.options, 'pageable', true),
+            slim: _.get(this.options, 'slim', false),
         };
     },
 
@@ -49,18 +56,22 @@ const CollectionCard = LayoutView.extend({
             childView: this.options.childView,
             childViewOptions: this.options.childViewOptions,
             emptyView: this.options.emptyView,
+            pageable: _.get(this.options, 'pageable', true),
+            slim: _.get(this.options, 'slim', false),
         }));
         if (_.get(this.options, 'pageable', true)) {
             this.showChildView('footer', new CollectionCardFooter({
                 collection: this.collection
             }));
         }
-        this.showChildView('header', new CollectionCardHeader({
-            collection: this.collection,
-            title: this.options.title,
-            actions: _.get(this.options, 'actions', ['sort']),
-            searchable: _.get(this.options, 'searchable', true)
-        }));
+        if (_.get(this.options, 'showHeader', true)) {
+            this.showChildView('header', new CollectionCardHeader({
+                collection: this.collection,
+                title: this.options.title,
+                actions: _.get(this.options, 'actions', ['sort']),
+                searchable: _.get(this.options, 'searchable', true)
+            }));
+        }
     },
 
     handlePaging() {

@@ -5,6 +5,10 @@
   white-space: nowrap;
   font-size: $data-table-font-size;
 
+  &.table--full-width {
+    width: 100%;
+  }
+
   thead th, tfoot th {
     height: 56px;
     padding-top: 12px;
@@ -87,6 +91,25 @@
     text-align: center;
     color: $color-text-gray-lighter;
     font-weight: 400;
+  }
+
+  td.table__cell--edit {
+    overflow: visible;
+    .mdl-button {
+      i.material-icons {
+        font-size: 16px;
+        color: $color-text-gray-light;
+        &:hover {
+          color: $color-brand-accent;
+        }
+      }
+    }
+  }
+
+  .table__empty {
+    text-align: center;
+    padding: 50px;
+    background: #f8f8f8;
   }
 
 }
