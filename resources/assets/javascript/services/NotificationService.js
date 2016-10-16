@@ -42,7 +42,7 @@ const NotificationService = Service.extend({
     }
 });
 
-var instance = new NotificationService();
+let instance = new NotificationService();
 window.notifications = instance;
 window.moment = moment;
 export default instance;

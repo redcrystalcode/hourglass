@@ -15,7 +15,7 @@ const AccountDetailsView = LayoutView.extend({
     },
 
     showEditDetailsActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new EditAccountDetailsView({model: this.model})
         });
         sheet.open();

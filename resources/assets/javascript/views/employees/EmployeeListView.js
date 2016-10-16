@@ -30,7 +30,7 @@ const EmployeeListView = LayoutView.extend({
     },
 
     showAddEmployeeActionSheet() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageEmployeeView({collection: this.collection})
         });
         sheet.open();

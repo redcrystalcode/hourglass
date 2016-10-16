@@ -82,7 +82,7 @@ const RegisterTimecardPromptView = LayoutView.extend({
     },
 
     onSubmit() {
-        var existingTimecard = this.timecards.findWhere({terminal_key: this.ui.timecard.val()});
+        let existingTimecard = this.timecards.findWhere({terminal_key: this.ui.timecard.val()});
 
         if (existingTimecard && existingTimecard.get('id') !== this.selectedEmployee.get('id')) {
             Dialog.open({
@@ -118,7 +118,7 @@ const RegisterTimecardPromptView = LayoutView.extend({
     },
 
     handleSearchInput() {
-        var val = this.ui.search.val();
+        let val = this.ui.search.val();
 
         if (val.length < 1) {
             this.clearSearch();

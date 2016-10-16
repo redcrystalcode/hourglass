@@ -32,7 +32,7 @@ const Menu = CompositeView.extend({
     },
 
     templateHelpers() {
-        var view = this;
+        let view = this;
         return {
             icon: view.icon,
             buttonId: view.buttonId,

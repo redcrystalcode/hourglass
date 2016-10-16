@@ -15,7 +15,7 @@ const EmployeeItemView = LayoutView.extend({
     },
 
     menuOptions() {
-        var items = [];
+        let items = [];
         if (this.model.get('archived')) {
             items = [
                 // {key: 'restore', label: 'Restore'}
@@ -30,7 +30,7 @@ const EmployeeItemView = LayoutView.extend({
     },
 
     onEditSelected() {
-        var sheet = new ActionSheet({
+        let sheet = new ActionSheet({
             view: new ManageEmployeeView({
                 collection: this.model.collection,
                 model: this.model

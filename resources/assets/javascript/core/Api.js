@@ -58,7 +58,7 @@ class Api {
             'Accept': 'application/json',
             'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN'),
         };
-        var xhr = $.ajax(url, {
+        let xhr = $.ajax(url, {
             method,
             data,
             headers,

@@ -12,7 +12,7 @@ const NotificationItemView = ItemView.extend({
         dismiss: 'dismiss'
     },
     templateHelpers() {
-        var timestamp = this.model.get('timestamp');
+        let timestamp = this.model.get('timestamp');
         return {
             timestamp: moment(timestamp).format('h:mm a')
         };
@@ -39,7 +39,7 @@ const NotificationsView = CollectionView.extend({
         });
     },
     showNotification(notification) {
-        var model = new Model(notification);
+        let model = new Model(notification);
         if (!model.get('timestamp')) {
             model.set('timestamp', moment().unix());
         }

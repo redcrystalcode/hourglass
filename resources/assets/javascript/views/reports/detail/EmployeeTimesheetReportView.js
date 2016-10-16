@@ -11,7 +11,7 @@ const TableRowView = ItemView.extend({
     tagName: 'tr',
     template: item,
     templateHelpers() {
-        var model = this.model;
+        let model = this.model;
         return {
             date: moment.utc(model.get('time_in')).local().format('ddd, MMM D, Y'),
             time_in: time(model.get('time_in')),
@@ -19,7 +19,7 @@ const TableRowView = ItemView.extend({
             original_time_in: time(model.get('original_time_in')),
             original_time_out: time(model.get('original_time_out')),
             job() {
-                var job = model.get('job');
+                let job = model.get('job');
                 return `#${job.number} - ${job.name}`;
             },
             total_time() {

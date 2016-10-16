@@ -18,7 +18,7 @@ const ActionSheet = LayoutView.extend({
         'click .js-secondary-action': 'handleSecondaryAction',
     },
     templateHelpers() {
-        var self = this;
+        let self = this;
         return {
             title: self.title,
             primary_action: self.primaryAction,
@@ -91,7 +91,7 @@ const ActionSheet = LayoutView.extend({
         if (!action) {
             return;
         }
-        var view = this.view;
+        let view = this.view;
 
         if (action === 'close') {
             this.close();

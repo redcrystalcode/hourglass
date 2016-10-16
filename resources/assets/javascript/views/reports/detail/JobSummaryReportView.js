@@ -12,7 +12,7 @@ const JobSummaryReportView = CompositeView.extend({
     },
     childViewContainer: '.reports-container',
     templateHelpers() {
-        var model = this.model;
+        let model = this.model;
         return {
             dates() {
                 let start = model.get('start');

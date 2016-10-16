@@ -4,9 +4,9 @@ import _ from 'lodash';
 const SortButton = SelectButton.extend({
 
     initialize(options) {
-        var collection = options.collection;
-        var rules = collection.sortRules;
-        var items = [];
+        let collection = options.collection;
+        let rules = collection.sortRules;
+        let items = [];
 
         this.sortableCollection = collection;
 
@@ -17,7 +17,7 @@ const SortButton = SelectButton.extend({
             });
         });
 
-        var defaultSelection = _.findIndex(items, function(item) {
+        let defaultSelection = _.findIndex(items, function(item) {
             return item.key === collection.defaultSort;
         });
 
@@ -31,12 +31,12 @@ const SortButton = SelectButton.extend({
     },
 
     onSelected() {
-        var rules = this.getSortRules(this.model.toJSON());
+        let rules = this.getSortRules(this.model.toJSON());
         this.updateSort(rules);
     },
 
     onReset() {
-        var rules = this.getSortRules(this.model.toJSON());
+        let rules = this.getSortRules(this.model.toJSON());
         this.updateSort(rules);
     },
 

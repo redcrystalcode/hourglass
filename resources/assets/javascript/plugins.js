@@ -24,7 +24,7 @@ if (window.__agent) {
 // Allow returning functions and JSONable objects in template helpers.
 Marionette.View.prototype.mixinTemplateHelpers = function(target) {
     target = target || {};
-    var templateHelpers = this.getOption('templateHelpers');
+    let templateHelpers = this.getOption('templateHelpers');
     templateHelpers = Marionette._getValue(templateHelpers, this);
 
     _.each(templateHelpers, function(helper, index) {
@@ -43,7 +43,7 @@ Marionette.View.prototype.mixinTemplateHelpers = function(target) {
 // Proxy Backbone.ajax to our API class.
 Backbone.ajax = function(params) {
     return new Promise((resolve, reject) => {
-        var data = _.isString(params.data) ? JSON.parse(params.data) : params.data;
+        let data = _.isString(params.data) ? JSON.parse(params.data) : params.data;
         api.call(params.type, api.url(params.url, {}), data)
             .then((response) => {
                 if (params.success) {
@@ -61,8 +61,8 @@ Backbone.ajax = function(params) {
 };
 
 Handlebars.registerHelper('compare', function(lvalue, operator, rvalue, options) {
-    var operators;
-    var result;
+    let operators;
+    let result;
 
     if (arguments.length < 3) {
         throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
