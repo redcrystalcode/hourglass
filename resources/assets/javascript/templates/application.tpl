@@ -2,7 +2,12 @@
 	<div class="app__main-container">
 		<div class="app__header-region"></div>
 		<div class="app__notifications-region"></div>
-		<div class="app__content-region"></div>
+		<div class="app__content-region">
+			{{! Default loading template }}
+			<div class="container container--default app__loader">
+				{{> loading }}
+			</div>
+		</div>
 		<div class="app__footer-region"></div>
 	</div>
 	<aside class="app__sidebar-container">

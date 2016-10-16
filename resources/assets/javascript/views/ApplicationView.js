@@ -26,7 +26,6 @@ const ApplicationView = LayoutView.extend({
     },
 
     onRender() {
-        this.showChildView('content', new LoadingView());
         this.showChildView('footer', new FooterView());
         this.showChildView('notifications', new NotificationsView());
         this.showChildView('sidebar', new OnTheClockSidebarView());
