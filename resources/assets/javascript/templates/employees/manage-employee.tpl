@@ -10,7 +10,7 @@
 		<label class="mdl-textfield__label" for="position">Position</label>
 	</div>
 	<div class="mdl-textfield mdl-textfield--floating-label mdl-textfield--full-width mdl-js-textfield">
-		<input class="mdl-textfield__input" type="text" id="terminal-key" name="terminal_key" value="{{terminal_key}}" tabindex="12" autocomplete="off">
+		<input class="mdl-textfield__input" type="password" id="terminal-key" name="terminal_key" value="{{terminal_key}}" tabindex="12" autocomplete="off">
 		<label class="mdl-textfield__label" for="terminal_key">Swipe a Timecard (Optional)</label>
 		<div class="mdl-textfield__tooltip">
 			<i class="material-icons" id="terminal-key-tt">info_outline</i>
