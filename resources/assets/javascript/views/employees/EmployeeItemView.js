@@ -29,6 +29,12 @@ const EmployeeItemView = LayoutView.extend({
         return {items};
     },
 
+    templateHelpers() {
+        return {
+            terminal_key: this.model.getCleanTerminalKey(),
+        };
+    },
+
     onEditSelected() {
         let sheet = new ActionSheet({
             view: new ManageEmployeeView({
