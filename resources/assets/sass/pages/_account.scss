@@ -10,23 +10,7 @@
   .rounding-rules {
     position: relative;
 
-    .rounding-rules__add {
-      @include shadow-4dp();
-      position: absolute;
-      top: (56px/2);
-      right: (56px/2) + 36;
-      z-index: 2;
-    }
-
     .rounding-rules__table {
-      width: 100%;
-
-      .rounding-rules__empty {
-        text-align: center;
-        padding: 50px;
-        background: #f8f8f8;
-      }
-
       th.rounding-rules__rule-column,
       th.rounding-rules__criteria-column,
       th.rounding-rules__result-column {
@@ -51,19 +35,6 @@
           width: 30px;
           text-align: center;
           display: inline-block;
-        }
-      }
-
-      td.rounding-rules__edit-column {
-        overflow: visible;
-        .mdl-button {
-          i.material-icons {
-            font-size: 16px;
-            color: $color-text-gray-lighter;
-            &:hover {
-              color: $color-brand-accent;
-            }
-          }
         }
       }
     }

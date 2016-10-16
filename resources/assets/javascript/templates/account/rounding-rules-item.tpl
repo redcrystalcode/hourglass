@@ -9,6 +9,6 @@
 <td class="rounding-rules__result-column table__cell table__cell--non-numeric">
 	{{resolution}}
 </td>
-<td class="menu-container rounding-rules__edit-column table__cell">
+<td class="menu-container rounding-rules__edit-column table__cell table__cell--edit">
 
 </td>

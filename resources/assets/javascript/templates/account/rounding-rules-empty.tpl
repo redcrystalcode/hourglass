@@ -1,4 +1,4 @@
-<td colspan="4" class="rounding-rules__empty content__empty">
+<td colspan="4" class="table__empty content__empty">
 	<div class="empty__icon"><i class="material-icons">timer</i></div>
 	<div class="empty__text">
 		<h4 class="empty__heading">You don't have any rounding rules set up yet.</h4>
