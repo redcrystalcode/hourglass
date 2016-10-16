@@ -1,12 +1,25 @@
 import BaseRoute from 'routing/routes/BaseRoute';
 import JobsLayoutView from 'views/jobs/JobsLayoutView';
+import ApplicationService from 'services/ApplicationService';
+import PageableJobsCollection from 'collections/PageableJobsCollection';
 
 /**
  * @docs https://github.com/thejameskyle/backbone-routing
  */
 const IndexRoute = BaseRoute.extend({
+    fetch() {
+        this.jobs = new PageableJobsCollection([], {
+            queryParams: {
+                include_deleted: true,
+            }
+        });
+        return this.jobs.fetch();
+    },
     render() {
-        this.container.show(new JobsLayoutView());
+        ApplicationService.request('sidebar:hide');
+        this.container.show(new JobsLayoutView({
+            jobs: this.jobs,
+        }));
     }
 });
 

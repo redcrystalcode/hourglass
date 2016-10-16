@@ -10,7 +10,9 @@ const JobsLayoutView = LayoutView.extend({
     },
 
     onBeforeShow() {
-        this.showChildView('jobs', new JobListView());
+        this.showChildView('jobs', new JobListView({
+            collection: this.options.jobs,
+        }));
     },
 });
 

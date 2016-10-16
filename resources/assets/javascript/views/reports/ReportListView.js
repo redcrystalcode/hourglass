@@ -1,10 +1,8 @@
-import {Collection} from 'backbone';
 import {LayoutView} from 'backbone.marionette';
 import CollectionCard from 'components/collection-card/CollectionCard';
 import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import ReportItemView from 'views/reports/ReportItemView';
-import PageableReportsCollection from 'collections/PageableReportsCollection';
 import CreateReportView from 'views/reports/create/CreateReportView';
 import template from 'templates/reports/list.tpl';
 
@@ -19,13 +17,9 @@ const JobListView = LayoutView.extend({
         'click .js-new-report-button': 'showCreateReportActionSheet',
     },
 
-    initialize() {
-        this.reports = new PageableReportsCollection();
-    },
-
     onBeforeShow() {
         this.showChildView('reports', new CollectionCard({
-            collection: this.reports,
+            collection: this.collection,
             childView: ReportItemView,
             emptyView: EmptyView.extend({
                 icon: 'assessment',
@@ -34,7 +28,6 @@ const JobListView = LayoutView.extend({
                     + 'Reports you create will show up here!'
             })
         }));
-        this.reports.fetch();
     },
 
     showCreateReportActionSheet() {

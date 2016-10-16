@@ -3,7 +3,6 @@ import CollectionCard from 'components/collection-card/CollectionCard';
 import EmptyView from 'components/EmptyView';
 import ActionSheet from 'components/ActionSheet';
 import JobItemView from 'views/jobs/JobItemView';
-import PageableJobsCollection from 'collections/PageableJobsCollection';
 import ManageJobView from 'views/jobs/ManageJobView';
 import template from 'templates/jobs/list.tpl';
 
@@ -18,17 +17,9 @@ const JobListView = LayoutView.extend({
         'click .js-add-job-button': 'showAddJobActionSheet',
     },
 
-    initialize() {
-        this.jobs = new PageableJobsCollection([], {
-            queryParams: {
-                include_deleted: true,
-            }
-        });
-    },
-
     onBeforeShow() {
         this.showChildView('jobs', new CollectionCard({
-            collection: this.jobs,
+            collection: this.collection,
             childView: JobItemView,
             emptyView: EmptyView.extend({
                 icon: 'work',
@@ -36,12 +27,11 @@ const JobListView = LayoutView.extend({
                 subhead: 'Looks like there are no jobs here. Try adding one!'
             }),
         }));
-        this.jobs.fetch();
     },
 
     showAddJobActionSheet() {
         let sheet = new ActionSheet({
-            view: new ManageJobView({collection: this.jobs})
+            view: new ManageJobView({collection: this.collection})
         });
         sheet.open();
     }

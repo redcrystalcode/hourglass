@@ -1,6 +1,5 @@
 import BaseRouter from 'routing/BaseRouter';
 import HeaderService from 'services/HeaderService';
-import ApplicationService from 'services/ApplicationService';
 import IndexRoute from 'routing/routes/reports/IndexRoute';
 import ShowRoute from 'routing/routes/reports/ShowRoute';
 
@@ -21,7 +20,6 @@ const ReportsRouter = BaseRouter.extend({
 
     reports() {
         HeaderService.request('activate', 'reports');
-        ApplicationService.request('sidebar:hide');
         return new IndexRoute({
             container: this.container
         });
@@ -29,7 +27,6 @@ const ReportsRouter = BaseRouter.extend({
 
     showReport(id) {
         HeaderService.request('activate', 'reports.detail');
-        ApplicationService.request('sidebar:hide');
         return new ShowRoute({
             container: this.container,
             reportId: id,
