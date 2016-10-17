@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import _ from 'lodash';
 import Cookies from 'js-cookie';
 import {sprintf} from 'sprintf-js';
 import Radio from 'backbone.radio';
@@ -23,6 +24,10 @@ class Api {
     }
 
     url(endpoint, params = null) {
+        if (!_.isArray(params)) {
+            params = [params];
+        }
+
         let url = params ? sprintf(endpoint, ...params) : endpoint;
 
         // Remove leading slash from the URL
