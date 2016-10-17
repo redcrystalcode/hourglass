@@ -3,9 +3,11 @@
 namespace Hourglass\Http\Controllers\Auth;
 
 use Hourglass\Http\Controllers\Controller;
+use Hourglass\Models\Account;
 use Hourglass\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use RedCrystal\ValidationRules\UniqueValidationRule;
 use Validator;
 
 class AuthController extends Controller
@@ -53,9 +55,12 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'account' => ['required', (new UniqueValidationRule('accounts', 'name'))->toString()],
+            'timezone' => ['required', 'timezone'],
+            'name' => ['required', 'max:255'],
+            'username' => ['required', 'max:255', (new UniqueValidationRule('users', 'username'))->toString()],
+            'email' => ['required', 'email', 'max:255', (new UniqueValidationRule('users', 'email'))->toString()],
+            'password' => ['required', 'min:6', 'confirmed'],
         ]);
     }
 
@@ -68,10 +73,21 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $account = Account::create([
+            'name' => $data['account'],
+            'timezone' => $data['timezone'],
+        ]);
+        
+        $user = new User([
             'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role' => 'admin'
         ]);
+        
+        $account->users()->save($user);
+        
+        return $user;
     }
 }
