@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Account extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'timezone'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Query\Builder

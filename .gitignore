@@ -9,5 +9,6 @@ Homestead.json
 .phpstorm.meta.php
 _ide_helper.php
 /resources/assets/vendor-sass
-/public/css
-/public/js
+/public/css/main.css
+/public/js/main.js
+/public/js/main.js.map
