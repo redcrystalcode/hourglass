@@ -11,3 +11,4 @@ _ide_helper.php
 /resources/assets/vendor-sass
 /public/css
 /public/js
+.DS_Store
