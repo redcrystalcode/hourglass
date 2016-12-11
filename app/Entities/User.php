@@ -159,7 +159,7 @@ class User
      */
     public function setPassword(string $password) : User
     {
-        $this->password = $password;
+        $this->password = bcrypt($password);
         return $this;
     }
 

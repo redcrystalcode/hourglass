@@ -99,7 +99,7 @@ return [
     */
     'extensions' => [
         //LaravelDoctrine\ORM\Extensions\TablePrefix\TablePrefixExtension::class,
-        //LaravelDoctrine\Extensions\Timestamps\TimestampableExtension::class,
+        LaravelDoctrine\Extensions\Timestamps\TimestampableExtension::class,
         //LaravelDoctrine\Extensions\SoftDeletes\SoftDeleteableExtension::class,
         //LaravelDoctrine\Extensions\Sluggable\SluggableExtension::class,
         //LaravelDoctrine\Extensions\Sortable\SortableExtension::class,
@@ -181,7 +181,7 @@ return [
     |
     */
     'gedmo' => [
-        'all_mappings' => true,
+        'all_mappings' => false,
     ],
     /*
      |--------------------------------------------------------------------------
