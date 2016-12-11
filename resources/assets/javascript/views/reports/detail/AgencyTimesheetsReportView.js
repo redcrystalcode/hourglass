@@ -48,7 +48,10 @@ const AgencyTimesheetsReportCollectionView = LayoutView.extend({
         };
     },
     initialize: function() {
-        this.collection = new Collection(this.model.get('employees'));
+        this.collection = new Collection(this.model.get('employees'), {
+            comparator: (a) => a.get('employee').name.toLowerCase(),
+        });
+        this.collection.sort();
     },
     onBeforeShow() {
         this.showChildView('summary', new EmployeeSummaryCollectionView({
