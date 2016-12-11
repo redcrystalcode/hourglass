@@ -28,16 +28,17 @@ return [
     'managers' => [
         'default' => [
             'dev' => env('APP_DEBUG'),
-            'meta' => 'xml',
+            'meta' => 'fluent',
+            'mappings' => [
+                Hourglass\Database\Mappings\UserMapping::class,
+                Hourglass\Database\Mappings\AccountMapping::class,
+            ],
             'connection' => env('DB_CONNECTION', 'mysql'),
             'namespaces' => [
                 'Hourglass',
             ],
             'paths' => [
-                // Entities live here:
                 base_path('app/Entities'),
-                // Mappings for entities live here.
-                database_path('mappings/xml'),
             ],
             'repository' => Doctrine\ORM\EntityRepository::class,
             'proxies' => [

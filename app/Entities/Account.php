@@ -2,12 +2,14 @@
 declare(strict_types = 1);
 namespace Hourglass\Entities;
 
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Hourglass\Entities\Behaviors\HasImmutableTimestamps;
 
 class Account
 {
+    use HasImmutableTimestamps;
+
     /** @var int */
     private $id;
 
@@ -19,12 +21,6 @@ class Account
 
     /** @var \Doctrine\Common\Collections\Collection */
     private $users;
-
-    /** @var \DateTimeInterface */
-    private $createdAt;
-
-    /** @var \DateTimeInterface */
-    private $updatedAt;
 
     /**
      * Account constructor.
@@ -91,21 +87,5 @@ class Account
     public function getUsers() : Collection
     {
         return $this->users;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getCreatedAt() : DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getUpdatedAt() : DateTimeInterface
-    {
-        return $this->updatedAt;
     }
 }

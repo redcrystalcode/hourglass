@@ -5,9 +5,12 @@ namespace Hourglass\Entities;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Hourglass\Entities\Behaviors\HasImmutableTimestamps;
 
 class User
 {
+    use HasImmutableTimestamps;
+
     /** @var int */
     private $id;
 
@@ -34,12 +37,6 @@ class User
 
     /** @var string */
     private $rememberToken;
-
-    /** @var \DateTimeImmutable */
-    private $createdAt;
-
-    /** @var \DateTimeImmutable */
-    private $updatedAt;
 
     /**
      * @return int
@@ -199,21 +196,5 @@ class User
     {
         $this->rememberToken = $rememberToken;
         return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getCreatedAt() : DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getUpdatedAt() : DateTimeInterface
-    {
-        return $this->updatedAt;
     }
 }
