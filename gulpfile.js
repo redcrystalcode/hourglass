@@ -10,6 +10,8 @@ var now = require('performance-now');
 var _ = require('lodash');
 var browserSync = require('browser-sync').create();
 var reload = browserSync.reload;
+var fs = require('fs');
+
 
 var paths = {
     sass: {
@@ -136,8 +138,12 @@ gulp.task('watch', function() {
     gulp.start(['js:watch', 'sass:watch']);
 });
 
+gulp.task('attributes', function() {
+    fs.writeFileSync('.buildattributes', Date.now());
+});
+
 // Build command to build dependencies for production
-gulp.task('build', ['sass', 'js']);
+gulp.task('build', ['sass', 'js', 'attributes']);
 
 // Default to watching assets
 gulp.task('default', ['watch']);
