@@ -1,5 +1,10 @@
 <?php
 
+use VasekPurchart\Doctrine\Type\DateTimeImmutable\DateImmutableType;
+use VasekPurchart\Doctrine\Type\DateTimeImmutable\DateTimeImmutableType;
+use VasekPurchart\Doctrine\Type\DateTimeImmutable\DateTimeTzImmutableType;
+use VasekPurchart\Doctrine\Type\DateTimeImmutable\TimeImmutableType;
+
 return [
 
     /*
@@ -26,7 +31,7 @@ return [
             'meta' => 'xml',
             'connection' => env('DB_CONNECTION', 'mysql'),
             'namespaces' => [
-                'Hourglass'
+                'Hourglass',
             ],
             'paths' => [
                 // Entities live here:
@@ -38,7 +43,7 @@ return [
             'proxies' => [
                 'namespace' => false,
                 'path' => storage_path('proxies'),
-                'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', false)
+                'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', false),
             ],
             /*
             |--------------------------------------------------------------------------
@@ -51,7 +56,7 @@ return [
             */
             'events' => [
                 'listeners' => [],
-                'subscribers' => []
+                'subscribers' => [],
             ],
             'filters' => [],
             /*
@@ -78,8 +83,8 @@ return [
             */
             'mapping_types' => [
                 //'enum' => 'string'
-            ]
-        ]
+            ],
+        ],
     ],
     /*
     |--------------------------------------------------------------------------
@@ -112,7 +117,11 @@ return [
     |--------------------------------------------------------------------------
     */
     'custom_types' => [
-        'json' => LaravelDoctrine\ORM\Types\Json::class
+        'json' => LaravelDoctrine\ORM\Types\Json::class,
+        DateImmutableType::NAME => DateImmutableType::class,
+        DateTimeImmutableType::NAME => DateTimeImmutableType::class,
+        DateTimeTzImmutableType::NAME => DateTimeTzImmutableType::class,
+        TimeImmutableType::NAME => TimeImmutableType::class
     ],
     /*
     |--------------------------------------------------------------------------
@@ -172,7 +181,7 @@ return [
     |
     */
     'gedmo' => [
-        'all_mappings' => false
+        'all_mappings' => true,
     ],
     /*
      |--------------------------------------------------------------------------
@@ -193,6 +202,6 @@ return [
      |
      */
     'notifications' => [
-        'channel' => 'database'
-    ]
+        'channel' => 'database',
+    ],
 ];
