@@ -12,7 +12,8 @@
         "league/csv": "^8.0",
         "jenssegers/rollbar": "^1.5",
         "ramsey/uuid": "^3.4",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "laravel-doctrine/orm": "1.2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
