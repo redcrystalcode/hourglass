@@ -3,7 +3,7 @@
 namespace Hourglass\Http\Controllers\Api;
 
 use Hourglass\Http\Controllers\Controller;
-use Hourglass\Http\Requests;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Hourglass\Transformers\Transformer;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -11,6 +11,7 @@ use League\Fractal\Manager as FractalManager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item as FractalItem;
+use Hourglass\Models\User as EloquentUser;
 
 class BaseController extends Controller
 {
@@ -48,7 +49,7 @@ class BaseController extends Controller
     public function __construct(Guard $guard, FractalManager $fractal)
     {
         $this->guard = $guard;
-        $this->user = $this->guard->user();
+        $this->user = $this->resolveUser($this->guard->user());
         $this->account = $this->user->account;
         $this->fractal = $fractal;
     }
@@ -118,5 +119,15 @@ class BaseController extends Controller
     {
         $response = response()->json($array, 200, $headers);
         return $response;
+    }
+
+    /**
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     *
+     * @return \Hourglass\Models\User
+     */
+    protected function resolveUser(Authenticatable $user) : EloquentUser
+    {
+        return EloquentUser::find($user->getAuthIdentifier());
     }
 }
