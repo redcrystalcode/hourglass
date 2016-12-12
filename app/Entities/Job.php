@@ -2,6 +2,8 @@
 declare(strict_types = 1);
 namespace Hourglass\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Hourglass\Entities\Behaviors\BelongsToAccount;
 use Hourglass\Entities\Behaviors\ImmutableTimestamps;
 use Hourglass\Entities\Behaviors\SoftDeletes;
@@ -30,6 +32,37 @@ class Job
 
     /** @var array */
     private $productivity;
+
+    /** @var \Doctrine\Common\Collections\Collection */
+    private $shifts;
+
+    /**
+     * Job constructor.
+     *
+     * @param string $name
+     * @param string $number
+     * @param string $description
+     * @param string $customer
+     * @param \Hourglass\Entities\Location $location
+     * @param array $productivity
+     */
+    public function __construct(
+        string $name,
+        string $number,
+        string $description,
+        string $customer,
+        Location $location,
+        array $productivity = []
+    ) {
+        $this->name = $name;
+        $this->number = $number;
+        $this->description = $description;
+        $this->customer = $customer;
+        $this->location = $location;
+        $this->productivity = $productivity;
+        $this->shifts = new ArrayCollection();
+    }
+
 
     /**
      * @return int
@@ -151,5 +184,13 @@ class Job
     {
         $this->productivity = $productivity;
         return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getShifts() : Collection
+    {
+        return $this->shifts;
     }
 }

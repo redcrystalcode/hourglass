@@ -30,11 +30,17 @@ return [
             'dev' => env('APP_DEBUG'),
             'meta' => 'fluent',
             'mappings' => [
+                Hourglass\Database\Mappings\JobMapping::class,
                 Hourglass\Database\Mappings\UserMapping::class,
+                Hourglass\Database\Mappings\ReportMapping::class,
                 Hourglass\Database\Mappings\AccountMapping::class,
                 Hourglass\Database\Mappings\LocationMapping::class,
                 Hourglass\Database\Mappings\EmployeeMapping::class,
+                Hourglass\Database\Mappings\JobShiftMapping::class,
+                Hourglass\Database\Mappings\RoundingRuleMapping::class,
                 Hourglass\Database\Mappings\EmployeeGroupMapping::class,
+                Hourglass\Database\Mappings\TimesheetEntryMapping::class,
+                Hourglass\Database\Mappings\PausedTimesheetEntryMapping::class,
             ],
             'connection' => env('DB_CONNECTION', 'mysql'),
             'namespaces' => [
@@ -195,7 +201,7 @@ return [
      |  Enables the Doctrine Presence Verifier for Validation
      |
      */
-    'doctrine_presence_verifier' => true,
+    'doctrine_presence_verifier' => false,
 
     /*
      |--------------------------------------------------------------------------

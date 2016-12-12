@@ -12,8 +12,11 @@ class PausedTimesheetEntry
     /** @var int */
     private $id;
 
-    /** @var \Hourglass\Entities\TimesheetEntry */
-    private $entry;
+    /** @var \Hourglass\Entities\Employee */
+    private $employee;
+
+    /** @var \Hourglass\Entities\JobShift */
+    private $shift;
 
     /**
      * @return int
@@ -24,22 +27,40 @@ class PausedTimesheetEntry
     }
 
     /**
-     * @return \Hourglass\Entities\TimesheetEntry
+     * @return \Hourglass\Entities\Employee
      */
-    public function getTimesheetEntry() : TimesheetEntry
+    public function getEmployee() : Employee
     {
-        return $this->entry;
+        return $this->employee;
     }
 
     /**
-     * @param \Hourglass\Entities\TimesheetEntry $entry
+     * @param \Hourglass\Entities\Employee $employee
      *
      * @return \Hourglass\Entities\PausedTimesheetEntry
      */
-    public function setTimesheetEntry(TimesheetEntry $entry) : PausedTimesheetEntry
+    public function setEmployee(Employee $employee) : PausedTimesheetEntry
     {
-        $this->entry = $entry;
+        $this->employee = $employee;
         return $this;
     }
 
+    /**
+     * @return \Hourglass\Entities\JobShift
+     */
+    public function getShift() : JobShift
+    {
+        return $this->shift;
+    }
+
+    /**
+     * @param \Hourglass\Entities\JobShift $shift
+     *
+     * @return \Hourglass\Entities\PausedTimesheetEntry
+     */
+    public function setShift(JobShift $shift) : PausedTimesheetEntry
+    {
+        $this->shift = $shift;
+        return $this;
+    }
 }
