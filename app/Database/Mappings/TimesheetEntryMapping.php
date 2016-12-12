@@ -32,7 +32,7 @@ class TimesheetEntryMapping extends EntityMapping
         $builder->belongsTo(Job::class, 'job');
         $builder->belongsTo(JobShift::class, 'shift')->setJoinColumn('job_shift_id');
         $builder->dateTime('start')->columnName('time_in');
-        $builder->dateTime('end')->columnName('time_out');
+        $builder->dateTime('end')->columnName('time_out')->nullable();
         $builder->timestamps();
     }
 

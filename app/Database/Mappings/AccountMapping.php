@@ -24,7 +24,7 @@ class AccountMapping extends EntityMapping
     {
         $builder->increments('id');
         $builder->string('name');
-        $builder->string('timezone');
+        $builder->string('timezone')->default('America/Los_Angeles');
         $builder->timestamps();
         $builder->hasMany(User::class, 'users')->mappedBy('account');
     }
