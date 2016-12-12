@@ -7,8 +7,9 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Hourglass\Entities\Behaviors\BelongsToAccount;
 use Hourglass\Entities\Behaviors\ImmutableTimestamps;
+use Illuminate\Contracts\Auth\Authenticatable;
 
-class User
+class User implements Authenticatable
 {
     use ImmutableTimestamps, BelongsToAccount;
 
@@ -171,9 +172,58 @@ class User
      *
      * @return \Hourglass\Entities\User
      */
-    public function setRememberToken(string $rememberToken) : User
+    public function setRememberToken($rememberToken)
     {
+        assert_type($rememberToken, 'string');
         $this->rememberToken = $rememberToken;
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAccountId() : int
+    {
+        return $this->account->getId();
+    }
+
+    /**
+     * Get the name of the unique identifier for the user.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    /**
+     * Get the unique identifier for the user.
+     *
+     * @return mixed
+     */
+    public function getAuthIdentifier()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->getPassword();
+    }
+
+    /**
+     * Get the column name for the "remember me" token.
+     *
+     * @return string
+     */
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
     }
 }
