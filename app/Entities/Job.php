@@ -63,7 +63,6 @@ class Job
         $this->shifts = new ArrayCollection();
     }
 
-
     /**
      * @return int
      */

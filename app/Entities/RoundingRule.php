@@ -111,6 +111,4 @@ class RoundingRule
         $this->resolution = DateTimeUtils::toMutable($resolution);
         return $this;
     }
-
-
 }

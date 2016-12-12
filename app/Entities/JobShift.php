@@ -142,5 +142,4 @@ class JobShift
         $this->paused = false;
         return $this;
     }
-
 }

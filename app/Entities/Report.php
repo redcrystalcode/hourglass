@@ -42,7 +42,6 @@ class Report
         $this->parameters = $parameters;
     }
 
-
     /**
      * @return string
      */
@@ -126,5 +125,4 @@ class Report
         $this->parameters = $parameters;
         return $this;
     }
-
 }

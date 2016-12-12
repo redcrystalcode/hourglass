@@ -31,7 +31,6 @@ class EmployeeGroup
         $this->employees = new ArrayCollection();
     }
 
-
     /**
      * @return int
      */

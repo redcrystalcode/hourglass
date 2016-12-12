@@ -15,9 +15,6 @@ class User
     /** @var int */
     private $id;
 
-    /** @var \Hourglass\Entities\Account */
-    private $account;
-
     /** @var string */
     private $name;
 

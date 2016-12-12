@@ -135,7 +135,4 @@ class TimesheetEntry
         $this->end = DateTimeUtils::toMutable($end);
         return $this;
     }
-
-
-
 }
