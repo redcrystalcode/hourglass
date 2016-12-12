@@ -4,11 +4,12 @@ namespace Hourglass\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Hourglass\Entities\Behaviors\BelongsToAccount;
 use Hourglass\Entities\Behaviors\ImmutableTimestamps;
 
-class Account
+class EmployeeGroup
 {
-    use ImmutableTimestamps;
+    use ImmutableTimestamps, BelongsToAccount;
 
     /** @var int */
     private $id;
@@ -16,24 +17,20 @@ class Account
     /** @var string */
     private $name;
 
-    /** @var string */
-    private $timezone;
-
     /** @var \Doctrine\Common\Collections\Collection */
-    private $users;
+    private $employees;
 
     /**
-     * Account constructor.
+     * EmployeeGroup constructor.
      *
      * @param string $name
-     * @param string $timezone
      */
-    public function __construct(string $name, string $timezone)
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->timezone = $timezone;
-        $this->users = new ArrayCollection();
+        $this->employees = new ArrayCollection();
     }
+
 
     /**
      * @return int
@@ -54,38 +51,19 @@ class Account
     /**
      * @param string $name
      *
-     * @return \Hourglass\Entities\Account
+     * @return \Hourglass\Entities\EmployeeGroup
      */
-    public function setName(string $name) : Account
+    public function setName(string $name) : EmployeeGroup
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return string
-     */
-    public function getTimezone() : string
-    {
-        return $this->timezone;
-    }
-
-    /**
-     * @param string $timezone
-     *
-     * @return \Hourglass\Entities\Account
-     */
-    public function setTimezone(string $timezone) : Account
-    {
-        $this->timezone = $timezone;
-        return $this;
-    }
-
-    /**
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers() : Collection
+    public function getEmployees() : Collection
     {
-        return $this->users;
+        return $this->employees;
     }
 }

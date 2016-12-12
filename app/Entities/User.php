@@ -5,11 +5,12 @@ namespace Hourglass\Entities;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Hourglass\Entities\Behaviors\HasImmutableTimestamps;
+use Hourglass\Entities\Behaviors\BelongsToAccount;
+use Hourglass\Entities\Behaviors\ImmutableTimestamps;
 
 class User
 {
-    use HasImmutableTimestamps;
+    use ImmutableTimestamps, BelongsToAccount;
 
     /** @var int */
     private $id;
@@ -47,25 +48,6 @@ class User
     }
 
     /**
-     * @return \Hourglass\Entities\Account
-     */
-    public function getAccount() : Account
-    {
-        return $this->account;
-    }
-
-    /**
-     * @param \Hourglass\Entities\Account $account
-     *
-     * @return User
-     */
-    public function setAccount(Account $account) : User
-    {
-        $this->account = $account;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName() : string
@@ -76,7 +58,7 @@ class User
     /**
      * @param string $name
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setName(string $name) : User
     {
@@ -95,7 +77,7 @@ class User
     /**
      * @param string $role
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setRole(string $role) : User
     {
@@ -114,7 +96,7 @@ class User
     /**
      * @param string $username
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setUsername(string $username) : User
     {
@@ -133,7 +115,7 @@ class User
     /**
      * @param string $email
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setEmail(string $email) : User
     {
@@ -152,7 +134,7 @@ class User
     /**
      * @param string $password
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setPassword(string $password) : User
     {
@@ -171,7 +153,7 @@ class User
     /**
      * @param string $timezone
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setTimezone(string $timezone) : User
     {
@@ -190,7 +172,7 @@ class User
     /**
      * @param string $rememberToken
      *
-     * @return User
+     * @return \Hourglass\Entities\User
      */
     public function setRememberToken(string $rememberToken) : User
     {

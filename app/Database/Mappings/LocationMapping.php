@@ -3,18 +3,18 @@ declare(strict_types = 1);
 namespace Hourglass\Database\Mappings;
 
 use Hourglass\Entities\Account;
-use Hourglass\Entities\User;
+use Hourglass\Entities\Location;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 
-class AccountMapping extends EntityMapping
+class LocationMapping extends EntityMapping
 {
     /**
      * {@inheritdoc}
      */
     public function mapFor()
     {
-        return Account::class;
+        return Location::class;
     }
 
     /**
@@ -23,9 +23,9 @@ class AccountMapping extends EntityMapping
     public function map(Fluent $builder)
     {
         $builder->increments('id');
-        $builder->string('name');
-        $builder->string('timezone');
+        $builder->string('name')->unique();
+        $builder->belongsTo(Account::class, 'account');
         $builder->timestamps();
-        $builder->hasMany(User::class, 'users')->mappedBy('account');
+        $builder->softDelete();
     }
 }
