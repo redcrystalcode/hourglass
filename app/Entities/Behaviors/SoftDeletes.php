@@ -21,6 +21,9 @@ trait SoftDeletes
         return DateTimeImmutable::createFromMutable($this->deletedAt);
     }
 
+    /**
+     * @return bool
+     */
     public function isDeleted() : bool
     {
         return $this->deletedAt === null;
