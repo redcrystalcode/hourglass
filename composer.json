@@ -11,7 +11,13 @@
         "league/fractal": "^0.13.0",
         "league/csv": "^8.0",
         "jenssegers/rollbar": "^1.5",
-        "ramsey/uuid": "^3.4"
+        "ramsey/uuid": "^3.4",
+        "doctrine/orm": "^2.5",
+        "laravel-doctrine/orm": "1.2.*",
+        "laravel-doctrine/extensions": "^1.0",
+        "gedmo/doctrine-extensions": "^2.4",
+        "vasek-purchart/doctrine-date-time-immutable-types": "^0.3.0",
+        "laravel-doctrine/fluent": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
