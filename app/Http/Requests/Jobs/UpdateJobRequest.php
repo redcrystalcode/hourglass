@@ -29,7 +29,7 @@ class UpdateJobRequest extends Request
             'name' => 'required',
             'number' => 'required',
             'customer' => 'required',
-            'location_id' => [
+            'location.id' => [
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
                     ->where('account_id', $accountId)
@@ -57,7 +57,7 @@ class UpdateJobRequest extends Request
     public function messages()
     {
         return [
-            'location_id.required' => [
+            'location.id.required' => [
                 'Please select a location.'
             ],
             'productivity.type.required' => [

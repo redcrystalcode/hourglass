@@ -91,9 +91,9 @@ class JobController extends BaseController
         /** @var Job $job */
         $job = $this->account->jobs()->find($id);
         $job->fill($request->only([
-            'name', 'number', 'customer', 'description',
-            'location_id', 'productivity'
+            'name', 'number', 'customer', 'description', 'productivity'
         ]));
+        $job->location_id = $request->input('location.id');
         $this->account->jobs()->save($job);
 
         return $this->respondWithItem($job);
