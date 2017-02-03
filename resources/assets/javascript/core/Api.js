@@ -10,7 +10,7 @@ class Api {
     }
 
     setApiBase() {
-        let protocol = 'http';
+        let protocol = 'https';
         let domain = this.getDomain();
         this.base = `${protocol}://${domain}/api/`;
     }
