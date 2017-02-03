@@ -57,10 +57,9 @@ class JobController extends BaseController
     public function store(CreateJobRequest $request)
     {
         $job = new Job($request->only([
-            'name', 'number', 'customer', 'description',
-            'location_id', 'productivity'
+            'name', 'number', 'customer', 'description', 'productivity'
         ]));
-
+        $job->location_id = $request->input('location.id');
         $this->account->jobs()->save($job);
 
         return $this->respondWithItem($job);

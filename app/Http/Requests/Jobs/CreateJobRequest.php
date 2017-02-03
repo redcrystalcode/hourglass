@@ -29,7 +29,7 @@ class CreateJobRequest extends Request
             'name' => 'required',
             'number' => 'required',
             'customer' => 'required',
-            'location_id' => [
+            'location.id' => [
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
                     ->where('account_id', $accountId)
