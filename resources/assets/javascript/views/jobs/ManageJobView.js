@@ -56,7 +56,7 @@ const ManageJobView = LayoutView.extend({
         this.listenTo(this.formManager, 'save:success', this.onSaveSuccess);
     },
     onLocationSelected(location) {
-        this.model.set('location_id', location.get('id'));
+        this.model.set('location', location ? location.toJSON() : null);
     },
     onSaveSuccess() {
         this.collection.fetch();
