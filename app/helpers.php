@@ -30,3 +30,14 @@ function carbon($source, $tz = null) : Carbon\Carbon
 
     return new Carbon\Carbon($source, $tz);
 }
+
+/**
+ * @param string $subdomain
+ *
+ * @return string
+ */
+function subdomain(string $subdomain) : string
+{
+    $info = parse_url(config('app.url'));
+    return $subdomain . '.' . $info['host'];
+}

@@ -11,6 +11,13 @@
 |
 */
 
+Route::group(['domain' => 'auth.hourglass.app'], function () {
+    Route::get('/authorize', function () {
+        return 'Hello World';
+    });
+});
+
+
 Route::get('/', function () {
     if (Auth::guest()) {
         return redirect('/login');
