@@ -19,7 +19,7 @@
 		<label class="mdl-textfield__label" for="description">Description</label>
 	</div>
 	<h4 class="action-sheet__form-header">Location</h4>
-	<div class="form-validation-error" data-validation-error-for="location_id"></div>
+	<div class="form-validation-error" data-validation-error-for="location.id"></div>
 	<p>Choose the location this job will primarily be worked in.</p>
 	<div class="location-chooser-region">
 
