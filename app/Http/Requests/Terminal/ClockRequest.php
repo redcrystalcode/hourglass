@@ -28,13 +28,13 @@ class ClockRequest extends Request
             'terminal_key' => [
                 'required',
                 (new ExistsValidationRule('employees', 'terminal_key'))
-                    ->where('account_id', $this->user()->account_id)
+                    ->where('account_id', $this->user()->getAccountId())
                     ->whereNull('deleted_at')
                     ->toString()
             ],
             'job_id' => [
                 (new ExistsValidationRule('jobs', 'id'))
-                    ->where('account_id', $this->user()->account_id)
+                    ->where('account_id', $this->user()->getAccountId())
                     ->whereNull('deleted_at')
                     ->toString()
             ],

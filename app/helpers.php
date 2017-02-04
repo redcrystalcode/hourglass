@@ -30,3 +30,33 @@ function carbon($source, $tz = null) : Carbon\Carbon
 
     return new Carbon\Carbon($source, $tz);
 }
+
+/**
+ * Assert that a given value is of a specified type.
+ * This function is for use in situations where type safety
+ * is desired but type hints cannot be used
+ * (e.g. implementing vendor interfaces)
+ *
+ * @param mixed $value
+ * @param string $expectedType
+ *
+ * @throws TypeError
+ */
+function assert_type($value, string $expectedType) : void
+{
+    $actualType = gettype($value);
+
+    if ($actualType === $expectedType) {
+        return;
+    }
+
+    if ($actualType === 'double' && $expectedType === 'float') {
+        return;
+    }
+
+    if ($actualType === 'object' && is_a($actualType, $expectedType)) {
+        return;
+    }
+
+    throw new TypeError("Argument must be of the type {$expectedType}, {$actualType} given");
+}
