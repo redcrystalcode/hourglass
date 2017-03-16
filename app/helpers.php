@@ -2,6 +2,11 @@
 declare(strict_types = 1);
 
 /**
+ * Global constants for helpers.
+ */
+const DATE_SIMPLE = 'Y-m-d H:i:s T';
+
+/**
  * Gets the current build time.
  *
  * @return int

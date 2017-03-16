@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
 |--------------------------------------------------------------------------
@@ -11,15 +12,39 @@
 |
 */
 
-Route::get('/', function () {
-    if (Auth::guest()) {
-        return redirect('/login');
-    } else {
-        return redirect('/app');
-    }
+Route::group(['domain' => 'auth.hourglass.app'], function () {
+//    Route::get('/login', ['name' => 'auth.login.show', 'action' => function () {
+//        return view('auth.login');
+//    }]);
+//    Route::post('/login', ['name' => 'auth.login.submit', 'action' => function (Request $request) {
+//
+//    }]);
+//    Route::get('/logout', ['name' => 'auth.logout', 'action' => function () {
+//        // TODO - destroy session.
+//    }]);
+    Route::auth();
+
+    Route::get('/', function () {
+        if (Auth::guest()) {
+            return redirect('/login')->withInput(Request::input());
+        }
+
+        $user = Auth::user();
+
+        return $user;
+        // TODO - Generate redirect response with JWT.
+    })->name('auth.connect');
 });
 
-Route::auth();
+
+//Route::get('/', function () {
+//    if (Auth::guest()) {
+//        return redirect('/login');
+//    } else {
+//        return redirect('/app');
+//    }
+//});
+//
 
 //Route::get('/home', 'HomeController@index');
 

@@ -7,11 +7,17 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Hourglass\Entities\Behaviors\BelongsToAccount;
 use Hourglass\Entities\Behaviors\ImmutableTimestamps;
+use Hourglass\Entities\Behaviors\Serializable;
+use Hourglass\Entities\Behaviors\SerializesToArray;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
+use LaravelDoctrine\ORM\Serializers\Arrayable as DoctrineArrayable;
 
-class User implements Authenticatable
+class User implements Authenticatable, Serializable
 {
-    use ImmutableTimestamps, BelongsToAccount;
+    use ImmutableTimestamps, BelongsToAccount, SerializesToArray;
 
     /** @var int */
     private $id;
@@ -162,7 +168,7 @@ class User implements Authenticatable
     /**
      * @return string
      */
-    public function getRememberToken() : string
+    public function getRememberToken() : ?string
     {
         return $this->rememberToken;
     }
@@ -226,4 +232,24 @@ class User implements Authenticatable
     {
         return 'remember_token';
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'accountId' => $this->getAccountId(),
+            'name' => $this->name,
+            'username' => $this->username,
+            'email' => $this->email,
+            'role' => $this->role,
+            'timezone' => $this->timezone,
+            'createdAt' => $this->createdAt->format(DATE_SIMPLE),
+            'updatedAt' => $this->updatedAt->format(DATE_SIMPLE),
+        ];
+    }
+
+
 }
