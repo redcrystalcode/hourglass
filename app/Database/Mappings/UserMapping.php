@@ -24,12 +24,12 @@ class UserMapping extends EntityMapping
     {
         $builder->increments('id');
         $builder->string('name');
-        $builder->string('role');
+        $builder->string('role')->default('admin');
         $builder->string('username')->unique();
         $builder->string('email')->unique();
         $builder->string('password');
-        $builder->string('timezone');
-        $builder->string('rememberToken')->nullable()->columnName('remember_token');
+        $builder->string('timezone')->default('America/Los_Angeles');
+        $builder->rememberToken()->columnName('remember_token');
         $builder->timestamps();
         $builder->belongsTo(Account::class, 'account');
     }
