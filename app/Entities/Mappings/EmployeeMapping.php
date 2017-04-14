@@ -1,5 +1,5 @@
 <?php
-namespace Hourglass\Database\Mappings;
+namespace Hourglass\Entities\Mappings;
 
 use Hourglass\Entities\Account;
 use Hourglass\Entities\Employee;

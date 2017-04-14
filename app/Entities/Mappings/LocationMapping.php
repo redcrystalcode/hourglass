@@ -1,34 +1,31 @@
 <?php
 declare(strict_types = 1);
-namespace Hourglass\Database\Mappings;
+namespace Hourglass\Entities\Mappings;
 
 use Hourglass\Entities\Account;
-use Hourglass\Entities\RoundingRule;
+use Hourglass\Entities\Location;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 
-class RoundingRuleMapping extends EntityMapping
+class LocationMapping extends EntityMapping
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function mapFor()
     {
-        return RoundingRule::class;
+        return Location::class;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function map(Fluent $builder)
     {
         $builder->increments('id');
+        $builder->string('name')->unique();
         $builder->belongsTo(Account::class, 'account');
-        $builder->time('start');
-        $builder->time('end');
-        $builder->jsonArray('criteria');
-        $builder->time('resolution');
         $builder->timestamps();
+        $builder->softDelete();
     }
-
 }
