@@ -1,5 +1,5 @@
 <?php
-namespace Hourglass\Database\Mappings;
+namespace Hourglass\Entities\Mappings;
 
 use Hourglass\Entities\Account;
 use Hourglass\Entities\Employee;
@@ -28,10 +28,11 @@ class EmployeeMapping extends EntityMapping
         $builder->belongsTo(Location::class, 'location');
         $builder->belongsTo(EmployeeGroup::class, 'group')->setJoinColumn('agency_id');
         $builder->string('name');
-        $builder->string('position');
-        $builder->string('key')->columnName('terminal_key');
+        $builder->string('position')->nullable();
+        $builder->string('key')->columnName('terminal_key')->nullable();
         $builder->timestamps();
         $builder->softDelete();
         $builder->unique(['account_id', 'terminal_key', 'deleted_at']);
+        $builder->index('name');
     }
 }

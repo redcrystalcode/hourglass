@@ -18,6 +18,9 @@
         "gedmo/doctrine-extensions": "^2.4",
         "vasek-purchart/doctrine-date-time-immutable-types": "^0.3.0",
         "laravel-doctrine/fluent": "^1.1",
+        "laravel-doctrine/migrations": "1.0.*",
+        "ocramius/generated-hydrator": "^2.0",
+        "jdorn/sql-formatter": "^1.2",
         "tymon/jwt-auth": "^0.5.10",
         "lcobucci/jwt": "^3.2"
     },

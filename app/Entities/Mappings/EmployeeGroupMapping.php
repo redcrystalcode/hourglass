@@ -1,20 +1,21 @@
 <?php
 declare(strict_types = 1);
-namespace Hourglass\Database\Mappings;
+namespace Hourglass\Entities\Mappings;
 
+use Hourglass\Entities\Employee;
+use Hourglass\Entities\EmployeeGroup;
 use Hourglass\Entities\Account;
-use Hourglass\Entities\Location;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 
-class LocationMapping extends EntityMapping
+class EmployeeGroupMapping extends EntityMapping
 {
     /**
      * {@inheritdoc}
      */
     public function mapFor()
     {
-        return Location::class;
+        return EmployeeGroup::class;
     }
 
     /**
@@ -23,9 +24,11 @@ class LocationMapping extends EntityMapping
     public function map(Fluent $builder)
     {
         $builder->increments('id');
-        $builder->string('name')->unique();
+        $builder->table('agencies');
         $builder->belongsTo(Account::class, 'account');
+        $builder->hasMany(Employee::class, 'employees')->mappedBy('group');
+        $builder->string('name');
         $builder->timestamps();
-        $builder->softDelete();
+        $builder->unique(['account_id', 'name']);
     }
 }

@@ -1,22 +1,22 @@
 <?php
 declare(strict_types = 1);
-namespace Hourglass\Database\Mappings;
+namespace Hourglass\Entities\Mappings;
 
 use Hourglass\Entities\Account;
-use Hourglass\Entities\Job;
 use Hourglass\Entities\JobShift;
+use Hourglass\Entities\Job;
 use Hourglass\Entities\Location;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 
-class JobMapping extends EntityMapping
+class JobShiftMapping extends EntityMapping
 {
     /**
      * {@inheritdoc}
      */
     public function mapFor()
     {
-        return Job::class;
+        return JobShift::class;
     }
 
     /**
@@ -26,15 +26,11 @@ class JobMapping extends EntityMapping
     {
         $builder->increments('id');
         $builder->belongsTo(Account::class, 'account');
-        $builder->string('name');
-        $builder->string('number');
-        $builder->string('description')->nullable();
-        $builder->string('customer');
-        $builder->belongsTo(Location::class, 'location');
-        $builder->hasMany(JobShift::class, 'shifts')->mappedBy('job');
+        $builder->string('comment')->columnName('comments')->nullable();
+        $builder->belongsTo(Job::class, 'job');
         $builder->jsonArray('productivity')->nullable();
+        $builder->boolean('closed');
+        $builder->boolean('paused');
         $builder->timestamps();
-        $builder->softDelete();
-        $builder->unique(['account_id', 'name', 'deleted_at']);
     }
 }
