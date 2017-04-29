@@ -20,7 +20,9 @@
         "laravel-doctrine/fluent": "^1.1",
         "laravel-doctrine/migrations": "1.0.*",
         "ocramius/generated-hydrator": "^2.0",
-        "jdorn/sql-formatter": "^1.2"
+        "jdorn/sql-formatter": "^1.2",
+        "tymon/jwt-auth": "^0.5.10",
+        "lcobucci/jwt": "^3.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
