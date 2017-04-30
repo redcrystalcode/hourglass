@@ -4,35 +4,25 @@ declare(strict_types = 1);
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\RoundingRules\CreateRoundingRuleRequest;
 use Hourglass\Models\RoundingRule;
 use Hourglass\Transformers\RoundingRuleTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 
 class RoundingRuleController extends BaseController
 {
-	/**
-	 * RoundingRuleController constructor.
-	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
-	 * @param \Hourglass\Transformers\RoundingRuleTransformer $transformer
-	 */
-	public function __construct(
-		EntityManager $em,
-		Guard $guard,
-		FractalManager $fractal,
-		RoundingRuleTransformer $transformer
-	) {
-		parent::__construct($em, $guard, $fractal);
-		$this->transformer = $transformer;
-	}
+    /**
+     * RoundingRuleController constructor.
+     *
+     * @param \Hourglass\Transformers\RoundingRuleTransformer $transformer
+     */
+    public function __construct(RoundingRuleTransformer $transformer)
+    {
+        parent::__construct();
+        $this->transformer = $transformer;
+    }
 
     /**
      * Display a listing of the resource.
@@ -109,8 +99,8 @@ class RoundingRuleController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param int $id
-	 *
-	 * @return void
+     *
+     * @return void
      */
     public function destroy(int $id) : void
     {
@@ -124,13 +114,17 @@ class RoundingRuleController extends BaseController
         $rule->delete();
     }
 
-	/**
-	 * @param string $time
-	 *
-	 * @return string
-	 */
+    /**
+     * @param string $time
+     *
+     * @return string
+     */
     private function parseTimeString(string $time) : string
     {
-        return Carbon::createFromFormat('g:i a', $time, $this->resolveAccount($this->account)->timezone)->toTimeString();
+        return Carbon::createFromFormat(
+            'g:i a',
+            $time,
+            $this->resolveAccount($this->account)->timezone
+        )->toTimeString();
     }
 }

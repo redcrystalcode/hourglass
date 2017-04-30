@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Models\Employee;
@@ -14,11 +13,9 @@ use Hourglass\Models\Report;
 use Hourglass\Models\RoundingRule;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\ReportTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReportController extends BaseController
@@ -26,14 +23,11 @@ class ReportController extends BaseController
 	/**
 	 * ReportController constructor.
 	 *
-	 * @param \Hourglass\Http\Controllers\Api\EntityManager $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 * @param \Hourglass\Transformers\ReportTransformer $transformer
 	 */
-    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, ReportTransformer $transformer)
+    public function __construct(ReportTransformer $transformer)
     {
-        parent::__construct($em, $guard, $fractal);
+        parent::__construct();
         $this->transformer = $transformer;
     }
 

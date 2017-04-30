@@ -3,26 +3,20 @@ declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Transformers\JobShiftTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 
 class ShiftController extends BaseController
 {
 	/**
 	 * ShiftController constructor.
 	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 * @param \Hourglass\Transformers\JobShiftTransformer $transformer
 	 */
-    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, JobShiftTransformer $transformer)
+    public function __construct(JobShiftTransformer $transformer)
     {
-        parent::__construct($em, $guard, $fractal);
+        parent::__construct();
         $this->transformer = $transformer;
 	}
 

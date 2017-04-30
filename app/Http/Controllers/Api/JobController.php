@@ -3,15 +3,12 @@ declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Jobs\CreateJobRequest;
 use Hourglass\Http\Requests\Jobs\UpdateJobRequest;
 use Hourglass\Models\Job;
 use Hourglass\Transformers\JobTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JobController extends BaseController
@@ -19,14 +16,11 @@ class JobController extends BaseController
 	/**
 	 * JobController constructor.
 	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 * @param \Hourglass\Transformers\JobTransformer $transformer
 	 */
-    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, JobTransformer $transformer)
+    public function __construct(JobTransformer $transformer)
     {
-        parent::__construct($em, $guard, $fractal);
+        parent::__construct();
         $this->transformer = $transformer;
     }
 

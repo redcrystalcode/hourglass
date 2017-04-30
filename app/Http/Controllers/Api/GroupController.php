@@ -3,15 +3,12 @@ declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Groups\CreateGroupRequest;
 use Hourglass\Http\Requests\Groups\UpdateGroupRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Transformers\AgencyTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GroupController extends BaseController
@@ -19,18 +16,11 @@ class GroupController extends BaseController
 	/**
 	 * AgencyController constructor.
 	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 * @param \Hourglass\Transformers\AgencyTransformer $transformer
 	 */
-	public function __construct(
-		EntityManager $em,
-		Guard $guard,
-		FractalManager $fractal,
-		AgencyTransformer $transformer
-	) {
-        parent::__construct($em, $guard, $fractal);
+	public function __construct(AgencyTransformer $transformer)
+    {
+        parent::__construct();
         $this->transformer = $transformer;
     }
 
