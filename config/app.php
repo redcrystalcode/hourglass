@@ -158,6 +158,7 @@ return [
         Hourglass\Providers\AuthServiceProvider::class,
         Hourglass\Providers\EventServiceProvider::class,
         Hourglass\Providers\RouteServiceProvider::class,
+        Hourglass\Providers\DoctrineServiceProvider::class,
     ],
 
     /*

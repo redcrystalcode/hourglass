@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Hourglass\Transformers\Transformer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\ContracsPagination\LengthAwarePaginator as Paginator;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
