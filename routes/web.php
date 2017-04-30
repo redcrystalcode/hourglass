@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,8 @@ Route::get('/', function () {
     }
 });
 
-Route::auth();
+Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout');
 
 //Route::get('/home', 'HomeController@index');
 

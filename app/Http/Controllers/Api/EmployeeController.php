@@ -3,17 +3,13 @@ declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Employees\CreateEmployeeRequest;
 use Hourglass\Http\Requests\Employees\RegisterTimecardRequest;
 use Hourglass\Http\Requests\Employees\UpdateEmployeeRequest;
-use Hourglass\Models\Account as EloquentAccount;
 use Hourglass\Models\Employee as EloquentEmployee;
 use Hourglass\Transformers\EmployeeTransformer;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EmployeeController extends BaseController
@@ -21,18 +17,11 @@ class EmployeeController extends BaseController
 	/**
 	 * EmployeeController constructor.
 	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 * @param \Hourglass\Transformers\EmployeeTransformer $transformer
 	 */
-	public function __construct(
-		EntityManager $em,
-		Guard $guard,
-		FractalManager $fractal,
-		EmployeeTransformer $transformer
-	) {
-        parent::__construct($em, $guard, $fractal);
+	public function __construct(EmployeeTransformer $transformer)
+    {
+        parent::__construct();
         $this->transformer = $transformer;
     }
 

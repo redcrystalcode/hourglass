@@ -3,20 +3,20 @@ declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
+use Auth;
 use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Entities\Account;
-use Hourglass\Models\Account as EloquentAccount;
 use Hourglass\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Guard;
+use Hourglass\Models\Account as EloquentAccount;
+use Hourglass\Models\User as EloquentUser;
 use Hourglass\Transformers\Transformer;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
-use Illuminate\ContracsPagination\LengthAwarePaginator as Paginator;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\Resource\Item as FractalItem;
-use Hourglass\Models\User as EloquentUser;
 
 class BaseController extends Controller
 {
@@ -44,6 +44,7 @@ class BaseController extends Controller
      * @var \Hourglass\Transformers\Transformer
      */
     protected $transformer;
+
 	/**
 	 * @var \Doctrine\ORM\EntityManager
 	 */
@@ -51,18 +52,18 @@ class BaseController extends Controller
 
 	/**
 	 * EmployeesController constructor.
-	 *
-	 * @param \Doctrine\ORM\EntityManagerInterface $em
-	 * @param \Illuminate\Contracts\Auth\Guard $guard
-	 * @param \League\Fractal\Manager $fractal
 	 */
-    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal)
+    public function __construct()
     {
-        $this->guard = $guard;
-        $this->user = $this->guard->user();
-        $this->account = $this->user->getAccount();
-        $this->fractal = $fractal;
-		$this->em = $em;
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->account = $this->user->getAccount();
+
+            return $next($request);
+        });
+
+        $this->fractal = app(FractalManager::class);
+		$this->em = app(EntityManager::class);
 	}
 
     /**

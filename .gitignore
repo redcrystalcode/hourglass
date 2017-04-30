@@ -13,3 +13,6 @@ _ide_helper.php
 /public/js
 .DS_Store
 .buildattributes
+/public/hot
+/storage/*.key
+Homestead.yaml
