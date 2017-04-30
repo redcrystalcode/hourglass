@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Hourglass\Http;
 
@@ -15,6 +16,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Hourglass\Http\Middleware\FlushEntityManager::class,
     ];
 
     /**
