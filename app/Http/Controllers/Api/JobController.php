@@ -1,27 +1,32 @@
 <?php
+declare(strict_types = 1);
+
 namespace Hourglass\Http\Controllers\Api;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Jobs\CreateJobRequest;
 use Hourglass\Http\Requests\Jobs\UpdateJobRequest;
 use Hourglass\Models\Job;
 use Hourglass\Transformers\JobTransformer;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JobController extends BaseController
 {
-    /**
-     * JobController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     * @param \Hourglass\Transformers\JobTransformer $transformer
-     */
-    public function __construct(Guard $guard, FractalManager $fractal, JobTransformer $transformer)
+	/**
+	 * JobController constructor.
+	 *
+	 * @param \Doctrine\ORM\EntityManagerInterface $em
+	 * @param \Illuminate\Contracts\Auth\Guard $guard
+	 * @param \League\Fractal\Manager $fractal
+	 * @param \Hourglass\Transformers\JobTransformer $transformer
+	 */
+    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, JobTransformer $transformer)
     {
-        parent::__construct($guard, $fractal);
+        parent::__construct($em, $guard, $fractal);
         $this->transformer = $transformer;
     }
 
@@ -32,9 +37,9 @@ class JobController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request) : JsonResponse
     {
-        $query = $this->account->jobs()
+        $query = $this->resolveAccount($this->account)->jobs()
             ->with('location')
             ->search($request->get('search'))
             ->sortTrashedLast()
@@ -52,48 +57,36 @@ class JobController extends BaseController
      *
      * @param \Hourglass\Http\Requests\Jobs\CreateJobRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateJobRequest $request)
+    public function store(CreateJobRequest $request) : JsonResponse
     {
         $job = new Job($request->only([
             'name', 'number', 'customer', 'description', 'productivity'
         ]));
         $job->location_id = $request->input('location.id');
-        $this->account->jobs()->save($job);
+        $this->resolveAccount($this->account)->jobs()->save($job);
 
         return $this->respondWithItem($job);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Hourglass\Http\Requests\Jobs\UpdateJobRequest $request
-     * @param  int $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateJobRequest $request, $id)
+    public function update(UpdateJobRequest $request, int $id) : JsonResponse
     {
         /** @var Job $job */
-        $job = $this->account->jobs()->find($id);
+        $job = $this->resolveAccount($this->account)->jobs()->find($id);
         $job->fill($request->only([
             'name', 'number', 'customer', 'description', 'productivity'
         ]));
         $job->location_id = $request->input('location.id');
-        $this->account->jobs()->save($job);
+        $this->resolveAccount($this->account)->jobs()->save($job);
 
         return $this->respondWithItem($job);
     }
@@ -101,14 +94,14 @@ class JobController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id) : JsonResponse
     {
         /** @var Job $job */
-        $job = $this->account->jobs()->find($id);
+        $job = $this->resolveAccount($this->account)->jobs()->find($id);
 
         if (!$job) {
             throw new NotFoundHttpException('Not Found');

@@ -1,8 +1,10 @@
 <?php
+declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Models\Employee;
@@ -13,6 +15,7 @@ use Hourglass\Models\RoundingRule;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\ReportTransformer;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use League\Fractal\Manager as FractalManager;
@@ -20,16 +23,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReportController extends BaseController
 {
-    /**
-     * ReportController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     * @param \Hourglass\Transformers\ReportTransformer $transformer
-     */
-    public function __construct(Guard $guard, FractalManager $fractal, ReportTransformer $transformer)
+	/**
+	 * ReportController constructor.
+	 *
+	 * @param \Hourglass\Http\Controllers\Api\EntityManager $em
+	 * @param \Illuminate\Contracts\Auth\Guard $guard
+	 * @param \League\Fractal\Manager $fractal
+	 * @param \Hourglass\Transformers\ReportTransformer $transformer
+	 */
+    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, ReportTransformer $transformer)
     {
-        parent::__construct($guard, $fractal);
+        parent::__construct($em, $guard, $fractal);
         $this->transformer = $transformer;
     }
 
@@ -38,11 +42,11 @@ class ReportController extends BaseController
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request) : JsonResponse
     {
-        $reports = $this->account->reports()
+        $reports = $this->resolveAccount($this->account)->reports()
             ->search($request->get('search'))
             ->sort($request->get('sort_by'), $request->get('order'))
             ->paginate($request->get('per_page', 10));
@@ -56,20 +60,20 @@ class ReportController extends BaseController
      *
      * @param  int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(int $id) : JsonResponse
     {
         /** @var Report $report */
-        $report = $this->account->reports()->find($id);
+        $report = $this->resolveAccount($this->account)->reports()->find($id);
 
         if (!$report) {
             throw new NotFoundHttpException('Not found.');
         }
 
-        return [
+        return new JsonResponse([
             'data' => $this->generateReportData($report)
-        ];
+        ]);
     }
 
 
@@ -78,14 +82,14 @@ class ReportController extends BaseController
      *
      * @param \Hourglass\Http\Requests\Reports\CreateReportRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateReportRequest $request)
+    public function store(CreateReportRequest $request) : JsonResponse
     {
         $report = new Report($request->only(['type']));
         $report->parameters = $this->getReportParameters($request);
         $report->generateName();
-        $this->account->reports()->save($report);
+        $this->resolveAccount($this->account)->reports()->save($report);
 
         return $this->respondWithItem($report);
     }
@@ -93,13 +97,13 @@ class ReportController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(int $id) : void
     {
-        $report = $this->account->reports()->find($id);
+        $report = $this->resolveAccount($this->account)->reports()->find($id);
 
         if (!$report) {
             throw new NotFoundHttpException('Not found.');
@@ -113,7 +117,7 @@ class ReportController extends BaseController
      *
      * @return array
      */
-    private function getReportParameters(Request $request)
+    private function getReportParameters(Request $request) : array
     {
         $type = $request->get('type');
 
@@ -158,12 +162,12 @@ class ReportController extends BaseController
      *
      * @return array
      */
-    private function generateReportData(Report $report)
+    private function generateReportData(Report $report) : array
     {
         $parameters = $report->parameters;
         if ($report->type === 'timesheet') {
             /** @var Employee $employee */
-            $employee = $this->account->employees()
+            $employee = $this->resolveAccount($this->account)->employees()
                 ->with('agency')->with('location')
                 ->findOrFail($parameters['employee_id']);
             $start = Carbon::parse($parameters['start'] . ' 00:00:00', 'America/Los_Angeles');
@@ -179,7 +183,7 @@ class ReportController extends BaseController
                 'employee' => [
                     'name' => $employee->name,
                     'location' => $employee->location->name,
-                    'agency' => $employee->agency->name ?? $this->account->name,
+                    'agency' => $employee->agency->name ?? $this->resolveAccount($this->account)->name,
                 ],
                 'start' => $start->tz('America/Los_Angeles')->toDateTimeString(),
                 'end' => $end->tz('America/Los_Angeles')->toDateTimeString(),
@@ -189,7 +193,7 @@ class ReportController extends BaseController
 
         if ($report->type === 'agency') {
             /** @var Agency $agency */
-            $agency = $this->account->agencies()->with('employees.location')->findOrFail($parameters['agency_id']);
+            $agency = $this->resolveAccount($this->account)->agencies()->with('employees.location')->findOrFail($parameters['agency_id']);
             $start = Carbon::parse($parameters['start'] . ' 00:00:00', 'America/Los_Angeles');
             $end = Carbon::parse($parameters['end'] . ' 23:59:59', 'America/Los_Angeles');
 
@@ -209,7 +213,7 @@ class ReportController extends BaseController
                     'employee' => [
                         'name' => $employee->name,
                         'location' => $employee->location->name,
-                        'agency' => $employee->agency->name ?? $this->account->name,
+                        'agency' => $employee->agency->name ?? $this->resolveAccount($this->account)->name,
                     ],
                     'timesheets' => $timesheets,
                     'total_time_minutes' => $this->sumTimesheets($timesheets),
@@ -232,7 +236,7 @@ class ReportController extends BaseController
 
         if ($report->type === 'shift') {
             /** @var JobShift $shift */
-            $shift = $this->account->shifts()->with('job.location')->findOrFail($parameters['job_shift_id']);
+            $shift = $this->resolveAccount($this->account)->shifts()->with('job.location')->findOrFail($parameters['job_shift_id']);
             $timesheets = $shift->timesheets()->with('employee')->whereNotNull('time_out')->get();
             if (array_get($parameters, 'use_rounding_rules', false) === true) {
                 $timesheets = $this->roundTimesheets($timesheets);
@@ -258,7 +262,7 @@ class ReportController extends BaseController
 
         if ($report->type === 'job') {
             /** @var Job $job */
-            $job = $this->account->jobs()->with('location')
+            $job = $this->resolveAccount($this->account)->jobs()->with('location')
                 ->findOrFail($parameters['job_id']);
             /** @var JobShift[] $shifts */
             $shifts = $job->shifts()->orderBy('created_at', 'asc')
@@ -324,7 +328,7 @@ class ReportController extends BaseController
      *
      * @return int
      */
-    private function calculateProductivityScoreForShift(JobShift $shift, Collection $timesheets)
+    private function calculateProductivityScoreForShift(JobShift $shift, Collection $timesheets) : int
     {
         $projectedQuantityPerHour = (int)$shift->job->productivity['quantity'];
         $numberOfPeopleRequired = (int)$shift->job->productivity['employees'];
@@ -375,7 +379,7 @@ class ReportController extends BaseController
         int $numberOfPeopleRequired,
         float $hoursWorked,
         int $totalQuantityProduced
-    ) {
+    ) : int {
         if ($numberOfPeopleRequired === 0 || $hoursWorked <= 0) {
             return 0; // Prevent divide by zero.
         }
@@ -397,7 +401,7 @@ class ReportController extends BaseController
      *
      * @return int
      */
-    private function calculateProductivityScoreForJob(Job $job, array $shiftReports)
+    private function calculateProductivityScoreForJob(Job $job, array $shiftReports) : int
     {
         $projectedQuantityPerHour = $job->productivity['quantity'];
         $numberOfPeopleRequired = $job->productivity['employees'];
@@ -474,7 +478,7 @@ class ReportController extends BaseController
             return $time;
         }
 
-        $timezone = $this->account->getTimezone();
+        $timezone = $this->resolveAccount($this->account)->getTimezone();
         $compare = $time->copy()->setTimezone($timezone);
         $start = Carbon::parse($rule->start, $timezone)
             ->setDate($compare->year, $compare->month, $compare->day);
@@ -495,7 +499,7 @@ class ReportController extends BaseController
      */
     private function getRoundingRules()
     {
-        return $this->account->roundingRules()->get();
+        return $this->resolveAccount($this->account)->roundingRules()->get();
     }
 
     /**

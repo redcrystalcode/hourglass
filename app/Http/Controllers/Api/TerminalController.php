@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
@@ -17,7 +18,6 @@ use Hourglass\Transformers\TerminalTimesheetTransformer;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -38,7 +38,8 @@ class TerminalController extends BaseController
         $transformer = new TerminalTimesheetTransformer();
         $terminalKey = $request->get('terminal_key');
 
-        $employee = $this->account->employees()->where('terminal_key', $terminalKey)->first();
+        $employee = $this->resolveAccount($this->account)->employees()
+			->where('terminal_key', $terminalKey)->first();
 
         /** @var PausedTimesheet $paused */
         $paused = PausedTimesheet::with('shift.job')->whereEmployeeId($employee->id)->first();
@@ -61,7 +62,7 @@ class TerminalController extends BaseController
         $jobId = $request->get('job_id');
         if ($jobId) {
             /** @var Job $job */
-            $job = $this->account->jobs()->find($jobId);
+            $job = $this->resolveAccount($this->account)->jobs()->find($jobId);
             $timesheet = $this->clockIn($employee, $job);
             return [
                 'data' => $transformer->transform($timesheet),
@@ -75,12 +76,12 @@ class TerminalController extends BaseController
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function clockedInEmployees()
+	/**
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+    public function clockedInEmployees() : JsonResponse
     {
-        $timesheets = $this->account->timesheets()
+        $timesheets = $this->resolveAccount($this->account)->timesheets()
             ->whereNull('time_out')
             ->with('employee')
             ->with('job')
@@ -95,7 +96,7 @@ class TerminalController extends BaseController
      */
     public function timecards()
     {
-        $timecards = $this->account->employees()->whereNotNull('terminal_key')->get(['id', 'terminal_key', 'name']);
+        $timecards = $this->resolveAccount($this->account)->employees()->whereNotNull('terminal_key')->get(['id', 'terminal_key', 'name']);
 
         return [
             'data' => $timecards
@@ -105,10 +106,10 @@ class TerminalController extends BaseController
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function ongoingShifts()
+    public function ongoingShifts() : JsonResponse
     {
         /** @var JobShift[] $shifts */
-        $shifts = $this->account->shifts()
+        $shifts = $this->resolveAccount($this->account)->shifts()
             ->where('closed', false)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -121,10 +122,10 @@ class TerminalController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function pauseShift($id)
+    public function pauseShift($id) : JsonResponse
     {
         /** @var JobShift $shift */
-        $shift = $this->account->shifts()->with('timesheets')->find($id);
+        $shift = $this->resolveAccount($this->account)->shifts()->with('timesheets')->find($id);
 
         if (!$shift) {
             throw new NotFoundHttpException('Not found.');
@@ -157,10 +158,10 @@ class TerminalController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function resumeShift($id)
+    public function resumeShift($id) : JsonResponse
     {
         /** @var JobShift $shift */
-        $shift = $this->account->shifts()->with('pausedTimesheets')->find($id);
+        $shift = $this->resolveAccount($this->account)->shifts()->with('pausedTimesheets')->find($id);
 
         if (!$shift) {
             throw new NotFoundHttpException('Not found.');
@@ -198,10 +199,10 @@ class TerminalController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function endShift(EndShiftRequest $request, $id)
+    public function endShift(EndShiftRequest $request, int $id) : JsonResponse
     {
         /** @var JobShift $shift */
-        $shift = $this->account->shifts()->find($id);
+        $shift = $this->resolveAccount($this->account)->shifts()->find($id);
 
         if (!$shift) {
             throw new NotFoundHttpException('Not found.');
@@ -228,7 +229,7 @@ class TerminalController extends BaseController
      *
      * @return bool
      */
-    private function isEmployeeClockedIn(Employee $employee)
+    private function isEmployeeClockedIn(Employee $employee) : bool
     {
         $timesheet = $this->getActiveTimesheetRecord($employee);
 
@@ -240,9 +241,9 @@ class TerminalController extends BaseController
      *
      * @return null|\Hourglass\Models\Timesheet
      */
-    private function getActiveTimesheetRecord(Employee $employee)
+    private function getActiveTimesheetRecord(Employee $employee) : ?Timesheet
     {
-        $timesheet = Timesheet::where('account_id', $this->account->id)
+        $timesheet = Timesheet::where('account_id', $this->resolveAccount($this->account)->id)
             ->where('employee_id', $employee->id)
             ->whereNull('time_out')
             ->first();
@@ -255,15 +256,15 @@ class TerminalController extends BaseController
      *
      * @return \Hourglass\Models\Timesheet
      */
-    private function clockIn(Employee $employee, Job $job)
+    private function clockIn(Employee $employee, Job $job) : Timesheet
     {
         /** @var JobShift $shift */
-        $shift = $this->account->shifts()->where('job_id', $job->id)->where('closed', false)->first();
+        $shift = $this->resolveAccount($this->account)->shifts()->where('job_id', $job->id)->where('closed', false)->first();
         if (!$shift) {
             $shift = new JobShift();
             $shift->job_id = $job->id;
             $shift->closed = false;
-            $this->account->shifts()->save($shift);
+            $this->resolveAccount($this->account)->shifts()->save($shift);
         }
 
         $timesheet = new Timesheet();
@@ -271,7 +272,7 @@ class TerminalController extends BaseController
         $timesheet->job_id = $job->id;
         $timesheet->job_shift_id = $shift->id;
         $timesheet->time_in = Carbon::now();
-        $this->account->timesheets()->save($timesheet);
+        $this->resolveAccount($this->account)->timesheets()->save($timesheet);
 
         return $timesheet;
     }
@@ -281,7 +282,7 @@ class TerminalController extends BaseController
      *
      * @return \Hourglass\Models\Timesheet
      */
-    private function clockOut(Employee $employee)
+    private function clockOut(Employee $employee) : Timesheet
     {
         $timesheet = $this->getActiveTimesheetRecord($employee);
 
@@ -304,6 +305,6 @@ class TerminalController extends BaseController
             'job_shift_id' => $shift->id,
         ];
         $report->generateName();
-        $this->account->reports()->save($report);
+        $this->resolveAccount($this->account)->reports()->save($report);
     }
 }

@@ -1,20 +1,22 @@
 <?php
+declare(strict_types = 1);
+
 namespace Hourglass\Transformers;
 
-use Hourglass\Models\Account;
+use Hourglass\Entities\Account;
 
 class AccountTransformer extends Transformer
 {
     /**
-     * @param \Hourglass\Models\Account $account
+     * @param \Hourglass\Entities\Account $account
      *
      * @return array
      */
     public function transform(Account $account) : array
     {
         return [
-            'id' => $account->id,
-            'name' => $account->name
+            'id' => $account->getId(),
+            'name' => $account->getName(),
         ];
     }
 }

@@ -1,9 +1,12 @@
 <?php
+declare(strict_types = 1);
 namespace Hourglass\Http\Controllers\Api;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
 use Hourglass\Http\Requests\Account\UpdateAccountRequest;
 use Hourglass\Transformers\AccountTransformer;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
 use League\Fractal\Manager as FractalManager;
 
 /**
@@ -13,23 +16,24 @@ use League\Fractal\Manager as FractalManager;
  */
 class AccountController extends BaseController
 {
-    /**
-     * AccountController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     * @param \Hourglass\Transformers\AccountTransformer $transformer
-     */
-    public function __construct(Guard $guard, FractalManager $fractal, AccountTransformer $transformer)
+	/**
+	 * AccountController constructor.
+	 *
+	 * @param \Doctrine\ORM\EntityManagerInterface $em
+	 * @param \Illuminate\Contracts\Auth\Guard $guard
+	 * @param \League\Fractal\Manager $fractal
+	 * @param \Hourglass\Transformers\AccountTransformer $transformer
+	 */
+    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal, AccountTransformer $transformer)
     {
-        parent::__construct($guard, $fractal);
+        parent::__construct($em, $guard, $fractal);
         $this->transformer = $transformer;
     }
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function show() : JsonResponse
     {
         return $this->respondWithItem($this->account);
     }
@@ -39,10 +43,11 @@ class AccountController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateAccountRequest $request)
+    public function update(UpdateAccountRequest $request) : JsonResponse
     {
-        $this->account->name = $request->get('name');
-        $this->account->save();
+        $this->account->setName($request->get('name'));
+
+        $this->em->persist($this->account);
 
         return $this->respondWithItem($this->account);
     }

@@ -1,12 +1,17 @@
 <?php
+declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
+use Doctrine\ORM\EntityManagerInterface as EntityManager;
+use Hourglass\Entities\Account;
+use Hourglass\Models\Account as EloquentAccount;
 use Hourglass\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Hourglass\Transformers\Transformer;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator as Paginator;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
@@ -21,12 +26,12 @@ class BaseController extends Controller
     protected $guard;
 
     /**
-     * @var \Hourglass\Models\User
+     * @var \Hourglass\Entities\User
      */
     protected $user;
 
     /**
-     * @var \Hourglass\Models\Account
+     * @var \Hourglass\Entities\Account
      */
     protected $account;
 
@@ -39,20 +44,26 @@ class BaseController extends Controller
      * @var \Hourglass\Transformers\Transformer
      */
     protected $transformer;
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	protected $em;
 
-    /**
-     * EmployeesController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     */
-    public function __construct(Guard $guard, FractalManager $fractal)
+	/**
+	 * EmployeesController constructor.
+	 *
+	 * @param \Doctrine\ORM\EntityManagerInterface $em
+	 * @param \Illuminate\Contracts\Auth\Guard $guard
+	 * @param \League\Fractal\Manager $fractal
+	 */
+    public function __construct(EntityManager $em, Guard $guard, FractalManager $fractal)
     {
         $this->guard = $guard;
-        $this->user = $this->resolveUser($this->guard->user());
-        $this->account = $this->user->account;
+        $this->user = $this->guard->user();
+        $this->account = $this->user->getAccount();
         $this->fractal = $fractal;
-    }
+		$this->em = $em;
+	}
 
     /**
      * @param $item
@@ -60,7 +71,7 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithItem($item, Transformer $transformer = null)
+    protected function respondWithItem($item, Transformer $transformer = null) : JsonResponse
     {
         $transformer = $transformer ?: $this->transformer;
 
@@ -76,7 +87,7 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithCollection($collection, Transformer $transformer = null)
+    protected function respondWithCollection($collection, Transformer $transformer = null) : JsonResponse
     {
         $transformer = $transformer ?: $this->transformer;
 
@@ -88,11 +99,11 @@ class BaseController extends Controller
 
     /**
      * @param Paginator $paginator
-     * @param null $transformer
+     * @param Transformer|null $transformer
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithPaginator(Paginator $paginator, $transformer = null)
+    protected function respondWithPaginator(Paginator $paginator, Transformer $transformer = null) : JsonResponse
     {
         $collection = $paginator->getCollection();
 
@@ -115,7 +126,7 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithArray(array $array, array $headers = [])
+    protected function respondWithArray(array $array, array $headers = []) : JsonResponse
     {
         $response = response()->json($array, 200, $headers);
         return $response;
@@ -129,5 +140,15 @@ class BaseController extends Controller
     protected function resolveUser(Authenticatable $user) : EloquentUser
     {
         return EloquentUser::find($user->getAuthIdentifier());
+    }
+
+    /**
+     * @param \Hourglass\Entities\Account $account
+     *
+     * @return \Hourglass\Models\Account
+     */
+    protected function resolveAccount(Account $account) : EloquentAccount
+    {
+        return EloquentAccount::find($account->getId());
     }
 }
