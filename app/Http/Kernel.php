@@ -17,6 +17,9 @@ class Kernel extends HttpKernel
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Hourglass\Http\Middleware\FlushEntityManager::class,
+        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
+        \Hourglass\Http\Middleware\TrimStrings::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
     /**
