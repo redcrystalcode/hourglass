@@ -95,7 +95,7 @@ class GroupController extends BaseController
         $agency->fill($request->only(['name']));
         $agency->save();
 
-        $this->respondWithItem($agency);
+        return $this->respondWithItem($agency);
     }
 
 	/**

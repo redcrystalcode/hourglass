@@ -112,7 +112,7 @@ class EmployeeController extends BaseController
         $employee->agency_id = $request->input('agency.id');
         $employee->save();
 
-        $this->respondWithItem($employee);
+        return $this->respondWithItem($employee);
     }
 
     /**
