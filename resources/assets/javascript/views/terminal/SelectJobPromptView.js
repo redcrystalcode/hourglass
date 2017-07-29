@@ -80,19 +80,22 @@ const SelectJobPromptView = LayoutView.extend({
             return;
         }
 
+        this.ui.submit.attr('disabled', true);
+
         nprogress.start();
         api.post('terminal/clock', null, {
             terminal_key: this.model.get('terminal_key'),
             job_id: this.selectedJob.get('id')
         }).then(this.handleResponse.bind(this)).catch((errors) => {
             this.validator.showServerErrors(errors);
+            this.ui.submit.attr('disabled', false);
             nprogress.done();
         });
     },
 
     handleResponse(response) {
         nprogress.done();
-
+        this.ui.submit.attr('disabled', false);
         this.channel.trigger('clock:in', response.data);
         NotificationService.request('notify:clock:in', response.data);
         TerminalService.request('index');
