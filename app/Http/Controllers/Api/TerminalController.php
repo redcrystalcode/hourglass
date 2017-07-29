@@ -15,7 +15,7 @@ use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\EmployeeTransformer;
 use Hourglass\Transformers\JobShiftTransformer;
 use Hourglass\Transformers\TerminalTimesheetTransformer;
-use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,6 +26,7 @@ class TerminalController extends BaseController
     /** Status Constants */
     const STATUS_CLOCKED_IN = 'clocked_in';
     const STATUS_CLOCKED_OUT = 'clocked_out';
+    const STATUS_CONFIRM_CLOCK_OUT = 'confirm_clock_out';
     const STATUS_SELECT_JOB = 'select_job';
 
     /**
@@ -49,6 +50,18 @@ class TerminalController extends BaseController
                 'terminal_key' => "This employee is currently clocked in to the paused shift for "
                     . "Job #{$paused->shift->job->number}."
             ], 422));
+        }
+
+        // Check to see if the employee clocking out is clocking out too soon.
+        if ($this->employeeClockedInRecently($employee) && !$request->has('clock_out_confirmed')) {
+            return [
+                'data' => [
+                    'message' => "Clock in too recent. Confirm that the employee should be clocked out.",
+                    'time_in' => $this->getActiveTimesheetRecord($employee)->time_in->toDateTimeString(),
+                    'terminal_key' => $terminalKey,
+                ],
+                'status' => self::STATUS_CONFIRM_CLOCK_OUT,
+            ];
         }
 
         if ($this->isEmployeeClockedIn($employee)) {
@@ -234,6 +247,24 @@ class TerminalController extends BaseController
         $timesheet = $this->getActiveTimesheetRecord($employee);
 
         return $timesheet !== null;
+    }
+
+    /**
+     * @param \Hourglass\Models\Employee $employee
+     *
+     * @return bool
+     */
+    private function employeeClockedInRecently(Employee $employee) : bool
+    {
+        $timesheet = $this->getActiveTimesheetRecord($employee);
+
+        if ($timesheet === null) {
+            return false;
+        }
+
+        $diff = $timesheet->time_in->diff(Carbon::now());
+
+        return $diff->y === 0 && $diff->m === 0 && $diff->d === 0 && $diff->h === 0 && $diff->i < 5;
     }
 
     /**
