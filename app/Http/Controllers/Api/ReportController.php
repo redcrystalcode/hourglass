@@ -489,7 +489,7 @@ class ReportController extends BaseController
     }
 
     /**
-     * @return \Hourglass\Models\RoundingRule[]
+     * @return \Illuminate\Support\Collection|\Hourglass\Models\RoundingRule[]
      */
     private function getRoundingRules()
     {
