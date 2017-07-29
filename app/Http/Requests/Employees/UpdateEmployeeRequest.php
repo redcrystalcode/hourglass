@@ -25,7 +25,7 @@ class UpdateEmployeeRequest extends Request
      */
     public function rules()
     {
-        $accountId = $this->user()->account_id;
+        $accountId = $this->user()->getAccountId();
         return [
             'name' => 'required',
             'terminal_key' => (new UniqueValidationRule('employees', 'terminal_key'))

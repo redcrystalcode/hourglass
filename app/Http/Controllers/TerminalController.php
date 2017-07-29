@@ -3,6 +3,7 @@
 namespace Hourglass\Http\Controllers;
 
 use Auth;
+use Hourglass\Models\User;
 use Illuminate\Http\Request;
 
 use Hourglass\Http\Requests;
@@ -15,12 +16,13 @@ class TerminalController extends Controller
             return redirect('/login');
         }
 
-        /** @var \Hourglass\Models\User $user */
+        /** @var \Hourglass\Entities\User $user */
         $user = Auth::user();
+        $eloquentUser = User::find($user->getId());
 
         return view('terminal', [
            'bootstrap' => [
-               'user' => $user->toArray(),
+               'user' => $eloquentUser->toArray(),
            ]
         ]);
     }

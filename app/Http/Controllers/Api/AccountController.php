@@ -1,10 +1,11 @@
 <?php
+declare(strict_types = 1);
 namespace Hourglass\Http\Controllers\Api;
 
 use Hourglass\Http\Requests\Account\UpdateAccountRequest;
+use Hourglass\Repositories\AccountRepository;
 use Hourglass\Transformers\AccountTransformer;
-use Illuminate\Contracts\Auth\Guard;
-use League\Fractal\Manager as FractalManager;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class AccountController
@@ -13,23 +14,28 @@ use League\Fractal\Manager as FractalManager;
  */
 class AccountController extends BaseController
 {
-    /**
-     * AccountController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     * @param \Hourglass\Transformers\AccountTransformer $transformer
-     */
-    public function __construct(Guard $guard, FractalManager $fractal, AccountTransformer $transformer)
+	/**
+	 * @var \Hourglass\Repositories\AccountRepository
+	 */
+	private $repository;
+
+	/**
+	 * AccountController constructor.
+	 *
+	 * @param \Hourglass\Repositories\AccountRepository $repository
+	 * @param \Hourglass\Transformers\AccountTransformer $transformer
+	 */
+	public function __construct(AccountRepository $repository, AccountTransformer $transformer)
     {
-        parent::__construct($guard, $fractal);
-        $this->transformer = $transformer;
-    }
+        parent::__construct();
+		$this->transformer = $transformer;
+		$this->repository = $repository;
+	}
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function show() : JsonResponse
     {
         return $this->respondWithItem($this->account);
     }
@@ -39,10 +45,11 @@ class AccountController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateAccountRequest $request)
+    public function update(UpdateAccountRequest $request) : JsonResponse
     {
-        $this->account->name = $request->get('name');
-        $this->account->save();
+        $this->account->setName($request->get('name'));
+
+        $this->repository->update($this->account);
 
         return $this->respondWithItem($this->account);
     }

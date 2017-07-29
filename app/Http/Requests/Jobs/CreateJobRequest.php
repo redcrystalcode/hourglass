@@ -24,7 +24,7 @@ class CreateJobRequest extends Request
      */
     public function rules()
     {
-        $accountId = $this->user()->account_id;
+        $accountId = $this->user()->getAccountId();
         return [
             'name' => 'required',
             'number' => 'required',

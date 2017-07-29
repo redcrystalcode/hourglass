@@ -1,29 +1,27 @@
 <?php
+declare(strict_types = 1);
 
 namespace Hourglass\Http\Controllers\Api;
 
 use Hourglass\Http\Requests\Employees\CreateEmployeeRequest;
 use Hourglass\Http\Requests\Employees\RegisterTimecardRequest;
 use Hourglass\Http\Requests\Employees\UpdateEmployeeRequest;
-use Hourglass\Models\Employee;
+use Hourglass\Models\Employee as EloquentEmployee;
 use Hourglass\Transformers\EmployeeTransformer;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\Fractal\Manager as FractalManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class EmployeeController extends BaseController
 {
-    /**
-     * EmployeeController constructor.
-     *
-     * @param \Illuminate\Contracts\Auth\Guard $guard
-     * @param \League\Fractal\Manager $fractal
-     * @param \Hourglass\Transformers\EmployeeTransformer $transformer
-     */
-    public function __construct(Guard $guard, FractalManager $fractal, EmployeeTransformer $transformer)
+	/**
+	 * EmployeeController constructor.
+	 *
+	 * @param \Hourglass\Transformers\EmployeeTransformer $transformer
+	 */
+	public function __construct(EmployeeTransformer $transformer)
     {
-        parent::__construct($guard, $fractal);
+        parent::__construct();
         $this->transformer = $transformer;
     }
 
@@ -34,9 +32,9 @@ class EmployeeController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request) : JsonResponse
     {
-        $query = $this->account->employees()
+        $query = $this->resolveAccount($this->account)->employees()
             ->with('location', 'agency')
             ->search($request->get('search'))
             ->sortTrashedLast()
@@ -50,25 +48,26 @@ class EmployeeController extends BaseController
             $paginate = $query->paginate($request->get('per_page', 10));
             return $this->respondWithPaginator($paginate);
         }
-    
+
         return $this->respondWithCollection($query->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Hourglass\Http\Requests\CreateEmployeeRequest $request
+     * @param \Hourglass\Http\Requests\Employees\CreateEmployeeRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateEmployeeRequest $request)
+    public function store(CreateEmployeeRequest $request) : JsonResponse
     {
-        $employee = new Employee($request->only([
+        $employee = new EloquentEmployee($request->only([
             'name', 'position', 'terminal_key',
         ]));
         $employee->location_id = $request->input('location.id');
         $employee->agency_id = $request->input('agency.id');
-        $this->account->employees()->save($employee);
+
+		$this->resolveAccount($this->account)->employees()->save($employee);
 
         return $this->respondWithItem($employee);
     }
@@ -76,14 +75,13 @@ class EmployeeController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($id) : JsonResponse
     {
-        /** @var Employee $employee */
-        $employee = $this->account->employees()->find($id);
+        $employee = $this->resolveAccount($this->account)->employees()->find($id);
 
         if (!$employee) {
             throw new NotFoundHttpException('Not found.');
@@ -95,15 +93,15 @@ class EmployeeController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Hourglass\Http\Requests\UpdateEmployeeRequest $request
-     * @param  int $id
+     * @param \Hourglass\Http\Requests\Employees\UpdateEmployeeRequest $request
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateEmployeeRequest $request, $id)
+    public function update(UpdateEmployeeRequest $request, $id) : JsonResponse
     {
-        /** @var Employee $employee */
-        $employee = $this->account->employees()->find($id);
+		/** @var EloquentEmployee $employee */
+		$employee = $this->resolveAccount($this->account)->employees()->find($id);
 
         if (!$employee) {
             throw new NotFoundHttpException('Not found.');
@@ -114,28 +112,29 @@ class EmployeeController extends BaseController
         $employee->agency_id = $request->input('agency.id');
         $employee->save();
 
-        $this->respondWithItem($employee);
+        return $this->respondWithItem($employee);
     }
 
     /**
      * Register a timecard to an employee.
      *
-     * @param  \Hourglass\Http\Requests\Employees\RegisterTimecardRequest $request
-     * @param  int $id
+     * @param \Hourglass\Http\Requests\Employees\RegisterTimecardRequest $request
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function register(RegisterTimecardRequest $request, $id)
+    public function register(RegisterTimecardRequest $request, int $id) : JsonResponse
     {
-        /** @var Employee $employee */
-        $employee = $this->account->employees()->find($id);
+		/** @var EloquentEmployee $employee */
+		$employee = $this->resolveAccount($this->account)->employees()->find($id);
+
         if (!$employee) {
             throw new NotFoundHttpException('Not found.');
         }
         $terminalKey = $request->get('terminal_key');
 
-        /** @var Employee $previouslyAssignedEmployee */
-        $previouslyAssignedEmployee = $this->account->employees()
+        /** @var EloquentEmployee $previouslyAssignedEmployee */
+        $previouslyAssignedEmployee = $this->resolveAccount($this->account)->employees()
             ->where('terminal_key', $terminalKey)->first();
 
         // Disassociate timecard from previous employee.
@@ -153,14 +152,14 @@ class EmployeeController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id) : JsonResponse
     {
-        /** @var Employee $employee */
-        $employee = $this->account->employees()->find($id);
+		/** @var EloquentEmployee $employee */
+		$employee = $this->resolveAccount($this->account)->employees()->find($id);
 
         if (!$employee) {
             throw new NotFoundHttpException('Not Found');

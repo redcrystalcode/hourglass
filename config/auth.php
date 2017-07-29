@@ -66,8 +66,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => \Hourglass\Models\User::class,
+            'driver' => 'doctrine',
+            'model' => \Hourglass\Entities\User::class,
         ],
 
         // 'users' => [

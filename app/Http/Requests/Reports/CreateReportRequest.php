@@ -24,7 +24,7 @@ class CreateReportRequest extends Request
      */
     public function rules()
     {
-        $accountId = $this->user()->account_id;
+        $accountId = $this->user()->getAccountId();
 
         $rules = [
             'type' => ['required', 'in:timesheet,agency,shift,job'],

@@ -7,7 +7,7 @@ import TerminalService from 'services/TerminalService';
 import NotificationService from 'services/NotificationService';
 import OngoingShiftsCollection from 'collections/OngoingShiftsCollection';
 import EmptyView from 'components/EmptyView';
-import Confirm from 'components/Confirm';;
+import Confirm from 'components/Confirm';
 import layout from 'templates/terminal/shifts/layout.tpl';
 import item from 'templates/terminal/shifts/item.tpl';
 
