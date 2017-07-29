@@ -52,11 +52,11 @@ class ReportController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param string $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(int $id) : JsonResponse
+    public function show(string $id) : JsonResponse
     {
         /** @var Report $report */
         $report = $this->resolveAccount($this->account)->reports()->find($id);
@@ -343,7 +343,7 @@ class ReportController extends BaseController
             $projectedQuantityPerHour,
             $numberOfPeopleRequired,
             $totalHours,
-            $shift->productivity['quantity']
+            (int)$shift->productivity['quantity']
         );
     }
 
@@ -397,8 +397,8 @@ class ReportController extends BaseController
      */
     private function calculateProductivityScoreForJob(Job $job, array $shiftReports) : int
     {
-        $projectedQuantityPerHour = $job->productivity['quantity'];
-        $numberOfPeopleRequired = $job->productivity['employees'];
+        $projectedQuantityPerHour = (int)$job->productivity['quantity'];
+        $numberOfPeopleRequired = (int)$job->productivity['employees'];
 
         $minutesWorked = 0;
         $totalQuantityProduced = 0;
