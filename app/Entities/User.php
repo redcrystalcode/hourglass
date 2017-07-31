@@ -224,6 +224,6 @@ class User implements Authenticatable
      */
     public function getRememberTokenName()
     {
-        return 'remember_token';
+        return 'rememberToken';
     }
 }
