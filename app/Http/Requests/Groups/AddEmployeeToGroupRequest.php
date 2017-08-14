@@ -3,7 +3,7 @@
 namespace Hourglass\Http\Requests\Groups;
 
 use Hourglass\Http\Requests\Request;
-use Hourglass\Models\Account;
+use Hourglass\Entities\Account;
 use RedCrystal\ValidationRules\ExistsValidationRule;
 
 class AddEmployeeToGroupRequest extends Request
@@ -25,11 +25,9 @@ class AddEmployeeToGroupRequest extends Request
      */
     public function rules()
     {
-        /** @var Account $account */
-        $account = $this->user()->account;
         return [
             'employee_id' => (new ExistsValidationRule('employees', 'id'))
-                ->where('account_id', $account->id)
+                ->where('account_id', $this->user()->getAccountId())
                 ->toString(),
         ];
     }
