@@ -7,6 +7,7 @@ use Hourglass\Http\Requests\Employees\CreateEmployeeRequest;
 use Hourglass\Http\Requests\Employees\RegisterTimecardRequest;
 use Hourglass\Http\Requests\Employees\UpdateEmployeeRequest;
 use Hourglass\Models\Employee as EloquentEmployee;
+use Hourglass\Models\Employee;
 use Hourglass\Transformers\EmployeeTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

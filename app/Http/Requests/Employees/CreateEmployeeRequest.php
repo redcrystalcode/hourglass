@@ -25,13 +25,14 @@ class CreateEmployeeRequest extends Request
      */
     public function rules()
     {
+        $key = (bool)$this->get('terminal_key');
         $accountId = $this->user()->getAccountId();
         return [
             'name' => 'required',
-            'terminal_key' => (new UniqueValidationRule('employees', 'terminal_key'))
-                ->where('account_id', $accountId)
-                ->whereNull('deleted_at')
-                ->toString(),
+            'terminal_key' => (!$key) ? ['nullable'] : (new UniqueValidationRule('employees', 'terminal_key'))
+                    ->where('account_id', $accountId)
+                    ->whereNull('deleted_at')
+                    ->toString(),
             'location.id' => [
                 'required',
                 (new ExistsValidationRule('locations', 'id'))
