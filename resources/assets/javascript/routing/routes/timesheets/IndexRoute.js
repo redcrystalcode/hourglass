@@ -9,8 +9,7 @@ import PageableTimesheetsCollection from 'collections/PageableTimesheetsCollecti
 const IndexRoute = BaseRoute.extend({
     fetch() {
         this.timesheets = PageableTimesheetsCollection.fromQueryParameters(this.options.query);
-        this.timesheets.setPageSize(25);
-        return this.timesheets.fetch();
+        return this.timesheets.setPageSize(25);
     },
     render() {
         ApplicationService.request('sidebar:hide');
