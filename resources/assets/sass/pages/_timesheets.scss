@@ -157,6 +157,8 @@
 
 .timesheets.card {
   position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
 
   .timesheets-card__loader {
     display: none;
@@ -243,3 +245,4 @@
     display: none;
   }
 }
+
