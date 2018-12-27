@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace Hourglass\Http\Controllers\Api;
 
-use Hourglass\Http\Requests\Reports\CreateReportRequest;
+use Carbon\Carbon;
+use Hourglass\Http\Requests\Timesheets\CreateTimesheetRequest;
+use Hourglass\Models\Job;
+use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
+use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\TimesheetTransformer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -33,6 +37,7 @@ class TimesheetController extends BaseController
     public function index(Request $request): JsonResponse
     {
         $timesheets = $this->resolveAccount($this->account)->timesheets()
+            ->with(['employee.agency', 'job', 'shift'])
             ->sort($request->get('sort_by'), $request->get('order'))
             ->paginate($request->get('per_page', 10));
 
@@ -46,14 +51,27 @@ class TimesheetController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateReportRequest $request): JsonResponse
+    public function store(CreateTimesheetRequest $request): JsonResponse
     {
-        $report = new Report($request->only(['type']));
-        $report->parameters = $this->getReportParameters($request);
-        $report->generateName();
-        $this->resolveAccount($this->account)->reports()->save($report);
+        $account = $this->resolveAccount($this->account);
+        $timesheet = new Timesheet();
 
-        return $this->respondWithItem($report);
+        $date = $request->get('date');
+
+        $timesheet->employee_id = $request->get('employee_id');
+        $timesheet->job_id = $request->get('job_id');
+        $timesheet->time_in = Carbon::parse($date . ' ' . $request->get('time_in'), $account->timezone)->timezone('UTC');
+        $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
+
+        if ($timesheet->time_out->lt($timesheet->time_in)) {
+            $timesheet->time_out->addDay();
+        }
+
+        $this->determineJobShift($timesheet);
+
+        $this->resolveAccount($this->account)->timesheets()->save($timesheet);
+
+        return $this->respondWithItem($timesheet);
     }
 
     /**
@@ -65,12 +83,27 @@ class TimesheetController extends BaseController
      */
     public function destroy(int $id): void
     {
-        $report = $this->resolveAccount($this->account)->reports()->find($id);
+        $timesheet = $this->resolveAccount($this->account)->timesheets()->find($id);
 
-        if (!$report) {
+        if (!$timesheet) {
             throw new NotFoundHttpException('Not found.');
         }
 
-        $report->delete();
+        $timesheet->delete();
+    }
+
+    private function determineJobShift(Timesheet $timesheet)
+    {
+        $job = Job::find($timesheet->job_id);
+        $shift = $job->shifts()->whereDate('created_at', '=', $timesheet->time_in->toDateString())->first();
+
+        if (!$shift) {
+            $shift = new JobShift();
+            $shift->account_id = $job->account_id;
+            $shift->job_id = $job->id;
+            $shift->save();
+        }
+
+        $timesheet->job_shift_id = $shift->id;
     }
 }

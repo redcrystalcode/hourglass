@@ -29,7 +29,7 @@ const SearchesCollection = {
 
     clearSearch() {
         this.ui.search.val('');
-        this.collection.fetch();
+        this.collection.search();
     }
 };
 

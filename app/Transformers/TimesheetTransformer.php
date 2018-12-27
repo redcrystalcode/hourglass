@@ -15,12 +15,14 @@ class TimesheetTransformer extends Transformer
         return [
             'id' => $timesheet->id,
             'employee' => [
+                'id' => $employee->id,
                 'name' => $employee->name,
                 'position' => $employee->position,
                 'terminal_key' => $employee->terminal_key,
                 'group' => $group ? $group->name : null,
             ],
             'job' => [
+                'id' => $job->id,
                 'name' => $job->name,
                 'number' => $job->number,
             ],

@@ -9,6 +9,7 @@ const DatePicker = Marionette.Object.extend({
         this.picker = new Pikaday({
             field: this.options.field[0],
             format: this.options.format || 'ddd, MMM D, Y',
+            maxDate: this.options.maxDate || undefined,
             i18n: {
                 previousMonth: 'Previous Month',
                 nextMonth: 'Next Month',

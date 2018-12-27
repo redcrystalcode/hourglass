@@ -1,7 +1,25 @@
 import _ from 'lodash';
 import {ItemView, CompositeView} from 'backbone.marionette';
+import {mixin} from 'helpers';
 import layout from 'templates/components/mini-chooser/layout.tpl';
 import item from 'templates/components/mini-chooser/item.tpl';
+import SearchesCollection from "views/mixins/SearchesCollection";
+
+function getModelAttribute(model, attribute) {
+    if (typeof attribute === 'string') {
+        return model.get(attribute);
+    }
+    if (typeof attribute === 'function') {
+        return attribute(model);
+    }
+    return null;
+}
+
+function stripTags(value) {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = value;
+    return tmp.textContent || tmp.innerText || "";
+}
 
 const MiniChooserItemView = ItemView.extend({
     template: item,
@@ -17,10 +35,14 @@ const MiniChooserItemView = ItemView.extend({
         return {
             icon: this.model.get('icon') || this.options.icon,
             primary() {
-                return view.getModelAttribute(view.options.primaryField);
+                return getModelAttribute(view.model, view.options.primaryField);
             },
             secondary() {
-                return view.getModelAttribute(view.options.secondaryField);
+                return getModelAttribute(view.model, view.options.secondaryField);
+            },
+            secondary_clean() {
+                const value = getModelAttribute(view.model, view.options.secondaryField);
+                return stripTags(value);
             },
         };
     },
@@ -42,6 +64,9 @@ const MiniChooser = CompositeView.extend({
     className: 'mini-chooser',
     childView: MiniChooserItemView,
     childViewContainer: '.mini-chooser__list',
+    ui: {
+        selected: '.mini-chooser__selected',
+    },
     childViewOptions() {
         return {
             icon: this.itemIcon,
@@ -62,15 +87,23 @@ const MiniChooser = CompositeView.extend({
     itemIcon: null,
     primaryField: 'name',
     secondaryField: null,
+    searchable: false,
+    selectedModel: null,
     miniChooserOptions: [
         'showCreateField', 'itemIcon', 'isScrollable', 'isFixedHeight',
-        'primaryField', 'secondaryField'
+        'primaryField', 'secondaryField', 'searchable', 'selectedModel',
     ],
     templateHelpers() {
         return {
             show_create_field: this.showCreateField,
             is_fixed_height: this.isFixedHeight,
             is_scrollable: this.isScrollable,
+            searchable: this.searchable,
+            icon: this.itemIcon,
+            selected_model: this.selectedModel,
+            primary: this.selectedModel && getModelAttribute(this.selectedModel, this.primaryField),
+            secondary: this.selectedModel && getModelAttribute(this.selectedModel, this.secondaryField),
+            secondary_clean: this.selectedModel && stripTags(getModelAttribute(this.selectedModel, this.secondaryField)),
         };
     },
     initialize(options) {
@@ -84,17 +117,24 @@ const MiniChooser = CompositeView.extend({
         // Deselect if selecting the same one.
         if (child.model === currentSelection) {
             this.trigger('selected', null);
+            this.toggleOriginalSelectionDisplay(true);
             return;
         }
 
         this.trigger('selected', child.model);
         child.model.set('selected', true);
+        this.toggleOriginalSelectionDisplay(false);
     },
     onRequest() {
         this.setLoadingState(true);
     },
     onSync() {
         this.setLoadingState(false);
+    },
+    toggleOriginalSelectionDisplay(show) {
+        if (this.ui.selected.length) {
+            this.ui.selected.toggle(show);
+        }
     },
     setLoadingState(loading = true) {
         if (loading) {
@@ -104,5 +144,7 @@ const MiniChooser = CompositeView.extend({
         }
     }
 });
+
+mixin(MiniChooser, SearchesCollection);
 
 export default MiniChooser;

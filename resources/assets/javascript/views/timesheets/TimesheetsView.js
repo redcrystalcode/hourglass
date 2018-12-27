@@ -1,6 +1,6 @@
 import {ItemView, LayoutView, CompositeView} from 'backbone.marionette';
 import ActionSheet from 'components/ActionSheet';
-// import ManageTimesheetView from 'views/timesheets/ManageTimesheetView';
+import ManageTimesheetView from 'views/timesheets/ManageTimesheetView';
 import DisplaysMenu from 'views/mixins/DisplaysMenu';
 import Confirm from 'components/Confirm';
 import {mixin, time} from 'helpers';
@@ -8,6 +8,7 @@ import template from 'templates/timesheets/list.tpl';
 import itemTemplate from 'templates/timesheets/item.tpl';
 import emptyTemplate from 'templates/timesheets/empty.tpl';
 import moment from "moment";
+import $ from 'jquery';
 
 const TimesheetItemView = LayoutView.extend({
     template: itemTemplate,
@@ -22,7 +23,7 @@ const TimesheetItemView = LayoutView.extend({
 
     menuOptions: {
         items: [
-            {key: 'edit', label: 'Edit'},
+            // {key: 'edit', label: 'Edit'},
             {key: 'delete', label: 'Delete'},
         ],
     },
@@ -60,10 +61,13 @@ const TimesheetItemView = LayoutView.extend({
 
     onDeleteSelected() {
         Confirm.confirm({
-            title: 'Delete rounding rule?',
-            body: 'This rounding rule will no longer apply to any reports. Are you sure you want to delete it?',
+            title: 'Delete time entry?',
+            body: 'Are you sure you want to delete this time record?',
             primaryAction: 'Delete',
-        }).done(() => this.model.destroy());
+        }).done(() => {
+            this.model.collection.remove(this.model);
+            this.model.destroy();
+        });
     }
 });
 mixin(TimesheetItemView, DisplaysMenu);
@@ -79,14 +83,23 @@ const TimesheetsView = CompositeView.extend({
     childView: TimesheetItemView,
     emptyView: TimesheetEmptyView,
 
-    collectionEvents: {
-        sync: 'render',
+    childEvents: {
+        'item:deleted': 'onItemDeleted'
     },
 
     events: {
-        'click .js-add-rule': 'showAddRuleActionSheet',
+        'click .js-add-button': 'showAddTimesheetActionSheet',
         'click .js-page-prev': 'previousPage',
         'click .js-page-next': 'nextPage',
+    },
+
+    ui: {
+        card: '.timesheets.card',
+    },
+
+    collectionEvents: {
+        request: 'onRequest',
+        sync: 'onSync',
     },
 
     templateHelpers() {
@@ -102,11 +115,15 @@ const TimesheetsView = CompositeView.extend({
         };
     },
 
-    showAddRuleActionSheet() {
+    onItemDeleted() {
+        this.collection.fetch();
+    },
+
+    showAddTimesheetActionSheet() {
         let sheet = new ActionSheet({
-            // view: new ManageTimesheetView({
-            //     collection: this.collection,
-            // })
+            view: new ManageTimesheetView({
+                collection: this.collection,
+            })
         });
         sheet.open();
     },
@@ -119,7 +136,21 @@ const TimesheetsView = CompositeView.extend({
     nextPage(e) {
         e.preventDefault();
         this.collection.getNextPage();
-    }
+    },
+
+    onRequest() {
+        this.setLoadingState(true);
+    },
+
+    onSync() {
+        this.setLoadingState(false);
+        this.render();
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    },
+
+    setLoadingState(state) {
+        this.ui.card.toggleClass('timesheets--loading', state);
+    },
 });
 
 export default TimesheetsView;
