@@ -45,7 +45,7 @@ class Employee extends Model
 {
     use BelongsToAccount, SoftDeletes, IsSearchable, IsSortable, SortsTrashedLast;
 
-    protected $searchable = ['name'];
+    protected $searchable = ['name', 'terminal_key'];
 
     protected $sortable = ['name', 'created_at'];
 

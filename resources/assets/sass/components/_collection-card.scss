@@ -229,30 +229,30 @@
 
   .footer__pagination {
     text-align: right;
+  }
+}
 
-    .pagination__stats {
+.pagination__stats {
+  color: $color-text-gray-light;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 24px;
+  line-height: 30px;
+  font-size: 12px;
+}
+.pagination__arrow {
+  @include link-style($color-text-gray-light, $color-text-gray);
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 8px;
+  font-size: 12px;
+  line-height: 12px;
+
+  &--disabled {
+    cursor: default;
+    opacity: 0.6;
+    &:hover {
       color: $color-text-gray-light;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 24px;
-      line-height: 30px;
-      font-size: 12px;
-    }
-    .pagination__arrow {
-      @include link-style($color-text-gray-light, $color-text-gray);
-      vertical-align: middle;
-      display: inline-block;
-      margin: 0 8px;
-      font-size: 12px;
-      line-height: 12px;
-
-      &--disabled {
-        cursor: default;
-        opacity: 0.6;
-        &:hover {
-          color: $color-text-gray-light;
-        }
-      }
     }
   }
 }

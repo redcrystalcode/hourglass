@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api', 'middleware' => ['web', '
     Route::post('employees/{employee}/register', 'EmployeeController@register');
     Route::resource('jobs', 'JobController');
     Route::resource('reports', 'ReportController');
+    Route::resource('timesheets', 'TimesheetController');
     Route::resource('locations', 'LocationController');
     Route::resource('rounding-rules', 'RoundingRuleController');
     Route::resource('groups', 'GroupController');

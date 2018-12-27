@@ -13,6 +13,7 @@ import ReportsRouter from 'routing/ReportsRouter';
 import TerminalRouter from 'routing/TerminalRouter';
 import EmployeesRouter from 'routing/EmployeesRouter';
 import SettingsRouter from 'routing/SettingsRouter';
+import TimesheetsRouter from 'routing/TimesheetsRouter';
 import JobsRouter from 'routing/JobsRouter';
 
 import HeaderService from 'services/HeaderService';
@@ -68,6 +69,9 @@ app.on('start', () => {
             container: app.layout.content
         }),
         reports: new ReportsRouter({
+            container: app.layout.content
+        }),
+        timesheets: new TimesheetsRouter({
             container: app.layout.content
         }),
         account: new AccountRouter({

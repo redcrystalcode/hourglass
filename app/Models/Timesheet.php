@@ -3,6 +3,8 @@
 namespace Hourglass\Models;
 
 use Hourglass\Models\Relations\BelongsToAccount;
+use Hourglass\Models\Scopes\IsSearchable;
+use Hourglass\Models\Scopes\IsSortable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Timesheet extends Model
 {
-    use BelongsToAccount;
+    use BelongsToAccount, IsSortable;
 
     /**
      * @var string[]
@@ -42,6 +44,8 @@ class Timesheet extends Model
     protected $dates = [
         'time_in', 'time_out', 'created_at', 'updated_at', 'deleted_at'
     ];
+
+    protected $sortable = ['time_in', 'created_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo||\Illuminate\Database\Query\Builder

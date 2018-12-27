@@ -1,0 +1,245 @@
+.timesheets-page {
+  .container__hero {
+    background: url(/images/backgrounds/timesheets.jpg) center no-repeat;
+    background-size: cover;
+  }
+}
+
+.timesheet {
+  @include shadow-4dp();
+  background: white;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.timesheet__header {
+  padding: 24px;
+}
+
+.timesheet__header-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  &.timesheet__header-meta--no-margin {
+    margin-bottom: 0;
+  }
+
+  .timesheet__title {
+    font-weight: 300;
+    font-size: 18px;
+    color: $color-brand-primary;
+  }
+  .timesheet__date-range {
+    font-weight: 400;
+    font-size: 18px;
+    color: $color-text-gray-light;
+  }
+}
+
+.timesheet__header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .timesheet__header-details {
+    display: flex;
+  }
+
+  .timesheet__info {
+    align-self: center;
+  }
+
+  .timesheet__info-title {
+    font-size: 22px;
+    color: $color-text-gray;
+    margin-bottom: 4px;
+  }
+
+  .timesheet__info-details {
+    color: $color-text-gray-light;
+    font-size: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .timesheet__icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: $color-brand-primary;
+    color: white;
+    display: flex;
+    position: relative;
+    margin-right: 16px;
+    align-self: center;
+
+    &.timesheet__icon--avatar {
+      overflow: hidden;
+      .material-icons {
+        $size: 86px;
+        font-size: $size;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: $size / 2px * -1px;
+      }
+    }
+
+    i.material-icons {
+      font-size: 40px;
+      align-self: center;
+      margin: 0 auto;
+    }
+  }
+
+  .timesheet__header-summary {
+    text-align: right;
+    .timesheet__header-summary-title {
+      margin-top: -8px;
+      color: $color-text-gray-lighter;
+      font-size: 18px;
+    }
+    .timesheet__header-summary-stat {
+      color: $color-brand-accent;
+      font-size: 48px;
+      line-height: 55px;
+      font-weight: 300;
+    }
+  }
+}
+
+.timesheet__data {
+  width: 100%;
+
+  .timesheet__data-total {
+    .total__label {
+      margin-right: 24px;
+    }
+    .total__data {
+      color: $color-brand-accent;
+      font-weight: 400;
+      width: 48px;
+      display: inline-block;
+    }
+  }
+
+  .timesheet__data-adjustment {
+    border-top: $data-table-dividers;
+    border-bottom: $data-table-dividers;
+
+    .adjustment__label {
+      margin-right: 24px;
+    }
+    .adjustment__data {
+      width: 48px;
+      font-weight: 400;
+      display: inline-block;
+    }
+    &--negative {
+      .adjustment__data {
+        color: #F44336;
+      }
+    }
+  }
+
+  .timesheet__data--job-col {
+    max-width: 180px;
+  }
+
+  .timesheet__data--time-tooltip-icon {
+    vertical-align: text-bottom;
+    font-size: 17px;
+  }
+}
+
+.timesheets.card {
+  position: relative;
+
+  .timesheets-card__loader {
+    display: none;
+  }
+
+  &.timesheets--loading {
+    .timesheets-card__loader {
+      display: block;
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      z-index: 5;
+      margin-left: -35px;
+      .app__loading {
+        padding: 0;
+      }
+    }
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+.timesheets__fab {
+  position: absolute;
+  top: 36px;
+  right: 48px;
+  z-index: 1;
+}
+
+.print-header {
+  padding: 24px;
+  //margin-bottom: 24px;
+  border-bottom: 1px solid #ddd;
+  img {
+    width: 100px;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+    margin: 0
+  }
+  .timesheet {
+    page-break-inside: avoid;
+  }
+  .timesheet__icon {
+    display: none !important;
+  }
+  button {
+    display: none !important;
+  }
+  table tbody tr {
+    height: auto !important;
+  }
+  .table thead th, .table tfoot th {
+    height: auto !important;
+  }
+  .table td {
+    height: auto !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  .timesheet__info-title {
+    font-size: 18px !important;
+  }
+  .timesheet__info-details {
+    font-size: 13px !important;
+  }
+  .timesheet__header-summary-stat {
+    font-size: 24px !important;
+  }
+  .timesheet__header-summary-title {
+    font-size: 12px !important;
+  }
+  .timesheet__data--time-tooltip-icon {
+    display: none;
+  }
+}

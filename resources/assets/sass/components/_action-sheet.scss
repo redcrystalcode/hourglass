@@ -92,6 +92,10 @@
     font-size: 12px;
     color: $color-text-gray-light;
   }
+
+  p.action-sheet__form-hint {
+    margin: 0;
+  }
 }
 
 .action-sheet__form-header {
