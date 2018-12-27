@@ -14,7 +14,6 @@ const TimesheetsRouter = BaseRouter.extend({
 
     routes: {
         'timesheets': 'timesheets',
-        'timesheets/:id': 'showReport',
     },
 
     timesheets(query) {
