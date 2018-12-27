@@ -1,8 +1,8 @@
 import BaseModel from 'models/BaseModel';
 import moment from "moment";
 
-const ReportModel = BaseModel.extend({
+const TimesheetModel = BaseModel.extend({
     urlRoot: '/timesheets',
 });
 
-export default ReportModel;
+export default TimesheetModel;
