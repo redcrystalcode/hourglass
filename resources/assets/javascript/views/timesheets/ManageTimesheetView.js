@@ -46,14 +46,23 @@ const ManageTimesheetView = LayoutView.extend({
 
         return {
             time_in: moment.utc(model.get('time_in')).local().format('h:mm A'),
-            time_out: moment.utc(model.get('time_out')).local().format('h:mm A'),
-            date: moment.utc(model.get('time_in')).local().format('ddd, MMM D, Y'),
+            time_out: model.get('time_out') ? moment.utc(model.get('time_out')).local().format('h:mm A') : null,
+            date: this.getDate(),
         };
     },
     initialize(options) {
         this.model = options.model || new TimesheetModel();
         this.employees = new PageableEmployeesCollection();
         this.jobs = new PageableJobsCollection();
+
+        if (!this.model.isNew()) {
+            this.model.set('employee_id', this.model.get('employee').id);
+            this.model.set('job_id', this.model.get('job').id);
+            this.model.set('date', this.getDate());
+        }
+    },
+    getDate() {
+        return moment.utc(this.model.get('time_in')).local().format('ddd, MMM D, Y');
     },
     onBeforeShow() {
         this.employeeChooser = new MiniChooser({

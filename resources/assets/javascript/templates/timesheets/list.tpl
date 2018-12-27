@@ -9,8 +9,9 @@
 		<button class="timesheets__fab js-add-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--fab mdl-button--mini-fab mdl-button--colored">
 			<i class="material-icons">add</i>
 		</button>
-		<table class="table table--full-width timesheets__table timesheets__table--empty" >
-			<thead>
+		<div class="table-responsive">
+			<table class="table table--full-width timesheets__table timesheets__table--empty" >
+				<thead>
 				<tr>
 					<th class="timesheets__date-column table__cell table__cell--non-numeric">Date</th>
 					<th class="timesheets__name-column table__cell table__cell--non-numeric">Name</th>
@@ -20,12 +21,12 @@
 					<th class="timesheets__total-time-column table__cell table__cell--non-numeric">Hrs. Worked</th>
 					<th class="timesheets__edit-column table__cell table__cell--edit"></th>
 				</tr>
-			</thead>
-			<tbody></tbody>
-			<tfoot>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
 				<td colspan="7">
 					{{#if pagination.end}}
-					<span class="pagination__stats"><strong>{{pagination.start}}-{{pagination.end}}</strong> of {{pagination.total}}</span>
+						<span class="pagination__stats"><strong>{{pagination.start}}-{{pagination.end}}</strong> of {{pagination.total}}</span>
 					{{/if}}
 					<a href="#" class="pagination__arrow js-page-prev {{#unless pagination.enable_prev}}pagination__arrow--disabled{{/unless}}">
 						<i class="material-icons">chevron_left</i>
@@ -34,7 +35,8 @@
 						<i class="material-icons">chevron_right</i>
 					</a>
 				</td>
-			</tfoot>
-		</table>
+				</tfoot>
+			</table>
+		</div>
 	</div>
 </section>

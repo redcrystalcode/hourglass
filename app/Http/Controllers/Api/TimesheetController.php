@@ -5,6 +5,7 @@ namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use Hourglass\Http\Requests\Timesheets\CreateTimesheetRequest;
+use Hourglass\Http\Requests\Timesheets\UpdateTimesheetRequest;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
 use Hourglass\Models\Report;
@@ -47,7 +48,7 @@ class TimesheetController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Hourglass\Http\Requests\Reports\CreateReportRequest $request
+     * @param CreateTimesheetRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -59,6 +60,36 @@ class TimesheetController extends BaseController
         $date = $request->get('date');
 
         $timesheet->employee_id = $request->get('employee_id');
+        $timesheet->job_id = $request->get('job_id');
+        $timesheet->time_in = Carbon::parse($date . ' ' . $request->get('time_in'), $account->timezone)->timezone('UTC');
+        $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
+
+        if ($timesheet->time_out->lt($timesheet->time_in)) {
+            $timesheet->time_out->addDay();
+        }
+
+        $this->determineJobShift($timesheet);
+
+        $this->resolveAccount($this->account)->timesheets()->save($timesheet);
+
+        return $this->respondWithItem($timesheet);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     *
+     * @param UpdateTimesheetRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateTimesheetRequest $request, int $id): JsonResponse
+    {
+        $account = $this->resolveAccount($this->account);
+        $timesheet = $account->timesheets()->find($id);
+
+        $date = $request->get('date');
+
         $timesheet->job_id = $request->get('job_id');
         $timesheet->time_in = Carbon::parse($date . ' ' . $request->get('time_in'), $account->timezone)->timezone('UTC');
         $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');

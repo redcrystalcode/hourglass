@@ -23,7 +23,7 @@ const TimesheetItemView = LayoutView.extend({
 
     menuOptions: {
         items: [
-            // {key: 'edit', label: 'Edit'},
+            {key: 'edit', label: 'Edit'},
             {key: 'delete', label: 'Delete'},
         ],
     },
@@ -34,13 +34,17 @@ const TimesheetItemView = LayoutView.extend({
             date: moment.utc(model.get('time_in')).local().format('ddd, MMM D, Y'),
             name: model.get('employee').name,
             time_in: time(model.get('time_in')),
-            time_out: time(model.get('time_out')),
+            time_out: model.get('time_out') ? time(model.get('time_out')) : null,
             job() {
                 let job = model.get('job');
                 let shift = model.get('shift');
                 return `#${job.number} (Shift #${shift.id})`;
             },
             total_time() {
+                if (!model.get('time_out')) {
+                    return null;
+                }
+
                 let duration = moment.duration(
                     moment.utc(model.get('time_out')).diff(moment.utc(model.get('time_in')))
                 );
