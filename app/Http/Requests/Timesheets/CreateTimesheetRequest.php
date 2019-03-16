@@ -24,10 +24,8 @@ class CreateTimesheetRequest extends Request
      */
     protected function prepareForValidation()
     {
-        $this->request->replace([
-            'time_in' => strtolower($this->get('time_in')),
-            'time_out' => strtolower($this->get('time_out')),
-        ]);
+        $this->request->set('time_in', strtolower($this->get('time_in')));
+        $this->request->set('time_out', strtolower($this->get('time_out')));
     }
 
 
