@@ -126,15 +126,17 @@ class TimesheetController extends BaseController
     private function determineJobShift(Timesheet $timesheet)
     {
         $job = Job::find($timesheet->job_id);
-        $shift = $job->shifts()->whereDate('created_at', '=', $timesheet->time_in->toDateString())->first();
 
-        if (!$shift) {
+        /** @var Timesheet|null $closest */
+        $closest = $job->timesheets()->whereDate('time_in', $timesheet->time_in->toDateString())->first();
+
+        if (!$closest) {
             $shift = new JobShift();
             $shift->account_id = $job->account_id;
             $shift->job_id = $job->id;
             $shift->save();
         }
 
-        $timesheet->job_shift_id = $shift->id;
+        $timesheet->job_shift_id = $closest->job_shift_id;
     }
 }
