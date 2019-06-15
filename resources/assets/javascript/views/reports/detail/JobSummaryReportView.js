@@ -25,6 +25,12 @@ const JobSummaryReportView = CompositeView.extend({
                 }
                 return `${moment(start).format('M/DD/YY')} &mdash; ${moment(end).format('M/DD/YY')}`;
             },
+            total_time() {
+                const totals = model.get('totals');
+                let total = moment.duration(totals.minutes, 'minutes');
+
+                return `${Math.floor(total.asHours())}h ${Math.floor(total.minutes())}m`;
+            }
         };
     },
     initialize() {

@@ -27,6 +27,20 @@
 			</div>
 		</div>
 	</div>
+	<table class="report__data table">
+		<tfoot>
+		<tr>
+			<th colspan="2" class="report__data-total table__cell--non-numeric">
+				<span class="total__label">Finished Product</span>
+				<span class="total__data">{{totals.quantity}}</span>
+			</th>
+			<th colspan="3" class="report__data-total">
+				<span class="total__label">Total Time</span>
+				<span class="total__data">{{total_time}}</span>
+			</th>
+		</tr>
+		</tfoot>
+	</table>
 </div>
 
 <div class="reports-container"></div>

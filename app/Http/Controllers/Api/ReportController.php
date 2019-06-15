@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Hourglass\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use DB;
 use Hourglass\Http\Requests\Reports\CreateReportRequest;
 use Hourglass\Models\Agency;
 use Hourglass\Models\Employee;
@@ -280,6 +281,8 @@ class ReportController extends BaseController
                     'timesheets' => $timesheets,
                 ];
             }
+
+            [$totalMinutes, $totalQty] = $this->calculateTotalsForJobShifts($shiftReports);
             return [
                 'type' => $report->type,
                 'job' => [
@@ -291,8 +294,12 @@ class ReportController extends BaseController
                 ],
                 'start' => count($shifts) > 0 ? $shifts->first()->created_at->toDateTimeString() : null,
                 'end' => count($shifts) > 0 ? $shifts->last()->updated_at->toDateTimeString() : null,
-                'score' => $this->calculateProductivityScoreForJob($job, $shiftReports),
+                'score' => $this->calculateProductivityScoreForJob($job, $totalMinutes, $totalQty),
                 'shifts' => $shiftReports,
+                'totals' => [
+                    'minutes' => $totalMinutes,
+                    'quantity' => $totalQty,
+                ]
             ];
         }
     }
@@ -391,15 +398,31 @@ class ReportController extends BaseController
 
     /**
      * @param \Hourglass\Models\Job $job
-     * @param array $shiftReports
-     *
+     * @param int $minutesWorked
+     * @param int $totalQuantityProduced
      * @return int
      */
-    private function calculateProductivityScoreForJob(Job $job, array $shiftReports) : int
+    private function calculateProductivityScoreForJob(Job $job, $minutesWorked, $totalQuantityProduced) : int
     {
         $projectedQuantityPerHour = (int)$job->productivity['quantity'];
         $numberOfPeopleRequired = (int)$job->productivity['employees'];
 
+        $hoursWorked = $minutesWorked / 60;
+
+        return $this->calculateProductivityScore(
+            $projectedQuantityPerHour,
+            $numberOfPeopleRequired,
+            $hoursWorked,
+            $totalQuantityProduced
+        );
+    }
+
+    /**
+     * @param array $shiftReports
+     * @return int[]
+     */
+    private function calculateTotalsForJobShifts(array $shiftReports): array
+    {
         $minutesWorked = 0;
         $totalQuantityProduced = 0;
 
@@ -417,14 +440,7 @@ class ReportController extends BaseController
             $totalQuantityProduced += $shift['productivity']['quantity'];
         }
 
-        $hoursWorked = $minutesWorked / 60;
-
-        return $this->calculateProductivityScore(
-            $projectedQuantityPerHour,
-            $numberOfPeopleRequired,
-            $hoursWorked,
-            $totalQuantityProduced
-        );
+        return [$minutesWorked, $totalQuantityProduced];
     }
 
     /**
