@@ -8,7 +8,6 @@ use Hourglass\Http\Requests\Timesheets\CreateTimesheetRequest;
 use Hourglass\Http\Requests\Timesheets\UpdateTimesheetRequest;
 use Hourglass\Models\Job;
 use Hourglass\Models\JobShift;
-use Hourglass\Models\Report;
 use Hourglass\Models\Timesheet;
 use Hourglass\Transformers\TimesheetTransformer;
 use Illuminate\Http\JsonResponse;
@@ -127,16 +126,26 @@ class TimesheetController extends BaseController
     {
         $job = Job::find($timesheet->job_id);
 
+        $localDateTime = Carbon::instance($timesheet->time_in)->timezone($timesheet->account->timezone);
+        $startOfDay = $localDateTime->copy()->startOfDay();
+        $endOfDay = $localDateTime->copy()->endOfDay();
+
         /** @var Timesheet|null $closest */
-        $closest = $job->timesheets()->whereDate('time_in', $timesheet->time_in->toDateString())->first();
+        $closest = $job->timesheets()
+            ->whereDate('time_in', '>=', $startOfDay->timezone('utc'))
+            ->whereDate('time_in', '<=', $endOfDay->timezone('utc'))
+            ->first();
 
         if (!$closest) {
             $shift = new JobShift();
             $shift->account_id = $job->account_id;
             $shift->job_id = $job->id;
             $shift->save();
+
+            $timesheet->job_shift_id = $shift->id;
+        } else {
+            $timesheet->job_shift_id = $closest->job_shift_id;
         }
 
-        $timesheet->job_shift_id = $closest->job_shift_id;
     }
 }
