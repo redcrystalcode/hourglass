@@ -25,7 +25,7 @@ class UpdateTimesheetRequest extends Request
     protected function prepareForValidation()
     {
         $this->request->set('time_in', strtolower($this->get('time_in')));
-        $this->request->set('time_out', strtolower($this->get('time_out')));
+        $this->request->set('time_out', $this->get('time_out') ? strtolower($this->get('time_out')) : null);
     }
 
 
@@ -52,7 +52,7 @@ class UpdateTimesheetRequest extends Request
                     ->toString()
             ],
             'time_in' => ['required', 'date_format:g:i a'],
-            'time_out' => ['required', 'date_format:g:i a'],
+            'time_out' => ['nullable', 'date_format:g:i a'],
             'date' => ['required', 'date'],
         ];
     }
