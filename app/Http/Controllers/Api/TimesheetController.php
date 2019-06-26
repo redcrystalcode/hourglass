@@ -61,10 +61,12 @@ class TimesheetController extends BaseController
         $timesheet->employee_id = $request->get('employee_id');
         $timesheet->job_id = $request->get('job_id');
         $timesheet->time_in = Carbon::parse($date . ' ' . $request->get('time_in'), $account->timezone)->timezone('UTC');
-        $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
 
-        if ($timesheet->time_out->lt($timesheet->time_in)) {
-            $timesheet->time_out->addDay();
+        if ($request->get('time_out')) {
+            $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
+            if ($timesheet->time_out->lt($timesheet->time_in)) {
+                $timesheet->time_out->addDay();
+            }
         }
 
         $this->determineJobShift($timesheet);
@@ -91,10 +93,12 @@ class TimesheetController extends BaseController
 
         $timesheet->job_id = $request->get('job_id');
         $timesheet->time_in = Carbon::parse($date . ' ' . $request->get('time_in'), $account->timezone)->timezone('UTC');
-        $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
 
-        if ($timesheet->time_out->lt($timesheet->time_in)) {
-            $timesheet->time_out->addDay();
+        if ($request->get('time_out')) {
+            $timesheet->time_out = Carbon::parse($date . ' ' . $request->get('time_out'), $account->timezone)->timezone('UTC');
+            if ($timesheet->time_out->lt($timesheet->time_in)) {
+                $timesheet->time_out->addDay();
+            }
         }
 
         $this->determineJobShift($timesheet);
