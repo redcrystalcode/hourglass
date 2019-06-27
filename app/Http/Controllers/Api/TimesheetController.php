@@ -130,14 +130,14 @@ class TimesheetController extends BaseController
     {
         $job = Job::find($timesheet->job_id);
 
-        $localDateTime = Carbon::instance($timesheet->time_in)->timezone($timesheet->account->timezone);
+        $localDateTime = Carbon::instance($timesheet->time_in)->timezone($this->account->getTimezone());
         $startOfDay = $localDateTime->copy()->startOfDay();
         $endOfDay = $localDateTime->copy()->endOfDay();
 
         /** @var Timesheet|null $closest */
         $closest = $job->timesheets()
-            ->whereDate('time_in', '>=', $startOfDay->timezone('utc'))
-            ->whereDate('time_in', '<=', $endOfDay->timezone('utc'))
+            ->where('time_in', '>=', $startOfDay->timezone('utc')->toDateTimeString())
+            ->where('time_in', '<=', $endOfDay->timezone('utc')->toDateTimeString())
             ->first();
 
         if (!$closest) {
